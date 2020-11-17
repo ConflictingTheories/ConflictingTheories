@@ -36,6 +36,7 @@
   <body>
     <!-- Title & Display -->
     <canvas id="hero"></canvas>
+    <div class="scanlines"></div>
     <div class="container">
       <span class="glitch">
         <span class="conflict glitch" data-text="Conflicting">Conflicting</span>
@@ -43,16 +44,18 @@
       <span class="glitch" data-text="Theories">Theories</span>
       <div class="glow"><span class="conflict">Conflicting</span>Theories</div>
       <p class="subtitle">SELF-SOVEREIGN RADIO - ORDER FROM CHAOS</p>
-      <iframe
-        src="http://player.twitch.tv/?channel=kderbyma&enableExtensions=true&muted=false&parent=conflictingtheories.com&volume=1"
-        height="600"
-        width="800"
-        frameborder="0"
-        scrolling="false"
-        allowfullscreen="true"
-      >
-      </iframe>
-      <div class="scanlines"></div>
+      <br/>
+      <br/>
+      <div style="margin-top:1em;" id="twitch-embed"></div>
+      <script src="https://embed.twitch.tv/embed/v1.js"></script>
+      <script type="text/javascript">
+        new Twitch.Embed("twitch-embed", {
+          width: 854,
+          height: 480,
+          channel: "kderbyma",
+          parent: ["conflictingtheories.com", "conflictingtheories.news","conflictingtheories.live","conflictingtheories.network"]
+        });
+      </script>
     </div>
     <!-- Link to Website & Date -->
     <p class="f">
