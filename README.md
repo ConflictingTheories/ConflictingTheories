@@ -1,4 +1,11 @@
-### Hi there 👋
+### Hi there - This is ConflictingTheories 👋
+
+Free Your Mind - Self-Sovereignty is the New Future
+- 🌱 I’m currently learning ... economics, banking, cryptography, non-profits / foundations
+- 🔭 I’m currently working on ... the Proxi Initiative, Self-Sovereignty, and Project Management
+- 👯 I’m looking to collaborate on ... the Proxi Initiative
+- 🤔 I’m looking for help with ... the Proxi Intiative
+
 
 <!--
 **ConflictingTheories/ConflictingTheories** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
