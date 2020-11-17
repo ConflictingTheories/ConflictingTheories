@@ -20,8 +20,9 @@
       var toggle = false;
       function playMusic() {
         toggle = !toggle;
-        if (toggle) document.querySelectorAll(".music").forEach(x=>x.play());
-        else document.querySelectorAll(".music").forEach(x=>x.pause());
+        if (toggle)
+          document.querySelectorAll(".music").forEach((x) => x.play());
+        else document.querySelectorAll(".music").forEach((x) => x.pause());
       }
       function today() {
         document.getElementById("date").innerText = new Date().toDateString();
@@ -42,11 +43,20 @@
       <span class="glitch" data-text="Theories">Theories</span>
       <div class="glow"><span class="conflict">Conflicting</span>Theories</div>
       <p class="subtitle">SELF-SOVEREIGN RADIO - ORDER FROM CHAOS</p>
+      <iframe
+        src="http://player.twitch.tv/?channel=kderbyma&enableExtensions=true&muted=false&parent=conflictingtheories.com&volume=1"
+        height="600"
+        width="800"
+        frameborder="0"
+        scrolling="false"
+        allowfullscreen="true"
+      >
+      </iframe>
+      <div class="scanlines"></div>
     </div>
-    <div class="scanlines"></div>
     <!-- Link to Website & Date -->
     <p class="f">
-      <a target="_blank" href="https://www.kderbyma.com">@kderbyma</a>      
+      <a target="_blank" href="https://www.kderbyma.com">@kderbyma</a>
       <a href="#" onclick="playMusic()">🎼</a>
       <br />
       <span id="date"></span>
