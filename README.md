@@ -21,3 +21,18 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
+
+
+https://proxi.network
+
+
+https://conflictingtheories.com
+https://conflictingtheories.news
+https://conflictingtheories.network
+https://conflictingtheories.live
+
+
+https://kderbyma.com
+https://kyledm.ca
+https://twitch.tv/kderbyma
+
