@@ -11,16 +11,12 @@ Please have a look and feel free to comment if you find it useful.
 > 
 > **TIMELINE LINK: [https://covid-19.kderbyma.com/timeline.html](http://covid-19.kderbyma.com/timeline.html)**
 > 
-> **CHART LINK: [https://covid-19.kderbyma.com/chart.html](http://covid-19.kderbyma.com/chart.html)**
-> 
-> <cite>  
+> **CHART LINK: [https://covid-19.kderbyma.com/chart.html](http://covid-19.kderbyma.com/chart.html)**  
 >   
-> </cite>
+> 
 
 > *Please note this may be taken down at any time. Apologies for the trouble.*
-> 
-> <cite>  
 >   
-> </cite>
+> 
 
 This Covid-19 tracker is powered by [TERRAFORM](https://www.terraformcorp.com/) in part.
