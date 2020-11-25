@@ -22,19 +22,19 @@ Examples:
 **MKV Files:**
 
  ~~~
-<pre class="wp-block-preformatted">castnow --tomp4 --ffmpeg-ac 2 --address <Chromecast-IP> --subtitles <path-to-subtitles>.srt <path-to-video>.mkv
+castnow --tomp4 --ffmpeg-ac 2 --address <Chromecast-IP> --subtitles <path-to-subtitles>.srt <path-to-video>.mkv
  ~~~
 
 **MP4 Files:**
 
  ~~~
-<pre class="wp-block-preformatted">castnow --ffmpeg-ac 2 --address <Chromecast-IP> --subtitles <path-to-subtitles>.srt <path-to-video>.mp4
+castnow --ffmpeg-ac 2 --address <Chromecast-IP> --subtitles <path-to-subtitles>.srt <path-to-video>.mp4
  ~~~
 
 **Without Subtitle File:**
 
  ~~~
-<pre class="wp-block-preformatted">castnow --tomp4 --ffmpeg-ac 2 --address <Chromecast-IP><path-to-video>.mkv
+castnow --tomp4 --ffmpeg-ac 2 --address <Chromecast-IP><path-to-video>.mkv
  ~~~
 
 I hope this helps some people to fix this issue without trying to shell out for paid solutions which don’t even work. Take care!

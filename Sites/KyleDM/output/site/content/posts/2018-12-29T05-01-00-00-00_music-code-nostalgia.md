@@ -26,7 +26,7 @@ Below you can see the piano in action. (Warning: you will have to turn the volum
 
 If you want to see the source code for the app and the arduino sketch you can find it below:
 
-https://github.com/ConflictingTheories/arduinoBTKeyboard/>
+https://github.com/ConflictingTheories/arduinoBTKeyboard/
 
 Additionally, I have included a Fritzing for your convenience on the sketch portion (I have omitted the keypad + RFID portions for now – I may add them later to the Fritz):
 

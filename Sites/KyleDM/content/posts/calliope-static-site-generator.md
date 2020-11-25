@@ -14,6 +14,6 @@ By separating everything out, I hope to create a more collaborative framework wh
 
 Keep your eyes peeled and you can follow along at:
 
-https://github.com/ConflictingTheories/calliope>
+https://github.com/ConflictingTheories/calliope
 
-https://git.kderbyma.com/portfolio/calliope-site-generator>
+https://git.kderbyma.com/portfolio/calliope-site-generator

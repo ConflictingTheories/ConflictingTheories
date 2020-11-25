@@ -11,6 +11,6 @@ This brings me to the creation of NERD (NginX, ExpressJS, ReactJS, Docker) which
 
 If you would like to see more about NERD, please check out the source code hosted below:
 
-- https://github.com/ConflictingTheories/nerd-starter-template>
+- https://github.com/ConflictingTheories/nerd-starter-template
 
-- https://git.kderbyma.com/portfolio/nerd-starter-template>
+- https://git.kderbyma.com/portfolio/nerd-starter-template
