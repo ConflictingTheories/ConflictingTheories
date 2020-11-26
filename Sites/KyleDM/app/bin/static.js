@@ -28,98 +28,66 @@ module.exports = (async () => {
   });
   // COPY Posts
   let posts = await getPosts();
-  let postJson = (
-    await Promise.all(
-      posts.map((file) => {
-        return new Promise((resolve, reject) => {
-          fs.readFile(file, "utf8", async function (err, data) {
-            // Read each file
-            if (err) {
-              console.log(
-                "cannot read the file, something goes wrong with the file",
-                err
-              );
-              reject(err);
-            }
-            await fs.promises.mkdir(
-              path.join(__dirname + `/../website/build/content/posts/`),
-              {
-                recursive: true,
-              }
-            );
-            // Copy into Build Dir
-            let filename = file
-              .split("../content/posts/")[1]
-              .split(/[\/\s]+/)
-              .join("-");
+  let postJson = [];
+  posts.forEach(function (file) {
+    let filename = file
+      .split("../content/posts/")[1]
+      .split(/[\/\s]+/)
+      .join("-");
+    postJson.push(filename);
+    fs.readFile(file, "utf8", async function (err, data) {
+      // Read each file
+      if (err) {
+        console.log(
+          "cannot read the file, something goes wrong with the file",
+          err
+        );
+      }
+      await fs.promises.mkdir(
+        path.join(__dirname + `/../website/build/content/posts/`),
+        {
+          recursive: true,
+        }
+      );
+      // Copy into Build Dir
+      fs.writeFileSync(
+        path.join(__dirname + `/../website/build/content/posts/${filename}`),
+        data
+      );
+    });
+  });
 
-            let date =
-              data.match(
-                /[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\+[0-9]{2}:[0-9]{2}/
-              ) || Date.now();
-
-            let outName = `${("" + date).split(/[:\+]/).join("-")}_${filename}`;
-
-            fs.writeFileSync(
-              path.join(
-                __dirname + `/../website/build/content/posts/${outName}`
-              ),
-              data
-            );
-
-            resolve(outName);
-          });
-        });
-      })
-    )
-  ).sort().reverse();
-
-  console.log(postJson);
   // COPY Pages
   let pages = await getPages();
-  let pageJson = (
-    await Promise.all(
-      pages.map((file) => {
-        return new Promise((resolve, reject) => {
-          let filename = file
-            .split("../content/pages/")[1]
-            .split(/[\/\s]+/)
-            .join("-");
-          fs.readFile(file, "utf8", async function (err, data) {
-            // Read each file
-            if (err) {
-              console.log(
-                "cannot read the file, something goes wrong with the file",
-                err
-              );
-              reject(err);
-            }
-            // Copy into Build Dir
-            await fs.promises.mkdir(
-              path.join(__dirname + `/../website/build/content/pages/`),
-              {
-                recursive: true,
-              }
-            );
-            let date =
-              data.match(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d+\d\d:\d\d/) ||
-              Date.now();
-            let outName = `${("" + date).split(/[:\+]/).join("-")}_${filename}`;
-
-            fs.writeFileSync(
-              path.join(
-                __dirname + `/../website/build/content/pages/${outName}`
-              ),
-              data
-            );
-
-            resolve(outName);
-          });
-        });
-      })
-    )
-  ).sort().reverse();
-  console.log(pageJson);
+  console.log(pages);
+  let pageJson = [];
+  pages.forEach(function (file) {
+    let filename = file
+      .split("../content/pages/")[1]
+      .split(/[\/\s]+/)
+      .join("-");
+    pageJson.push(filename);
+    fs.readFile(file, "utf8", async function (err, data) {
+      // Read each file
+      if (err) {
+        console.log(
+          "cannot read the file, something goes wrong with the file",
+          err
+        );
+      }
+      // Copy into Build Dir
+      await fs.promises.mkdir(
+        path.join(__dirname + `/../website/build/content/pages/`),
+        {
+          recursive: true,
+        }
+      );
+      fs.writeFileSync(
+        path.join(__dirname + `/../website/build/content/pages/${filename}`),
+        data
+      );
+    });
+  });
 
   // COPY Media
   const mediaFiles = path.join(__dirname + `/../../content/media`);
@@ -141,8 +109,7 @@ module.exports = (async () => {
       console.log("transfering -- ", filepath);
       await fs.promises.mkdir(
         path.join(
-          __dirname +
-            `/../website/build/content/media/${filenamePath.join("/")}`
+          __dirname + `/../website/build/content/media/${filenamePath.join("/")}`
         ),
         {
           recursive: true,

@@ -14,7 +14,7 @@ import React from "react";
 
 // Code Highlighting
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { synthwave84 } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { materialLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 // Math Latex Support
 import { InlineMath, BlockMath } from "react-katex";
@@ -23,14 +23,19 @@ import "katex/dist/katex.min.css";
 // Customization for Markdown Rendering (react-markdown)
 export const renderers = {
   image: ({ alt, src, title }) => (
-    <img alt={alt} src={src} title={title} style={{ maxWidth: "100%" }} />
+    <img
+      alt={alt}
+      src={src}
+      title={title}
+      style={{ maxWidth: "100%", padding: 0 }}
+    />
   ),
   code: ({ language, value }) => {
     return (
       <SyntaxHighlighter
-        style={synthwave84}
+        style={materialLight}
         language={language}
-        children={value || ''}
+        children={value || ""}
       />
     );
   },
