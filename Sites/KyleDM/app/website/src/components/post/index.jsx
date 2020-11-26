@@ -55,7 +55,7 @@ class Post extends Component {
         <React.Fragment className="calliope-post">
           <hr />
           <ReactMarkdownWithHtml
-            plugins={[emoji, a11yEmoji, math, gfm, slug, headings, html]}
+            plugins={[emoji, a11yEmoji, math, gfm, html, slug, headings]}
             children={content || ""}
             renderers={renderers}
             allowDangerousHtml
