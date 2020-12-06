@@ -1,4 +1,6 @@
 # A little bit of my history 
+~ 2020-04-15T20:22:00+00:00 ~
+
 Since this is my personal blog, I think it is fair to occasionally take a purely vain look at myself and have posts devoted wholly to some aspect that really only impacts me in the end. That is what this post is all about – a little look into some of my history – really just a tiny slice – less than two whole years of my life.
 
 #### University Graduation &amp; Entrepreneurship

@@ -1,8 +1,6 @@
 # Spy Days &#8211; Team Building Espionage
 ~ 2018-10-14T21:17:39+00:00 ~
- amazon_polly_enable:
-    - '0amazon_polly_audio_location:
-    - '---
+
 How many of you were like me? I wanted to be a spy when I was younger, and I thought it would be the coolest profession. I think many kids want to be spies because of the mystery and intrigue that surrounds the idea. From heroes like James Bond to Evelyn Salt, spies captivate us as a society and keep our creative minds abounding with ideas.
 
 To rekindle my inner spy, I have decided to implement a new team building system at work called Spy Days. The premise is simple, make the team building involve espionage. Why? Because it is fun!
