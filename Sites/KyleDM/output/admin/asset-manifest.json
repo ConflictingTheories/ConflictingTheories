@@ -1,28 +1,28 @@
 {
   "files": {
-    "main.css": "/static/css/main.14a30f42.chunk.css",
-    "main.js": "/static/js/main.5de88023.chunk.js",
-    "main.js.map": "/static/js/main.5de88023.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.e8f40a24.js",
-    "runtime-main.js.map": "/static/js/runtime-main.e8f40a24.js.map",
-    "static/css/2.40579a6c.chunk.css": "/static/css/2.40579a6c.chunk.css",
-    "static/js/2.d7039472.chunk.js": "/static/js/2.d7039472.chunk.js",
-    "static/js/2.d7039472.chunk.js.map": "/static/js/2.d7039472.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.35e190cdc0c2d5feb10f7b63430f22cd.js": "/precache-manifest.35e190cdc0c2d5feb10f7b63430f22cd.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/2.40579a6c.chunk.css.map": "/static/css/2.40579a6c.chunk.css.map",
-    "static/css/main.14a30f42.chunk.css.map": "/static/css/main.14a30f42.chunk.css.map",
-    "static/js/2.d7039472.chunk.js.LICENSE.txt": "/static/js/2.d7039472.chunk.js.LICENSE.txt",
-    "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.f43e8696.woff2",
-    "static/media/blueprint-icons.css": "/static/media/icons-20.cef8cdbb.woff",
-    "static/media/logo.svg": "/static/media/logo.1b010ed1.svg"
+    "main.css": "/admin/static/css/main.309660e2.chunk.css",
+    "main.js": "/admin/static/js/main.b2f20eec.chunk.js",
+    "main.js.map": "/admin/static/js/main.b2f20eec.chunk.js.map",
+    "runtime-main.js": "/admin/static/js/runtime-main.8ffee97a.js",
+    "runtime-main.js.map": "/admin/static/js/runtime-main.8ffee97a.js.map",
+    "static/css/2.9bbac755.chunk.css": "/admin/static/css/2.9bbac755.chunk.css",
+    "static/js/2.dfa8b81a.chunk.js": "/admin/static/js/2.dfa8b81a.chunk.js",
+    "static/js/2.dfa8b81a.chunk.js.map": "/admin/static/js/2.dfa8b81a.chunk.js.map",
+    "index.html": "/admin/index.html",
+    "precache-manifest.0adf6b06db19ba58bfa21aa5bbaeeaa5.js": "/admin/precache-manifest.0adf6b06db19ba58bfa21aa5bbaeeaa5.js",
+    "service-worker.js": "/admin/service-worker.js",
+    "static/css/2.9bbac755.chunk.css.map": "/admin/static/css/2.9bbac755.chunk.css.map",
+    "static/css/main.309660e2.chunk.css.map": "/admin/static/css/main.309660e2.chunk.css.map",
+    "static/js/2.dfa8b81a.chunk.js.LICENSE.txt": "/admin/static/js/2.dfa8b81a.chunk.js.LICENSE.txt",
+    "static/media/katex.min.css": "/admin/static/media/KaTeX_Typewriter-Regular.f43e8696.woff2",
+    "static/media/blueprint-icons.css": "/admin/static/media/icons-20.cef8cdbb.woff",
+    "static/media/logo.svg": "/admin/static/media/logo.1b010ed1.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.e8f40a24.js",
-    "static/css/2.40579a6c.chunk.css",
-    "static/js/2.d7039472.chunk.js",
-    "static/css/main.14a30f42.chunk.css",
-    "static/js/main.5de88023.chunk.js"
+    "static/js/runtime-main.8ffee97a.js",
+    "static/css/2.9bbac755.chunk.css",
+    "static/js/2.dfa8b81a.chunk.js",
+    "static/css/main.309660e2.chunk.css",
+    "static/js/main.b2f20eec.chunk.js"
   ]
 }
