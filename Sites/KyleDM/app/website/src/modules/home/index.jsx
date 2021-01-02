@@ -54,7 +54,7 @@ class Dashboard extends React.Component {
             <Container>
               <Content>
                 {store.posts &&
-                  store.posts?.reverse().map((post) => {
+                  store.posts?.map((post) => {
                     return (
                       <Row>
                         <Container className="calliope-list-item">
