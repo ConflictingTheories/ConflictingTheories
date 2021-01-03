@@ -1,15 +1,15 @@
-/*                                            *\
-** ------------------------------------------ **
-**         Calliope - Site Generator   	      **
-** ------------------------------------------ **
-**  Copyright (c) 2020 - Kyle Derby MacInnis  **
-**                                            **
-** Any unauthorized distribution or transfer  **
-**    of this work is strictly prohibited.    **
-**                                            **
-**           All Rights Reserved.             **
-** ------------------------------------------ **
-\*                                            */
+/*                                                 *\
+** ----------------------------------------------- **
+**             Calliope - Site Generator   	       **
+** ----------------------------------------------- **
+**  Copyright (c) 2020-2021 - Kyle Derby MacInnis  **
+**                                                 **
+**    Any unauthorized distribution or transfer    **
+**       of this work is strictly prohibited.      **
+**                                                 **
+**               All Rights Reserved.              **
+** ----------------------------------------------- **
+\*                                                 */
 
 import React from "react";
 import { collect, store } from "react-recollect";
@@ -33,6 +33,8 @@ import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 import NavBar from "../../components/nav";
 import SideMenu from "../../components/menu";
 import Post from "../../components/post";
+import MarkdownEdit from "../../components/edit";
+import MarkdownPreview from "../../components/preview";
 // ASSETS & APP STYLES
 import "../../theme/less/App.less";
 
@@ -46,12 +48,18 @@ class Dashboard extends React.Component {
     super(props);
   }
 
+  async edit(post) {
+    // Fetch Post & Store Content
+    if (post && post !== "") {
+      store.selectedPost = post;
+    }
+  }
+
   renderPosts() {
     return (
       <React.Fragment>
-        <Row>
-          <Col sm={3} />
-          <Col sm={18}>
+        <Row style={{ paddingTop: "2em" }}>
+          <Col sm={8}>
             <Container>
               <Content>
                 {store.posts &&
@@ -59,7 +67,12 @@ class Dashboard extends React.Component {
                     return (
                       <Row>
                         <Container className="calliope-list-item">
-                          <Post src={`posts/${post}`} />
+                          <details>
+                            <summary>
+                              {post} <a onClick={this.edit(post)}>Edit</a>
+                            </summary>
+                            <Post src={`posts/${post}`} />
+                          </details>
                         </Container>
                       </Row>
                     );
@@ -67,7 +80,14 @@ class Dashboard extends React.Component {
               </Content>
             </Container>
           </Col>
-          <Col sm={3} />
+          <Col sm={8}>
+            {/* {store.selectedPost && <MarkdownEdit post={store.selectedPost} />} */}
+          </Col>
+          <Col sm={8}>
+            {/* {store.selectedPost && (
+              <MarkdownPreview post={store.selectedPost} />
+            )} */}
+          </Col>
         </Row>
       </React.Fragment>
     );
