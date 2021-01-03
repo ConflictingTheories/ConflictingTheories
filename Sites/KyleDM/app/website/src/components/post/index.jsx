@@ -1,20 +1,24 @@
-/*                                            *\
-** ------------------------------------------ **
-**         Calliope - Site Generator   	      **
-** ------------------------------------------ **
-**  Copyright (c) 2020 - Kyle Derby MacInnis  **
-**                                            **
-** Any unauthorized distribution or transfer  **
-**    of this work is strictly prohibited.    **
-**                                            **
-**           All Rights Reserved.             **
-** ------------------------------------------ **
-\*                                            */
+/*                                                 *\
+** ----------------------------------------------- **
+**             Calliope - Site Generator   	       **
+** ----------------------------------------------- **
+**  Copyright (c) 2020-2021 - Kyle Derby MacInnis  **
+**                                                 **
+**    Any unauthorized distribution or transfer    **
+**       of this work is strictly prohibited.      **
+**                                                 **
+**               All Rights Reserved.              **
+** ----------------------------------------------- **
+\*                                                 */
 
 import React, { Component } from "react";
 import { collect } from "react-recollect";
 
 import ReactMarkdownWithHtml from "react-markdown/with-html";
+
+import ReactMarkdown from "react-markdown";
+import htmlParser from 'react-markdown/plugins/html-parser';
+
 import gfm from "remark-gfm";
 import math from "remark-math";
 import a11yEmoji from "@fec/remark-a11y-emoji";
@@ -22,9 +26,14 @@ import html from "remark-html";
 import slug from "remark-slug";
 import emoji from "remark-emoji";
 import headings from "remark-autolink-headings";
+import shortcodes from "remark-shortcodes";
 
 import { renderers } from "../../theme/jsx";
 
+const parseHtml = htmlParser({
+  isValidNode: node => node.type !== 'script',
+  processingInstructions: [/* ... */]
+})
 class Post extends Component {
   constructor(props) {
     super(props);
@@ -55,7 +64,21 @@ class Post extends Component {
         <React.Fragment className="calliope-post">
           <hr />
           <ReactMarkdownWithHtml
-            plugins={[emoji, a11yEmoji, math, gfm, html, slug, headings]}
+          astPlugins={[parseHtml]}
+          escapeHtml={false}
+          parserOptions={{gfm:true}}
+          plugins={[
+              [
+                shortcodes,
+                { startBlock: "[[", endBlock: "]]", inlineMode: true },
+              ],
+              emoji,
+              a11yEmoji,
+              math,
+              slug,
+              headings,
+              html,
+            ]}
             children={content || ""}
             renderers={renderers}
             allowDangerousHtml
