@@ -56,7 +56,7 @@ class Dashboard extends React.Component {
               <Content>
                 {store.posts &&
                   store.posts
-                    ?.filter((post, i) => i < store.end && i >= store.start)
+                    ?.reverse().filter((_, i) => i < store.end && i >= store.start)
                     .map((post) => {
                       return (
                         <Row>
