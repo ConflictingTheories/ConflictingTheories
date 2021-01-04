@@ -9,7 +9,7 @@ const getPosts = () =>
           "cannot read the Posts folder, something goes wrong with glob",
           err
         );
-        reject(err);
+        resolve([]);
       }
       resolve(files);
     });
@@ -24,7 +24,7 @@ const getPages = () =>
           "cannot read the Pages folder, something goes wrong with glob",
           err
         );
-        reject(err);
+        resolve([]);
       }
       resolve(files);
     });

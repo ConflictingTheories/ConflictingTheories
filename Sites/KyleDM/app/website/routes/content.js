@@ -27,13 +27,13 @@ module.exports = (() => {
     // Return List of Site Posts
     const { getPosts } = require("../../lib/generator");
     const posts = await getPosts();
-    const files = posts.map((post) => post.split("../content/posts/")[1]);
+    const files = posts.map((post) => post.split("../content/posts/")[1]).reverse();
     console.log(files);
     if (files) res.status(200).json(files);
     // Return
     else res.status(404).json(status);
   });
-
+[].reverse
   router.get("/pages.json", async (_, res) => {
     // Setup Response
     let status = {
@@ -43,7 +43,7 @@ module.exports = (() => {
     // Return List of Site Posts
     const { getPages } = require("../../lib/generator");
     const pages = await getPages();
-    const files = pages.map((page) => page.split("../content/pages/")[1]);
+    const files = pages.map((page) => page.split("../content/pages/")[1]).reverse();
     if (files) res.status(200).json(files);
     // Return
     else res.status(404).json(status);
