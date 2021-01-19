@@ -1,17 +1,16 @@
 @import "./colors.less";
-@import "./cyberpunk.less";
 
 body,
 html {
   width: 100%;
   height: 100%;
-  margin: 0;
   overflow-wrap: break-word;
+  margin: 0;
   font-family: monospace;
   background: linear-gradient(45deg, #141823 0%, #292e49 100%);
   font-weight: lighter;
-  color: #fff8f0;
-  background: black;
+  color: #000810;
+  background: snow;
   font-family: "Orbitron", sans-serif;
   font-style: italic;
 }
@@ -20,19 +19,20 @@ h1,h2,h3,h4,h5,h6 {
   margin: 2.5%;
 }
 
-p, ul {
+p, ul{
   font-family: monospace;
   margin: 2.5%;
 }
 
-video {
+
+video{
   max-width: 95%;
   width: 95%;
   text-align: center;
   margin: 2.5% 2.5% auto;
 }
 
-audio {
+audio{
   max-width: 95%;
   width: 95%;
   text-align: center;
@@ -43,7 +43,7 @@ canvas {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: black;
+  background-color: snow;
 }
 
 .App {
@@ -51,7 +51,7 @@ canvas {
 }
 
 .App-nav {
-  position: fixed;
+  position:fixed;
 }
 
 .App-header {
@@ -106,10 +106,17 @@ canvas {
   right: 15px;
   font-family: "Arial";
   font-size: 1rem;
-  color: #d7b8f3;
+  color: #1f1329;
   text-align: center;
 }
 .f a {
   font-size: 1rem;
-  color: #fff;
+  color: #000;
+}
+
+.container {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 40%;
+  left: 50%;
 }
