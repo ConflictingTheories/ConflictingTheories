@@ -1,4 +1,1 @@
-{
-  "posts": "/content/posts.json",
-  "pages": "/content/pages.json"
-}
+{"posts":"/content/posts.json","pages":"/content/pages.json","save":"/content/save","offline":true}
