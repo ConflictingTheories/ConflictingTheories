@@ -95,7 +95,7 @@ class Dashboard extends React.Component {
                     .map((post) => {
                       return (
                         <Row>
-                          <Container className="calliope-list-item">
+                          <Container className="calliope-post">
                             <Post src={`${post}`} />
                           </Container>
                         </Row>
