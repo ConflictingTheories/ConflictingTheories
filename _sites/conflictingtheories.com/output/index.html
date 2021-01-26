@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Meta & Titles -->
+    <title>ConflictingTheories - Self-Sovereign Radio</title>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Rock+Salt"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Cabin+Sketch"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link href="css/index.css" rel="stylesheet" type="text/css" />
+    <script src="js/index.js"></script>
+    <script>
+      var toggle = false;
+      function playMusic() {
+        toggle = !toggle;
+        if (toggle)
+          document.querySelectorAll(".music").forEach((x) => x.play());
+        else document.querySelectorAll(".music").forEach((x) => x.pause());
+      }
+      function today() {
+        document.getElementById("date").innerText = new Date().toDateString();
+      }
+      window.onload = function () {
+        today();
+        initialize(hero);
+      };
+    </script>
+  </head>
+  <body>
+    <!-- Title & Display -->
+    <canvas id="hero" style="height: inherit; width: inherit"></canvas>
+    <div class="scanlines"></div>
+    <div class="container">
+      <span class="glitch">
+        <span class="conflict glitch" data-text="Conflicting">Conflicting</span>
+      </span>
+      <span class="glitch" data-text="Theories">Theories</span>
+      <div class="glow"><span class="conflict">Conflicting</span>Theories</div>
+      <p class="subtitle">SELF-SOVEREIGN RADIO - ORDER FROM CHAOS</p>
+      <br />
+      <br />
+      <br />
+      <h3>Latest Stream</h3>
+      <div style="margin-top: 1em" id="twitch-embed"></div>
+      <!-- <br />
+      <div>
+        <h3>Latest Podcast</h3>
+        <audio src="media/audio/latest.mp3" controls="true"></audio>
+      </div> -->
+      <script src="https://embed.twitch.tv/embed/v1.js"></script>
+      <script type="text/javascript">
+        new Twitch.Embed("twitch-embed", {
+          width: 854,
+          height: 480,
+          channel: "kderbyma",
+          autoplay: true,
+          parent: [
+            "conflictingtheories.com",
+            "conflictingtheories.news",
+            "conflictingtheories.live",
+            "conflictingtheories.network",
+          ],
+        });
+      </script>
+    </div>
+    <!-- Link to Website & Date -->
+    <p class="f">
+      <a target="_blank" href="https://www.kderbyma.com">@kderbyma</a>
+      <a href="#" onclick="playMusic()">🎼</a>
+      <br />
+      <span id="date"></span>
+    </p>
+    <!-- Audio -->
+    <audio class="music" autoplay loop>
+      <source src="media/drums.mp3" type="audio/wav" />
+    </audio>
+    <audio class="music" autoplay loop>
+      <source src="media/dark.wav" type="audio/wav" />
+    </audio>
+  </body>
+</html>
