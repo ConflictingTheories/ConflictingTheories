@@ -1,4 +1,5 @@
 # Decentralized Gaming
+~ 2021-02-26T04:13:51+00:00 ~
 
 Wouldn't it be cool if we could have a game which ran through decentralized clients, but which shared a common chain of truth. Rather than worry about PoW and traditional mining, we could have a client-driven node which operates by performing txn's on the chain. These txn's change the state of the world (game's universe) and this is translated through a concensus protocol. Rather than having a centralized server managing the state of the world, you could split it out to the clients themselves (which typically do most of the asset/rendering anyways).
 

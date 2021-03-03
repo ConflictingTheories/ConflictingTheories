@@ -1,4 +1,5 @@
 # Client Driven Social Networks
+~ 2021-01-28T00:05:03+00:00 ~
 
 So I have been really interested in the idea of client-driven social networks. Previous concepts have been developed which already incorporate this idea, but I feel like a lot of stuff in technology - it has been forgotten and is ripe to be "rediscovered".
 
@@ -25,6 +26,6 @@ These days, we trust out browser to be our clients - but they do not pull in mul
 #### Clients, Clients, everywhere....
 In the future - there will many clients - some full-featured, and other lighter. Some will be restictive, and others more free-wheeling - but in each case you will be able to better tailor the experience. It is also likely, that existing services would adopt a feed-like service if it begins to get enough attention.
 
-Anyways - that is all for now. I hope to expand on this concept in more detail with the [Muse.json Standard](/embed/posts/20210103T211300_MusejsonFormatConcept.md) I am working on.
+Anyways - that is all for now. I hope to expand on this concept in more detail with the [Muse.json Standard](/embed/posts/20210103T211300_MusejsonFormatConcept) I am working on.
 
 Cheers! :smile: :boom:
