@@ -1,4 +1,5 @@
 # Follow your muse :brain: :heart: :eggplant: :taco:
+~ 2021-01-16T20:09:01+00:00 ~
 
 I have made some updates this week to [Calliope](https://calliope.site) and the changes can be see on this site too. I have deployed the latest version of Calliope and it is currently being used to run this site.
 
@@ -21,4 +22,4 @@ I will know I have succeeded when it is being used on other people's sites and t
 
 Clients and User Agents free to roam the internet to their hearts content - not tied to the giant tyrants of today.
 
-Thank you and please consider giving iit a shot! :+1: :star: :apple: :cactus:
+Thank you and please consider giving it a shot! :+1: :star: :apple: :cactus:
