@@ -19,7 +19,7 @@ My method is as follows:
 
 3. Bisect circle and define 4 points at 90 degrees. Where bisection and original baseline. Inscribed a square. (A,B,C,D)
 
-4. Starting at leftmost point of the square (A) - Draw an arc crossing the circumference of the of radius R counter clockwise. at this point (E) again draw and arc and cross over the circumference going counter clockwise around the circle - this is Point (F)
+4. Starting at leftmost point of the square (A) - Draw an arc crossing the circumference of the of radius P counter clockwise. at this point (E) again draw and arc and cross over the circumference going counter clockwise around the circle - this is Point (F)
 
 5. Draw a line between the starting corner of the inscribed square(A), to the first point on the circumference(E). Bisect this line with the centre of the circle. Find the point which intersects the circumference.(G)
 
@@ -27,6 +27,10 @@ My method is as follows:
 
 7. Now rotate and repeat the steps from the next corner of the inscribed square (B) continuing counter clockwise. This will form your square of equal area to the circle once all the lines are finished. The next edge is F and C fyi
 
+
+---
+
+If you have R = P you will not have Pi, you will resolve to $3R^2$. P is a trancendental number that is a relationship between Pi and Sqrt(2).
 
 ---
 
