@@ -287,7 +287,7 @@ pickAt = (min, max, mx, my) => {
   // Build result
   if (pixel[0] != 255) {
     console.log(pixel);
-    let normal;
+    let normal = new Vector(0, 0, 0);
     if (pixel[3] == 1) normal = new Vector(0, 0, 1);
     else if (pixel[3] == 2) normal = new Vector(0, 0, -1);
     else if (pixel[3] == 3) normal = new Vector(0, -1, 0);
