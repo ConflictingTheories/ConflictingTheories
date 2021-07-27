@@ -8,7 +8,7 @@ body {
 }
 
 #background-wrap {
-	background: url("img/mapletree.png");
+	background: url("img/mapletree.png") no-repeat center;
     bottom: 0;
 	left: 0;
 	padding-top: 50px;
