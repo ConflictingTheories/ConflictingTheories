@@ -1,6 +1,6 @@
 # Set Directory Location
 declare -x BUILD_PATH=$(pwd)
-cd BUILD_PATH;
+cd $BUILD_PATH;
 
 # Source Env
 . $BUILD_PATH/.env
