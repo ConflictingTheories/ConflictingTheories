@@ -24,6 +24,7 @@
     ]
   },
   "dependencies": {
-    "craco-less": "^1.20.0"
+    "craco-less": "^1.20.0",
+    "remark-slug": "^7.0.0"
   }
 }
