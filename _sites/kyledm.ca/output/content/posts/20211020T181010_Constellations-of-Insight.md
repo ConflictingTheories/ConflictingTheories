@@ -7,7 +7,7 @@ I think one of the coolest things was learning that Stonehenge has a full starma
 
 I have gone onto Google Earth to show it better, at is is hard to spot if you dont know how to orient it.
 
-![Stonehenge is more than just some stones](/media/stonehenge.png)
+![Stonehenge is more than just some stones](/content/media/stonehenge.png)
 
 
 ---
