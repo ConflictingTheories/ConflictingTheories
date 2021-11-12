@@ -17,7 +17,7 @@ export default function vs() {
   uniform mat4 uViewMatrix;
   uniform mat4 uProjMatrix;
 
-  attribute vec3 aPos;
+  attribute Vector aPos;
   attribute vec2 aTexCoord;
   attribute vec4 aColor;
 

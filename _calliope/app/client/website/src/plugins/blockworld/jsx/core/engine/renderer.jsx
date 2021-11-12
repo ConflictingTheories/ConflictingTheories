@@ -14,7 +14,7 @@ var vertexSource =
   "uniform mat4 uProjMatrix;" +
   "uniform mat4 uViewMatrix;" +
   "uniform mat4 uModelMatrix;" +
-  "attribute vec3 aPos;" +
+  "attribute Vector aPos;" +
   "attribute vec4 aColor;" +
   "attribute vec2 aTexCoord;" +
   "varying vec4 vColor;" +
