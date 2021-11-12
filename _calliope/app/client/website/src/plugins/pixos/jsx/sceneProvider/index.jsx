@@ -38,7 +38,7 @@ scene.init = (engine) => {
   impl.from = null;
 
   // Init Game Engine Components
-  let world = (impl.world = new World());
+  let world = (impl.world = new World(engine));
   world.loadZone("dungeon-top");
   world.loadZone("dungeon-bottom");
   world.zoneList.each(function (z) {

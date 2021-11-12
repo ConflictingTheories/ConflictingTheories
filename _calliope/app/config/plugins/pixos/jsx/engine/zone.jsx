@@ -11,30 +11,25 @@
 ** ----------------------------------------------- **
 \*                                                 */
 import { Vector } from "./utils/vector";
-import { Direction } from "./utils/direction";
+import Direction from "./utils/direction";
+import Config from "./utils/config";
+import ActionQueue from "./queue";
+import { ActorLoader, TilesetLoader } from "./utils/loaders";
+
 export default class Zone {
-  constructor() {
+  constructor(zoneId, engine) {
     this.data = {};
     this.actorDict = {};
     this.actorList = [];
-
     this.onLoadActions = new ActionQueue();
-  }
-
-  // Actions to run when the map has loaded
-  runWhenLoaded(a) {
-    if (this.loaded) a();
-    else this.onLoadActions.add(a);
-  }
-
-  // Zone ctor
-  initialize(zoneId) {
+    this.actorLoader = new ActorLoader(engine);
+    this.tsLoader = new TilesetLoader(engine);
     // TODO: Check LocalStorage / IndexDB for cached data
     // Pull zone data from server
     this.id = zoneId;
     let self = this;
     new Request.JSON({
-      url: config.zoneRequestUrl(zoneId),
+      url: Config.zoneRequestUrl(zoneId),
       method: "get",
       link: "chain",
       secure: true,
@@ -51,6 +46,12 @@ export default class Zone {
     }).send();
   }
 
+  // Actions to run when the map has loaded
+  runWhenLoaded(a) {
+    if (this.loaded) a();
+    else this.onLoadActions.add(a);
+  }
+
   // Recieved zone definition JSON
   onJsonLoaded(data) {
     this.bounds = data.bounds;
@@ -61,7 +62,7 @@ export default class Zone {
     this.cells = data.cells;
 
     // Load tileset if necessary, then create level geometry
-    this.tileset = TilesetLoader.load(data.tileset);
+    this.tileset = this.tsLoader.load(data.tileset);
     this.tileset.runWhenDefinitionLoaded(
       this.onTilesetDefinitionLoaded.bind(this)
     );
@@ -110,7 +111,7 @@ export default class Zone {
         // Custom walkability
         if (cell.length == 3 * n + 1) this.walkability[k] = cell[3 * n];
       }
-      this.vertexPosBuf[j] = engine.createBuffer(vertices, gl.STATIC_DRAW, 3);
+      this.vertexPosBuf[j] = engine.createBuffer(vertices, engine.gl.STATIC_DRAW, 3);
       this.vertexTexBuf[j] = engine.createBuffer(
         vertexTexCoords,
         engine.gl.STATIC_DRAW,
@@ -136,7 +137,7 @@ export default class Zone {
 
   loadActor(data) {
     data.zone = this;
-    let a = ActorLoader.load(data.type, function (b) {
+    let a = this.actorLoader.load(data.type, function (b) {
       b.onLoad(data);
     });
     this.actorDict[data.id] = a;

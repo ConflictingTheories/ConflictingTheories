@@ -11,9 +11,10 @@
 ** ----------------------------------------------- **
 \*                                                 */
 
+import ActionQueue from "./queue";
 export default class Tileset {
   constructor(engine) {
-    this.engine
+    this.engine = engine;
     this.src = null;
     this.sheetSize = [0, 0];
     this.tileSize = 0;
@@ -48,7 +49,7 @@ export default class Tileset {
     this.texture.runWhenLoaded(this.onTextureLoaded.bind(this));
 
     if (this.bgColor)
-      gl.clearColor(
+      this.engine.gl.clearColor(
         this.bgColor[0] / 255,
         this.bgColor[1] / 255,
         this.bgColor[2] / 255,
@@ -95,5 +96,3 @@ export default class Tileset {
       .flatten();
   }
 }
-
-

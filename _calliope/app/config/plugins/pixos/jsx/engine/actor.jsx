@@ -16,7 +16,7 @@ import {
   translate,
 } from "./utils/matrix4";
 
-import { Direction } from "./utils/direction";
+import Direction from "./utils/direction";
 export default class Actor {
   constructor(engine) {
     this.engine = engine;
