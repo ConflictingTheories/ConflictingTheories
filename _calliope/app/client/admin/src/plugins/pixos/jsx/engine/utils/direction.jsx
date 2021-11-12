@@ -1,4 +1,4 @@
-export default Direction = {
+const Direction = {
   None: 0,
   Right: 1,
   Up: 2,
@@ -56,3 +56,5 @@ export default Direction = {
     return "down";
   },
 };
+
+export default Direction;

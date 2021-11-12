@@ -308,8 +308,8 @@ scene.draw = (engine) => {
     }
   }
   // Update Model
-  const uModelMat = create();
-  gl.uniformMatrix4fv(programInfo.attribLocations.uModelMat, false, uModelMat);
+  const uViewMat = create();
+  gl.uniformMatrix4fv(programInfo.attribLocations.uViewMat, false, uViewMat);
 
 }
 

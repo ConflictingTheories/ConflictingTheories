@@ -28,14 +28,14 @@ import { loadModel as loadPlayerModel } from "../models/player";
 var vertexSource =
   "uniform mat4 uProjMatrix;" +
   "uniform mat4 uViewMatrix;" +
-  "uniform mat4 uModelMatrix;" +
+  "uniform mat4 uViewMatrix;" +
   "attribute Vector aPos;" +
   "attribute vec4 aColor;" +
   "attribute vec2 aTexCoord;" +
   "varying vec4 vColor;" +
   "varying vec2 vTexCoord;" +
   "void main() {" +
-  "	gl_Position = uProjMatrix * uViewMatrix * ( uModelMatrix * vec4( aPos, 1.0 ) );" +
+  "	gl_Position = uProjMatrix * uViewMatrix * ( uViewMatrix * vec4( aPos, 1.0 ) );" +
   "	vColor = aColor;" +
   "	vTexCoord = aTexCoord;" +
   "}";
@@ -102,7 +102,7 @@ export class Renderer {
 
     // Create dummy model matrix
     mat4.identity(this.modelMatrix);
-    gl.uniformMatrix4fv(this.uModelMat, false, this.modelMatrix);
+    gl.uniformMatrix4fv(this.uViewMat, false, this.modelMatrix);
 
     // Create 1px white texture for pure vertex color operations (e.g. picking)
     gl.activeTexture(gl.TEXTURE0);
@@ -219,7 +219,7 @@ export class Renderer {
       ]);
       mat4.rotateZ(this.modelMatrix, Math.PI - player.yaw);
       mat4.rotateX(this.modelMatrix, -pitch);
-      gl.uniformMatrix4fv(this.uModelMat, false, this.modelMatrix);
+      gl.uniformMatrix4fv(this.uViewMat, false, this.modelMatrix);
 
       gl.bindTexture(gl.TEXTURE_2D, this.texPlayer);
       this.drawBuffer(this.playerHead);
@@ -232,27 +232,27 @@ export class Renderer {
         player.z + 0.01,
       ]);
       mat4.rotateZ(this.modelMatrix, Math.PI - player.yaw);
-      gl.uniformMatrix4fv(this.uModelMat, false, this.modelMatrix);
+      gl.uniformMatrix4fv(this.uViewMat, false, this.modelMatrix);
       this.drawBuffer(this.playerBody);
 
       mat4.translate(this.modelMatrix, this.modelMatrix, [0, 0, 1.4]);
       mat4.rotateX(this.modelMatrix, 0.75 * aniangle);
-      gl.uniformMatrix4fv(this.uModelMat, false, this.modelMatrix);
+      gl.uniformMatrix4fv(this.uViewMat, false, this.modelMatrix);
       this.drawBuffer(this.playerLeftArm);
 
       mat4.rotateX(this.modelMatrix, -1.5 * aniangle);
-      gl.uniformMatrix4fv(this.uModelMat, false, this.modelMatrix);
+      gl.uniformMatrix4fv(this.uViewMat, false, this.modelMatrix);
       this.drawBuffer(this.playerRightArm);
       mat4.rotateX(this.modelMatrix, 0.75 * aniangle);
 
       mat4.translate(this.modelMatrix, this.modelMatrix, [0, 0, -0.67]);
 
       mat4.rotateX(this.modelMatrix, 0.5 * aniangle);
-      gl.uniformMatrix4fv(this.uModelMat, false, this.modelMatrix);
+      gl.uniformMatrix4fv(this.uViewMat, false, this.modelMatrix);
       this.drawBuffer(this.playerRightLeg);
 
       mat4.rotateX(this.modelMatrix, -aniangle);
-      gl.uniformMatrix4fv(this.uModelMat, false, this.modelMatrix);
+      gl.uniformMatrix4fv(this.uViewMat, false, this.modelMatrix);
       this.drawBuffer(this.playerLeftLeg);
 
       // Draw player name
@@ -273,7 +273,7 @@ export class Renderer {
       ]);
       mat4.rotateZ(this.modelMatrix, ang);
       mat4.scale(this.modelMatrix, [0.005, 1, 0.005]);
-      gl.uniformMatrix4fv(this.uModelMat, false, this.modelMatrix);
+      gl.uniformMatrix4fv(this.uViewMat, false, this.modelMatrix);
 
       gl.bindTexture(gl.TEXTURE_2D, player.nametag.texture);
       this.drawBuffer(player.nametag.model);
@@ -282,7 +282,7 @@ export class Renderer {
     gl.disable(gl.BLEND);
 
     mat4.identity(this.modelMatrix);
-    gl.uniformMatrix4fv(this.uModelMat, false, this.modelMatrix);
+    gl.uniformMatrix4fv(this.uViewMat, false, this.modelMatrix);
   }
 
   // buildPlayerName( nickname )
@@ -575,7 +575,7 @@ export class Renderer {
     // Store variable locations
     this.uProjMat = gl.getUniformLocation(program, "uProjMatrix");
     this.uViewMat = gl.getUniformLocation(program, "uViewMatrix");
-    this.uModelMat = gl.getUniformLocation(program, "uModelMatrix");
+    this.uViewMat = gl.getUniformLocation(program, "uViewMatrix");
     this.uSampler = gl.getUniformLocation(program, "uSampler");
     this.aPos = gl.getAttribLocation(program, "aPos");
     this.aColor = gl.getAttribLocation(program, "aColor");

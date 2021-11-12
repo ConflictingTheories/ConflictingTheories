@@ -52,10 +52,7 @@ export class ActorLoader {
 
     // Unknown class type - create a skeleton class to be updated once the code has downloaded
     if (typeof this.definitions[type] === "undefined") {
-      this.definitions[type] = new Class({
-        Extends: this.baseClass,
-      });
-
+      this.definitions[type] = new this.baseClass(this.engine);
       this.instances[type] = [];
       var self = this;
       var url = this.requestUrlLookup(type);

@@ -19,7 +19,7 @@ import {
   isPowerOf2,
 } from "./utils/matrix4";
 
-import {Vector} from "./utils/vector";
+import { Vector } from "./utils/vector";
 import Texture from "./texture.jsx";
 
 export default class GLEngine {
@@ -28,10 +28,10 @@ export default class GLEngine {
     this.width = width;
     this.height = height;
     this.modelViewMatrixStack = [];
-    (this.cameraAngle = 45),
-      (this.cameraPosition = Vector.create()),
-      // Storage for negated camera position
-      (this.cameraOffset = Vector.create());
+    this.cameraAngle = 45;
+    this.cameraPosition = Vector.create();
+    // Storage for negated camera position
+    this.cameraOffset = Vector.create();
   }
 
   // Initialize a Scene object
@@ -59,7 +59,7 @@ export default class GLEngine {
 
     // Dummy Model Matrix
     // this.modelMatrix = create();
-    // gl.uniformMatrix4fv(this.programInfo.uniformLocations.uModelMat, false, this.modelMatrix);
+    // gl.uniformMatrix4fv(this.programInfo.uniformLocations.uViewMat, false, this.modelMatrix);
 
     // Initialize Scene
     scene.init(this);
@@ -113,14 +113,22 @@ export default class GLEngine {
       },
       uniformLocations: {
         uProjMat: gl.getUniformLocation(shaderProgram, "uPMatrix"),
-        uModelMat: gl.getUniformLocation(shaderProgram, "uMVMatrix"),
+        uViewMat: gl.getUniformLocation(shaderProgram, "uMVMatrix"),
         uSampler: gl.getUniformLocation(shaderProgram, "uSampler"),
       },
     };
 
     shaderProgram.setMatrixUniforms = function () {
-      gl.uniformMatrix4fv(this.pMatrixUniform, false, pMatrix);
-      gl.uniformMatrix4fv(this.mvMatrixUniform, false, mvMatrix);
+      gl.uniformMatrix4fv(
+        this.programInfo.uniformLocations.uProjMat,
+        false,
+        this.uProjMat
+      );
+      gl.uniformMatrix4fv(
+        this.programInfo.uniformLocations.uViewMat,
+        false,
+        this.uViewMat
+      );
     };
 
     gl.enableVertexAttribArray(this.programInfo.attribLocations.aPos);
@@ -152,18 +160,18 @@ export default class GLEngine {
   }
 
   mvPopMatrix() {
-    if (mvMatrixStack.length == 0) {
+    if (this.modelViewMatrixStack.length == 0) {
       throw "Invalid popMatrix!";
     }
-    mvMatrix = mvMatrixStack.pop();
+    this.uViewMat = this.modelViewMatrixStack.pop();
   }
 
   setCamera() {
-    translate(mvMatrix, [0.0, 0.0, -15.0]);
-    rotate(mvMatrix, degToRad(this.cameraAngle), [1, 0, 0]);
+    translate(this.uViewMat, [0.0, 0.0, -15.0]);
+    rotate(this.uViewMat, this.degToRad(this.cameraAngle), [1, 0, 0]);
 
     Vector.negate(this.cameraPosition, this.cameraOffset);
-    translate(mvMatrix, this.cameraOffset);
+    translate(this.uViewMat, this.cameraOffset);
   }
 
   // Clear Screen with Color (RGBA)
@@ -204,7 +212,7 @@ export default class GLEngine {
 
   loadTexture(src) {
     if (this.textures[src]) return this.textures[src];
-    this.textures[src] = new Texture;
+    this.textures[src] = new Texture();
     this.textures[src].initialize(src);
     return this.textures[src];
   }
