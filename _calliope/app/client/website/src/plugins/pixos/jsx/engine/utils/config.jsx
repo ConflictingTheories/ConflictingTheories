@@ -14,6 +14,6 @@
 export default {
     activityRequestUrl : function(id) { return "activities/"+id+".js" },
     actorRequestUrl: function(id) { return 'actors/'+id+'.js'; },
-    tilesetRequestUrl: function(id) { return "tilesets/"+id+".ts"; },
+    tilesetRequestUrl: function(id) { return "tilesets/"+id+".tileset"; },
     zoneRequestUrl: function(id) { return "maps/"+id+".map"; },
 };
