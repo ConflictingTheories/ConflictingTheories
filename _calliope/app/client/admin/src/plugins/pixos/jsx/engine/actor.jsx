@@ -10,13 +10,15 @@
 **               All Rights Reserved.              **
 ** ----------------------------------------------- **
 \*                                                 */
+import { Vector } from "./utils/vector";
+import Direction from "./utils/direction";
+import ActionQueue from "./queue";
 
 import {
   rotate,
   translate,
 } from "./utils/matrix4";
 
-import Direction from "./utils/direction";
 export default class Actor {
   constructor(engine) {
     this.engine = engine;
@@ -53,7 +55,7 @@ export default class Actor {
     this.texture.runWhenLoaded(this.onTilesetOrTextureLoaded.bind(this));
     this.vertexTexBuf = this.engine.createBuffer(
       this.getTexCoords(),
-      gl.DYNAMIC_DRAW,
+      this.engine.gl.DYNAMIC_DRAW,
       2
     );
 
@@ -75,7 +77,7 @@ export default class Actor {
       [v[2], v[3], v[0]],
       [v[2], v[0], v[1]],
     ].flatten();
-    this.vertexPosBuf = this.engine.createBuffer(poly, gl.STATIC_DRAW, 3);
+    this.vertexPosBuf = this.engine.createBuffer(poly, this.engine.gl.STATIC_DRAW, 3);
 
     this.zone.tileset.runWhenLoaded(this.onTilesetOrTextureLoaded.bind(this));
   }
@@ -112,20 +114,20 @@ export default class Actor {
     if (!this.loaded) return;
 
     engine.mvPushMatrix();
-    translate(mvMatrix, this.pos);
+    translate( this.engine.uViewMat, this.pos);
 
     // Undo rotation so that character plane is normal to LOS
-    translate(mvMatrix, this.drawOffset);
-    rotate(mvMatrix, engine.degToRad(this.engine.cameraAngle), [1, 0, 0]);
-    engine.bindBuffer(this.vertexPosBuf, shaderProgram.vertexPositionAttribute);
-    engine.bindBuffer(this.vertexTexBuf, shaderProgram.textureCoordAttribute);
+    translate( this.engine.uViewMat, this.drawOffset);
+    rotate( this.engine.uViewMat, engine.degToRad(this.engine.cameraAngle), [1, 0, 0]);
+    engine.bindBuffer(this.vertexPosBuf,  this.engine.programInfo.program.vertexPositionAttribute);
+    engine.bindBuffer(this.vertexTexBuf,  this.engine.programInfo.program.textureCoordAttribute);
     engine.bindTexture(this.texture);
-    shaderProgram.setMatrixUniforms();
+     this.engine.programInfo.program.setMatrixUniforms();
 
     // Actors always render on top of everything behind them
-    gl.depthFunc(gl.ALWAYS);
-    gl.drawArrays(gl.TRIANGLES, 0, this.vertexPosBuf.numItems);
-    gl.depthFunc(gl.LESS);
+    this.engine.gl.depthFunc(this.engine.gl.ALWAYS);
+    this.engine.gl.drawArrays(this.engine.gl.TRIANGLES, 0, this.vertexPosBuf.numItems);
+    this.engine.gl.depthFunc(this.engine.gl.LESS);
 
     engine.mvPopMatrix();
   }

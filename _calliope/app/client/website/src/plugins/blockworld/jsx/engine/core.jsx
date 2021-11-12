@@ -45,7 +45,7 @@ export default class GLEngine {
 
     // Dummy Model Matrix
     this.modelMatrix = create();
-    gl.uniformMatrix4fv(this.programInfo.uniformLocations.uModelMat, false, this.modelMatrix);
+    gl.uniformMatrix4fv(this.programInfo.uniformLocations.uViewMat, false, this.modelMatrix);
 
     // Initialize Scene
     scene.init(this);
@@ -96,7 +96,7 @@ export default class GLEngine {
       },
       uniformLocations: {
         uProjMat: gl.getUniformLocation(shaderProgram, 'uProjMatrix'),
-        uModelMat: gl.getUniformLocation(shaderProgram, 'uModelMatrix'),
+        uViewMat: gl.getUniformLocation(shaderProgram, 'uViewMatrix'),
         uViewMat: gl.getUniformLocation(shaderProgram, 'uViewMatrix'),
         uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
       },

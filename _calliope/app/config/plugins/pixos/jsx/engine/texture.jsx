@@ -10,10 +10,10 @@
 **               All Rights Reserved.              **
 ** ----------------------------------------------- **
 \*                                                 */
-
+import ActionQueue from "./queue";
 export default class Texture {
   constructor(src, engine) {
-    this.gl = engine.gl;
+    this.engine = engine;
     this.src = src;
     this.glTexture = engine.gl.createTexture();
     this.image = new Image();
@@ -50,6 +50,6 @@ export default class Texture {
   bind(gl) {
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, this.glTexture);
-    gl.uniform1i(shaderProgram.samplerUniform, 0);
+    gl.uniform1i(this.engine.programInfo.program.samplerUniform, 0);
   }
 }

@@ -42,7 +42,7 @@ scene.init = (engine) => {
   world.loadZone("dungeon-top");
   world.loadZone("dungeon-bottom");
   world.zoneList.each(function (z) {
-    z.runWhenLoaded(LoadScreen.onZoneLoaded);
+    z.runWhenLoaded(()=>console.log('loading...done'));
   });
 };
 

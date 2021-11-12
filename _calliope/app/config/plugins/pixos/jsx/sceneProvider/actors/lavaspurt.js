@@ -58,11 +58,11 @@ def = {
             return;
 
         engine.mvPushMatrix();
-        translate(mvMatrix, this.pos);
+        translate(engine.uViewMat, this.pos);
 
         // Lie flat on the ground
-        translate(engine.mvMatrix, this.drawOffset);
-        rotate(engine.mvMatrix, engine.degToRad(90), [1, 0, 0]);
+        translate(engine.uViewMat, this.drawOffset);
+        rotate(engine.uViewMat, engine.degToRad(90), [1, 0, 0]);
         engine.bindBuffer(this.vertexPosBuf, engine.shaderProgram.vertexPositionAttribute);
         engine.bindBuffer(this.vertexTexBuf, engine.shaderProgram.textureCoordAttribute);
         engine.bindTexture(this.texture);
