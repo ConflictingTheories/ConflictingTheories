@@ -1,4 +1,4 @@
-export const Direction = {
+export default Direction = {
   None: 0,
   Right: 1,
   Up: 2,

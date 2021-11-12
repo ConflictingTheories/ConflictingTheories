@@ -14,7 +14,8 @@ import Zone from "./zone.jsx";
 import ActionQueue from "./queue.jsx";
 
 export default class World {
-  constructor() {
+  constructor(engine) {
+    this.engine = engine;
     this.zoneDict = {};
     this.zoneList = [];
     this.afterTickActions = new ActionQueue();
@@ -34,7 +35,7 @@ export default class World {
   loadZone(zoneId) {
     if (this.zoneDict[zoneId]) return this.zoneDict[zoneId];
 
-    let z = new Zone(zoneId);
+    let z = new Zone(zoneId, this.engine);
     this.zoneDict[zoneId] = z;
     this.zoneList.push(z);
 
@@ -54,8 +55,8 @@ export default class World {
     this.afterTickActions.run(time);
   }
 
-  draw(engine) {
-    for (let z in this.zoneDict) this.zoneDict[z].draw(engine);
+  draw() {
+    for (let z in this.zoneDict) this.zoneDict[z].draw(this.engine);
   }
 
   zoneContaining(x, y) {
