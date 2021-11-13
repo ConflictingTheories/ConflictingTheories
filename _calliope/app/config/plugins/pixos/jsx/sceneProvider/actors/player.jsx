@@ -2,7 +2,7 @@
 // You can redistribute and/or modify it under the terms of version 3 of the
 // GNU General Public License, as published by the Free Software Foundation.
 // See LICENSE.html for the license terms.
-import { Vector, set } from "../../../../blockworld/jsx/engine/utils/vector";
+import { Vector, set } from "../../engine/utils/vector";
 export default {
   // Character art from http://opengameart.org/content/chara-seth-scorpio
   src: "art/player.gif",
@@ -95,7 +95,7 @@ export default {
 
     // Check zones
     if (!this.zone.isInZone(to[0], to[1])) {
-      var z = Map.zoneContaining(to[0], to[1]);
+      var z = zone.world.zoneContaining(to[0], to[1]);
       if (
         !z ||
         !z.loaded ||

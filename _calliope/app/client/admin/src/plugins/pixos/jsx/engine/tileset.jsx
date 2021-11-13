@@ -22,6 +22,7 @@ export default class Tileset {
     this.loaded = false;
     this.onLoadActions = new ActionQueue();
     this.onDefinitionLoadActions = new ActionQueue();
+    this.onTextureLoaded = this.onTextureLoaded.bind(this);
   }
 
   runWhenLoaded(a) {
@@ -48,7 +49,7 @@ export default class Tileset {
     this.onDefinitionLoadActions.run();
 
     this.texture = this.engine.loadTexture(this.src);
-    this.texture.runWhenLoaded(this.onTextureLoaded.bind(this));
+    this.texture.runWhenLoaded(this.onTextureLoaded);
 
     if (this.bgColor)
       this.engine.gl.clearColor(

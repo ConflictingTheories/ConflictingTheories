@@ -46,36 +46,11 @@ scene.init = async (engine) => {
   });
 };
 
-// Load Scene Textures
-scene.loadTextures = (engine) => {
-  let { gl } = engine;
-  // Create 1px white texture for pure vertex color operations (e.g. picking)
-  let white = new Uint8Array([255, 255, 255, 255]);
-  impl.texWhite = engine.blankTexture(white, gl.TEXTURE0);
-
-  // Load Image Textures
-  impl.texTerrain = engine.loadTexture("media/terrain.png");
-  impl.texPlayer = engine.loadTexture("media/player.png");
-};
-
 // Render Loop
 scene.render = (engine, now) => {
   // Draw Frame
+  // engine.initProjection();
   impl.world.tick(now);
-  impl.world.draw(engine);
-  scene.draw(engine);
-
-  // Update for next frame
-  const deltaTime = impl.from === null ? 0 : now - impl.from;
-  impl.from = now;
-  impl.squareRotation += deltaTime * 0.001;
-};
-
-// Draw Scene
-scene.draw = (engine) => {
-  const { gl, programInfo } = engine;
-  engine.clearScreen();
-  // engine.initPerspective(gl);
   impl.world.draw(engine);
 };
 

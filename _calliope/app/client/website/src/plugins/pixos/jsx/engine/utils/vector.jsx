@@ -56,7 +56,7 @@ export class Coord {
   toString() {
     return `( ${this.x}, ${this.y} )`;
   }
-  
+
   negate() {
     return new Vector(this.x * -1, this.y * -1);
   }
@@ -225,6 +225,7 @@ export function set(v, w) {
   v.z = w.z;
 }
 
-export function negate(v, o) {
-  return new Vector(this.x * -1, this.y * -1, this.z * -1);
+export function negate(vec, dest) {
+  dest = new Vector(-vec.x, -vec.y, -vec.z);
+  return dest;
 }

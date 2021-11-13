@@ -47,7 +47,7 @@ export default class Texture {
     this.onLoadActions.run();
   }
 
-  bind() {
+  attach() {
     this.engine.gl.activeTexture(this.engine.gl.TEXTURE0);
     this.engine.gl.bindTexture(this.engine.gl.TEXTURE_2D, this.glTexture);
     this.engine.gl.uniform1i(this.engine.programInfo.uniformLocations.uSampler, 0);

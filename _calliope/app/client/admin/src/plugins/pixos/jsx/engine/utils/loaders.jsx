@@ -25,7 +25,6 @@ export class TilesetLoader {
         console.error(e);
       }
     }
-
     return this.tilesets[name];
   }
 }

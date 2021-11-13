@@ -46,7 +46,7 @@ export default {
       this.fromZone.removeActor(a.id);
 
       // Defer until aftertick to stop the actor being ticked twice
-      Map.runAfterTick(
+      a.zone.world.runAfterTick(
         function () {
           this.toZone.addActor(a);
           debug.log(

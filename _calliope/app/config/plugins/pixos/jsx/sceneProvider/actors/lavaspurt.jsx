@@ -2,7 +2,7 @@
 // You can redistribute and/or modify it under the terms of version 3 of the
 // GNU General Public License, as published by the Free Software Foundation.
 // See LICENSE.html for the license terms.
-import { Vector } from "../../../../blockworld/jsx/engine/utils/vector";
+import { Vector, set } from "../../engine/utils/vector";
 import { translate, rotate } from "../../engine/utils/matrix4";
 export default {
   // Character art from http://opengameart.org/content/twelve-16x18-rpg-character-sprites-including-npcs-and-elementals
@@ -71,7 +71,7 @@ export default {
     );
     engine.bindTexture(this.texture);
 
-    engine.programInfo.program.setMatrixUniforms();
+    engine.programInfo.setMatrixUniforms();
     engine.gl.drawArrays(engine.gl.TRIANGLES, 0, this.vertexPosBuf.numItems);
     engine.mvPopMatrix();
   },

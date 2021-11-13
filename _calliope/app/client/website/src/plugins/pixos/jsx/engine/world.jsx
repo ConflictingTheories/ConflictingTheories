@@ -19,6 +19,7 @@ export default class World {
     this.zoneDict = {};
     this.zoneList = [];
     this.afterTickActions = new ActionQueue();
+    this.sortZones = this.sortZones.bind(this);
   }
 
   runAfterTick(a) {
@@ -35,13 +36,13 @@ export default class World {
   async loadZone(zoneId) {
     if (this.zoneDict[zoneId]) return this.zoneDict[zoneId];
 
-    let z = new Zone(zoneId, this.engine);
+    let z = new Zone(zoneId, this);
     await z.load();
     this.zoneDict[zoneId] = z;
     this.zoneList.push(z);
 
     // Sort for correct render order
-    z.runWhenLoaded(this.sortZones.bind(this));
+    z.runWhenLoaded(this.sortZones);
     return z;
   }
 
