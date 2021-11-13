@@ -79,11 +79,11 @@ export default {
 
     var faceDir = function (facing) {
       if (this.facing == facing) return null;
-      return ActivityLoader.create("face", [facing], this);
+      return this.activityLoader.create("face", [facing], this);
     }.bind(this);
 
     var from = new Vector(this.pos);
-    var dp = Direction.toOffset(facing);
+    var dp = this.engine.Direction.toOffset(facing);
     var to = new Vector([
       Math.round(from[0] + dp[0]),
       Math.round(from[1] + dp[1]),
@@ -103,7 +103,7 @@ export default {
       )
         return faceDir(facing);
 
-      return ActivityLoader.create(
+      return this.activityLoader.create(
         "changezone",
         [this.zone.id, this.pos, z.id, to, moveTime],
         this
@@ -113,6 +113,6 @@ export default {
     if (!this.zone.isWalkable(to[0], to[1], Direction.reverse(facing)))
       return faceDir(facing);
 
-    return ActivityLoader.create("move", [this.pos, to, moveTime], this);
+    return this.activityLoader.create("move", [this.pos, to, moveTime], this);
   },
 };

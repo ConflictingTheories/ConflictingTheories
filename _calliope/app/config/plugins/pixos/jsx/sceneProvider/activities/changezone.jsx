@@ -6,11 +6,11 @@ import {
   Vector,
   set,
 } from "../../../../_calliope/app/config/plugins/pixos/jsx/engine/utils/vector";
-
+import Direction from "../../engine/utils/direction";
 export default {
   init: async function (fromZoneId, from, toZoneId, to, length) {
-    this.fromZone = await Map.loadZone(fromZoneId);
-    this.toZone = await Map.loadZone(toZoneId);
+    this.fromZone = await this.actor.zone.world.loadZone(fromZoneId);
+    this.toZone = await this.actor.zone.world.loadZone(toZoneId);
     this.from = new Vector(from);
     this.to = new Vector(to);
     this.facing = Direction.fromOffset([
