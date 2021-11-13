@@ -8,30 +8,23 @@ export class TilesetLoader {
     this.tilesets = {};
   }
 
-  load(name) {
+  async load(name) {
     var ts = this.tilesets[name];
     if (ts) return ts;
 
     this.tilesets[name] = ts = new Tileset(this.engine);
     ts.name = name;
-    new Request.JSON({
-      url: Config.tilesetRequestUrl(name),
-      method: "get",
-      link: "chain",
-      secure: true,
-      onSuccess: function (json) {
-        ts.onJsonLoaded(json);
-      },
-      onFailure: function () {
-        console.error("Error fetching tileset definition '" + ts.name + "'");
-      },
-      onError: function (text, error) {
-        console.error(
-          "Error parsing tileset '" + ts.name + "' definition: " + error
-        );
-        console.error(text);
-      },
-    }).send();
+
+    const fileResponse = await fetch(Config.tilesetRequestUrl(name));
+    if (fileResponse.ok) {
+      try {
+        let content = await fileResponse.json();
+        await ts.onJsonLoaded(content);
+      } catch (e) {
+        console.error("Error parsing tileset '" + ts.name + "' definition");
+        console.error(e);
+      }
+    }
 
     return this.tilesets[name];
   }
@@ -43,10 +36,10 @@ export class ActorLoader {
     this.definitions = [];
     this.instances = {};
     this.baseClass = Actor;
-    this.requestUrlLookup = Config.requestUrlLookup;
+    this.requestUrlLookup = Config.actorRequestUrl;
   }
 
-  load(type) {
+  async load(type) {
     var afterLoad = arguments[1];
     var afterConstruct = arguments[2];
 
@@ -56,41 +49,47 @@ export class ActorLoader {
       this.instances[type] = [];
       var self = this;
       var url = this.requestUrlLookup(type);
-      new Request({
-        url: url,
-        method: "get",
-        link: "chain",
-        onSuccess: function (json) {
-          var def;
-          try {
-            eval(json);
-          } catch (e) {
-            var lineNumber = "";
-            // Dirty browser specific hack to determine line number in loaded file
-            if (e.lineNumber)
-              lineNumber = e.lineNumber - new Error().lineNumber + 6;
+      
+      // TODO --- NEED TO LOAD FROM CLASSES -- REPLACE BASE CLASS 
+      // const fileResponse = await fetch(url);
+      // if (fileResponse.ok) {
+      //   try {
+      //     let json = await fileResponse.text();
+      //     var def;
+      //     try {
+      //       // TODO -- FIX THIS!!! 
+      //       eval(json);
+      //     } catch (e) {
+      //       var lineNumber = "";
+      //       // Dirty browser specific hack to determine line number in loaded file
+      //       if (e.lineNumber)
+      //         lineNumber = e.lineNumber - new Error().lineNumber + 6;
 
-            console.error(
-              "Error in type definition for " + type + ":" + lineNumber
-            );
-            console.error(e.message);
-          }
-          self.definitions[type].implement(def);
-          self.definitions[type].implement({ templateLoaded: true });
+      //       console.error(
+      //         "Error in type definition for " + type + ":" + lineNumber
+      //       );
+      //       console.error(e.message);
+      //     }
+      //     console.log(self.definitions[type]);
+      //     console.log(def);
+
+          // self.definitions[type].implement(def);
+          Object.assign(self.definitions[type],require("../../sceneProvider/actors/"+type+".jsx")['default']);
+          self.definitions[type].templateLoaded = true;
 
           // notify existing actor instances
-          self.instances[type].each(function (i) {
+          self.instances[type].forEach(function (i) {
             if (i.f) i.f(i.i);
           });
           console.log("Loaded definition for type '" + type + "'");
-        },
-        onFailure: function () {
-          console.error("Error fetching definition for '" + type + "'");
-        },
-      }).send();
+        // } catch (e) {
+        //   console.error("Error fetching definition for '" + type + "'");
+        //   console.error(e);
+        // }
+      // }
     }
 
-    var instance = new this.definitions[type]();
+    var instance = this.definitions[type];
     if (afterConstruct) afterConstruct(instance);
 
     if (afterLoad) {

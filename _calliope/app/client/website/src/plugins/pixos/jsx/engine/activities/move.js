@@ -2,11 +2,12 @@
 // You can redistribute and/or modify it under the terms of version 3 of the
 // GNU General Public License, as published by the Free Software Foundation.
 // See LICENSE.html for the license terms.
+import { Vector , set} from "../../../../_calliope/app/config/plugins/pixos/jsx/engine/utils/vector";
 
 def = {
     init: function(from, to, length) {
-        this.from = Vector.create(from);
-        this.to = Vector.create(to);
+        this.from = new Vector(from);
+        this.to = new Vector(to);
         this.facing = Direction.fromOffset([Math.round(to[0] - from[0]), Math.round(to[1] - from[1])]);
         this.length = length;
     },
@@ -23,7 +24,7 @@ def = {
         var endTime = this.startTime + this.length;
         var frac = (time - this.startTime)/this.length;
         if (time >= endTime) {
-            Vector.set(this.to, a.pos);
+            set(this.to, a.pos);
             frac = 1;
         }
         else

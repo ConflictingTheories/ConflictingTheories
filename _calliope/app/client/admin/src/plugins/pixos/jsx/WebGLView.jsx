@@ -22,11 +22,11 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
   let onMouseEvent = () =>null;
   let onKeyEvent = () =>null;
 
-  useEffect(() => {
+  useEffect(async () => {
     const canvas = ref.current;
     const engine = new glEngine(canvas, width, height);
     // Initialize Scene
-    engine.init(SceneProvider);
+    await engine.init(SceneProvider);
     // Attach Handlers
     onMouseEvent = SceneProvider.onMouseEvent;
     onKeyEvent = SceneProvider.onKeyEvent;

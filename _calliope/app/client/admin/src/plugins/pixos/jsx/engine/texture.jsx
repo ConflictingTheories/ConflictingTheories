@@ -28,28 +28,28 @@ export default class Texture {
     else this.onLoadActions.add(a);
   }
 
-  onImageLoaded(gl) {
+  onImageLoaded() {
     console.log("loaded image '" + this.src + "'");
-    gl.bindTexture(gl.TEXTURE_2D, this.glTexture);
-    gl.texImage2D(
-      gl.TEXTURE_2D,
+    this.engine.gl.bindTexture(this.engine.gl.TEXTURE_2D, this.glTexture);
+    this.engine.gl.texImage2D(
+      this.engine.gl.TEXTURE_2D,
       0,
-      gl.RGBA,
-      gl.RGBA,
-      gl.UNSIGNED_BYTE,
+      this.engine.gl.RGBA,
+      this.engine.gl.RGBA,
+      this.engine.gl.UNSIGNED_BYTE,
       this.image
     );
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-    gl.bindTexture(gl.TEXTURE_2D, null);
+    this.engine.gl.texParameteri(this.engine.gl.TEXTURE_2D, this.engine.gl.TEXTURE_MAG_FILTER, this.engine.gl.NEAREST);
+    this.engine.gl.texParameteri(this.engine.gl.TEXTURE_2D, this.engine.gl.TEXTURE_MIN_FILTER, this.engine.gl.NEAREST);
+    this.engine.gl.bindTexture(this.engine.gl.TEXTURE_2D, null);
 
     this.loaded = true;
     this.onLoadActions.run();
   }
 
-  bind(gl) {
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, this.glTexture);
-    gl.uniform1i(this.engine.programInfo.program.samplerUniform, 0);
+  bind() {
+    this.engine.gl.activeTexture(this.engine.gl.TEXTURE0);
+    this.engine.gl.bindTexture(this.engine.gl.TEXTURE_2D, this.glTexture);
+    this.engine.gl.uniform1i(this.engine.programInfo.program.samplerUniform, 0);
   }
 }

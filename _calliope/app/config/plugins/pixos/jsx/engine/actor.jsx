@@ -10,7 +10,7 @@
 **               All Rights Reserved.              **
 ** ----------------------------------------------- **
 \*                                                 */
-import { Vector } from "./utils/vector";
+import { Vector,set } from "./utils/vector";
 import Direction from "./utils/direction";
 import ActionQueue from "./queue";
 
@@ -23,10 +23,10 @@ export default class Actor {
   constructor(engine) {
     this.engine = engine;
     this.templateLoaded = false;
-    this.drawOffset = Vector.create();
-    this.hotspotOffset = Vector.create();
+    this.drawOffset = new Vector(0,0,0);
+    this.hotspotOffset = new Vector(0,0,0);
     this.animFrame = 0;
-    this.pos = Vector.create();
+    this.pos = new Vector(0,0,0);
     this.facing = Direction.RIGHT;
     this.activityDict = {};
     this.activityList = [];
@@ -48,7 +48,7 @@ export default class Actor {
 
     this.zone = instanceData.zone;
     if (instanceData.id) this.id = instanceData.id;
-    if (instanceData.pos) Vector.set(instanceData.pos, this.pos);
+    if (instanceData.pos) set(instanceData.pos, this.pos);
     if (instanceData.facing) this.facing = instanceData.facing;
 
     this.texture = this.engine.loadTexture(this.src);
@@ -76,7 +76,7 @@ export default class Actor {
     let poly = [
       [v[2], v[3], v[0]],
       [v[2], v[0], v[1]],
-    ].flatten();
+    ].flat();
     this.vertexPosBuf = this.engine.createBuffer(poly, this.engine.gl.STATIC_DRAW, 3);
 
     this.zone.tileset.runWhenLoaded(this.onTilesetOrTextureLoaded.bind(this));
@@ -107,21 +107,21 @@ export default class Actor {
       [v[0], v[1], v[2]],
       [v[0], v[2], v[3]],
     ];
-    return poly.flatten();
+    return poly.flat();
   }
 
-  draw(engine) {
+  draw() {
     if (!this.loaded) return;
 
-    engine.mvPushMatrix();
-    translate( this.engine.uViewMat, this.pos);
+    this.engine.mvPushMatrix();
+    translate( this.engine.uViewMat, this.engine.uViewMat, this.pos.toArray());
 
     // Undo rotation so that character plane is normal to LOS
-    translate( this.engine.uViewMat, this.drawOffset);
-    rotate( this.engine.uViewMat, engine.degToRad(this.engine.cameraAngle), [1, 0, 0]);
-    engine.bindBuffer(this.vertexPosBuf,  this.engine.programInfo.program.vertexPositionAttribute);
-    engine.bindBuffer(this.vertexTexBuf,  this.engine.programInfo.program.textureCoordAttribute);
-    engine.bindTexture(this.texture);
+    translate( this.engine.uViewMat, this.engine.uViewMat, this.drawOffset.toArray());
+    rotate( this.engine.uViewMat, this.engine.uViewMat, this.engine.degToRad(this.engine.cameraAngle), [1, 0, 0]);
+    this.engine.bindBuffer(this.vertexPosBuf,  this.engine.programInfo.program.vertexPositionAttribute);
+    this.engine.bindBuffer(this.vertexTexBuf,  this.engine.programInfo.program.textureCoordAttribute);
+    this.engine.bindTexture(this.texture);
      this.engine.programInfo.program.setMatrixUniforms();
 
     // Actors always render on top of everything behind them
@@ -129,7 +129,7 @@ export default class Actor {
     this.engine.gl.drawArrays(this.engine.gl.TRIANGLES, 0, this.vertexPosBuf.numItems);
     this.engine.gl.depthFunc(this.engine.gl.LESS);
 
-    engine.mvPopMatrix();
+    this.engine.mvPopMatrix();
   }
 
   setFrame(frame) {
@@ -165,14 +165,14 @@ export default class Actor {
     });
 
     let toRemove = [];
-    this.activityList.each(function (a) {
+    this.activityList.forEach(function (a) {
       if (!a.loaded || a.startTime > time) return;
 
       // Activity returns true when it is complete
       if (a.tick(time)) toRemove.push(a);
     });
 
-    toRemove.each(
+    toRemove.forEach(
       function (a) {
         this.removeActivity(a.id);
       }.bind(this)

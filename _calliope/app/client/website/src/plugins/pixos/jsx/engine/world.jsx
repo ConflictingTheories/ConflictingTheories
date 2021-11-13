@@ -32,10 +32,11 @@ export default class World {
     });
   }
 
-  loadZone(zoneId) {
+  async loadZone(zoneId) {
     if (this.zoneDict[zoneId]) return this.zoneDict[zoneId];
 
     let z = new Zone(zoneId, this.engine);
+    await z.load();
     this.zoneDict[zoneId] = z;
     this.zoneList.push(z);
 

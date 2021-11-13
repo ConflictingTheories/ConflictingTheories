@@ -41,7 +41,7 @@ export default class GLEngine {
     this.initShaderProgram(gl, scene.shaders);
 
     // Initialize Project Matrix
-    this.initProjection(gl);
+    this.initProjection();
 
     // Dummy Model Matrix
     this.modelMatrix = create();
@@ -110,13 +110,13 @@ export default class GLEngine {
   };
 
   // Set FOV and Perspective
-  initProjection(gl) {
+  initProjection() {
     const fieldOfView = (60 * Math.PI) / 180; // in radians
-    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    const aspect = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
     const zNear = 0.1;
     const zFar = 200.0;
     this.uProjMat = perspective(fieldOfView, aspect, zNear, zFar);
-    gl.uniformMatrix4fv(this.programInfo.uniformLocations.uProjMat, false, this.uProjMat);
+    this.gl.uniformMatrix4fv(this.programInfo.uniformLocations.uProjMat, false, this.uProjMat);
   }
 
   // Set Camera Pos & Angle

@@ -86,7 +86,8 @@ export class Vector {
   }
 
   normal() {
-    if (this.x === 0 && this.y === 0 && this.z === 0) return new Vector(0, 0, 0);
+    if (this.x === 0 && this.y === 0 && this.z === 0)
+      return new Vector(0, 0, 0);
     const l = this.length();
     return new Vector(this.x / l, this.y / l, this.z / l);
   }
@@ -113,11 +114,21 @@ export class Vector4 {
   }
 
   add(vec) {
-    return new Vector4(this.x + vec.x, this.y + vec.y, this.z + vec.z, this.w + vec.w);
+    return new Vector4(
+      this.x + vec.x,
+      this.y + vec.y,
+      this.z + vec.z,
+      this.w + vec.w
+    );
   }
 
   sub(vec) {
-    return new Vector4(this.x - vec.x, this.y - vec.y, this.z - vec.z, this.w - vec.w);
+    return new Vector4(
+      this.x - vec.x,
+      this.y - vec.y,
+      this.z - vec.z,
+      this.w - vec.w
+    );
   }
 
   mul(n) {
@@ -125,7 +136,9 @@ export class Vector4 {
   }
 
   length() {
-    return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
+    return Math.sqrt(
+      this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w
+    );
   }
 
   distance(vec) {
@@ -133,7 +146,8 @@ export class Vector4 {
   }
 
   normal() {
-    if (this.x === 0 && this.y === 0 && this.z === 0 && this.w === 0) return new Vector4(0, 0, 0, 0);
+    if (this.x === 0 && this.y === 0 && this.z === 0 && this.w === 0)
+      return new Vector4(0, 0, 0, 0);
     const l = this.length();
     return new Vector4(this.x / l, this.y / l, this.z / l, this.w / l);
   }
@@ -171,10 +185,14 @@ export function lineRectCollide(line, rect) {
 // Checks if two rectangles (x1, y1, x2, y2) overlap.
 
 export function rectRectCollide(r1, r2) {
-  if (r2.x1 > r1.x1 && r2.x1 < r1.x2 && r2.y1 > r1.y1 && r2.y1 < r1.y2) return true;
-  if (r2.x2 > r1.x1 && r2.x2 < r1.x2 && r2.y1 > r1.y1 && r2.y1 < r1.y2) return true;
-  if (r2.x2 > r1.x1 && r2.x2 < r1.x2 && r2.y2 > r1.y1 && r2.y2 < r1.y2) return true;
-  if (r2.x1 > r1.x1 && r2.x1 < r1.x2 && r2.y2 > r1.y1 && r2.y2 < r1.y2) return true;
+  if (r2.x1 > r1.x1 && r2.x1 < r1.x2 && r2.y1 > r1.y1 && r2.y1 < r1.y2)
+    return true;
+  if (r2.x2 > r1.x1 && r2.x2 < r1.x2 && r2.y1 > r1.y1 && r2.y1 < r1.y2)
+    return true;
+  if (r2.x2 > r1.x1 && r2.x2 < r1.x2 && r2.y2 > r1.y1 && r2.y2 < r1.y2)
+    return true;
+  if (r2.x1 > r1.x1 && r2.x1 < r1.x2 && r2.y2 > r1.y1 && r2.y2 < r1.y2)
+    return true;
   return false;
 }
 
@@ -187,4 +205,11 @@ export function pushQuad(v, p1, p2, p3, p4) {
   v.push(p3[0], p3[1], p3[2], p3[3], p3[4], p3[5], p3[6], p3[7], p3[8]);
   v.push(p4[0], p4[1], p4[2], p4[3], p4[4], p4[5], p4[6], p4[7], p4[8]);
   v.push(p1[0], p1[1], p1[2], p1[3], p1[4], p1[5], p1[6], p1[7], p1[8]);
+}
+
+// apply values from one vector to another
+export function set(v, w) {
+  v.x = w.x;
+  v.y = w.y;
+  v.z = w.z;
 }

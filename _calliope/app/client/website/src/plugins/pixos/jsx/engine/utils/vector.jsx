@@ -217,3 +217,14 @@ export function pushQuad(v, p1, p2, p3, p4) {
   v.push(p4[0], p4[1], p4[2], p4[3], p4[4], p4[5], p4[6], p4[7], p4[8]);
   v.push(p1[0], p1[1], p1[2], p1[3], p1[4], p1[5], p1[6], p1[7], p1[8]);
 }
+
+// apply values from one vector to another
+export function set(v, w) {
+  v.x = w.x;
+  v.y = w.y;
+  v.z = w.z;
+}
+
+export function negate(v, o) {
+  return new Vector(this.x * -1, this.y * -1, this.z * -1);
+}

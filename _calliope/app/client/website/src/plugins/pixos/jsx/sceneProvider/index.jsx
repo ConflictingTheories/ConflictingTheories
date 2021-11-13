@@ -31,7 +31,7 @@ const scene = {
 };
 
 // Init Scene
-scene.init = (engine) => {
+scene.init = async (engine) => {
   // game Engine & Timing
   impl.engine = engine;
   impl.squareRotation = 0;
@@ -39,9 +39,9 @@ scene.init = (engine) => {
 
   // Init Game Engine Components
   let world = (impl.world = new World(engine));
-  world.loadZone("dungeon-top");
-  world.loadZone("dungeon-bottom");
-  world.zoneList.each(function (z) {
+  await world.loadZone("dungeon-top");
+  await world.loadZone("dungeon-bottom");
+  world.zoneList.forEach(function (z) {
     z.runWhenLoaded(()=>console.log('loading...done'));
   });
 };
@@ -60,6 +60,7 @@ scene.loadTextures = (engine) => {
 
 // Render Loop
 scene.render = (engine, now) => {
+  console.log('-')
   // Draw Frame
   impl.world.tick(now);
   impl.world.draw();
@@ -75,7 +76,7 @@ scene.render = (engine, now) => {
 scene.draw = (engine) => {
   const { gl, programInfo } = engine;
   engine.clearScreen();
-  engine.initPerspective(gl);
+  // engine.initPerspective(gl);
   impl.world.draw(engine);
 };
 
