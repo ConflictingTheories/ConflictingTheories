@@ -1,6 +1,7 @@
 import Config from "./config";
 import Actor from "../actor";
 import Tileset from "../tileset";
+import Activity from "../activity";
 
 export class TilesetLoader {
   constructor(engine) {
@@ -62,6 +63,64 @@ export class ActorLoader {
     }
 
     var instance = this.definitions[type];
+    if (afterConstruct) afterConstruct(instance);
+
+    if (afterLoad) {
+      if (instance.templateLoaded) afterLoad(instance);
+      else this.instances[type].push({ i: instance, f: afterLoad });
+    }
+
+    return instance;
+  }
+}
+
+export class ActivityLoader {
+  constructor(type, args, actor, id, time) {
+    this.baseClass = Activity;
+    this.instances = {};
+    this.definitions = [];
+
+    if (!time) {
+      time = new Date().getTime();
+    }
+    if (!id) {
+      id = actor.id + "-" + type + "-" + time;
+    }
+    return this.load(
+      type,
+      function (a) {
+        a.onLoad(args);
+      },
+      function (a) {
+        a.onConstruct(type, actor, id, time, args);
+      }
+    );
+  }
+
+  load(type) {
+    var afterLoad = arguments[1];
+    var afterConstruct = arguments[2];
+
+    // Unknown class type - create a skeleton class to be updated once the code has downloaded
+    if (typeof this.definitions[type] === "undefined") {
+      this.definitions[type] = new this.baseClass(this.engine);
+      this.instances[type] = [];
+      var self = this;
+
+      Object.assign(
+        self.definitions[type],
+        require("../../sceneProvider/activities/" + type + ".jsx")["default"]
+      );
+      self.definitions[type].templateLoaded = true;
+
+      // notify existing actor instances
+      self.instances[type].forEach(function (i) {
+        if (i.f) i.f(i.i);
+      });
+      console.log("Loaded definition for activity '" + type + "'");
+    }
+
+    var instance = new this.definitions[type]();
     if (afterConstruct) afterConstruct(instance);
 
     if (afterLoad) {

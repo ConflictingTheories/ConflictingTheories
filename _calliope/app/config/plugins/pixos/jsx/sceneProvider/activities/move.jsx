@@ -6,6 +6,7 @@ import {
   Vector,
   set,
 } from "../../../../_calliope/app/config/plugins/pixos/jsx/engine/utils/vector";
+import Direction from "../../engine/utils/direction";
 export default {
   init: function (from, to, length) {
     this.from = new Vector(from);
