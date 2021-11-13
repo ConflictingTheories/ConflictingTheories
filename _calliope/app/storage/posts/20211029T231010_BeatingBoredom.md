@@ -14,3 +14,5 @@ Any ways - if you wish to hear some of my music mixing while I learn this new sk
 ![Screenshot of my Practice](/content/media/dj.png)
 
 Cheers!
+
+[[ pixos ]]

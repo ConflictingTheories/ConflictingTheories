@@ -18,6 +18,7 @@ import { ActorLoader, TilesetLoader } from "./utils/loaders";
 
 export default class Zone {
   constructor(zoneId, engine) {
+    this.engine = engine;
     this.data = {};
     this.actorDict = {};
     this.actorList = [];
@@ -27,23 +28,20 @@ export default class Zone {
     // TODO: Check LocalStorage / IndexDB for cached data
     // Pull zone data from server
     this.id = zoneId;
+  }
+
+  async load() {
     let self = this;
-    new Request.JSON({
-      url: Config.zoneRequestUrl(zoneId),
-      method: "get",
-      link: "chain",
-      secure: true,
-      onSuccess(json) {
-        self.onJsonLoaded(json);
-      },
-      onFailure() {
-        console.error("Error fetching zone " + zoneId);
-      },
-      onError(text, error) {
-        console.error("Error parsing zone " + zoneId + ": " + error);
-        console.error(text);
-      },
-    }).send();
+    const fileResponse = await fetch(Config.zoneRequestUrl(this.id));
+    if (fileResponse.ok) {
+      try {
+        let content = await fileResponse.json();
+        await self.onJsonLoaded(content);
+      } catch (e) {
+        console.error("Error parsing zone " + this.id);
+        console.error(e);
+      }
+    }
   }
 
   // Actions to run when the map has loaded
@@ -53,7 +51,7 @@ export default class Zone {
   }
 
   // Recieved zone definition JSON
-  onJsonLoaded(data) {
+  async onJsonLoaded(data) {
     this.bounds = data.bounds;
     this.size = [
       data.bounds[2] - data.bounds[0],
@@ -62,24 +60,24 @@ export default class Zone {
     this.cells = data.cells;
 
     // Load tileset if necessary, then create level geometry
-    this.tileset = this.tsLoader.load(data.tileset);
+    this.tileset = await this.tsLoader.load(data.tileset);
     this.tileset.runWhenDefinitionLoaded(
       this.onTilesetDefinitionLoaded.bind(this)
     );
     this.tileset.runWhenLoaded(this.onTilesetOrActorLoaded.bind(this));
 
     // Load actors
-    data.actors.each(this.loadActor.bind(this));
+    data.actors.forEach(this.loadActor.bind(this));
 
     // Notify the zone when the actor has loaded
-    this.actorList.each(
+    this.actorList.forEach(
       function (a) {
         a.runWhenLoaded(this.onTilesetOrActorLoaded.bind(this));
       }.bind(this)
     );
   }
 
-  onTilesetDefinitionLoaded(engine) {
+  onTilesetDefinitionLoaded() {
     // Initialize zone geometry
     this.vertexPosBuf = [];
     this.vertexTexBuf = [];
@@ -94,7 +92,7 @@ export default class Zone {
 
         let n = Math.floor(cell.length / 3);
         for (let l = 0; l < n; l++) {
-          let tilePos = Vector.create([
+          let tilePos = new Vector([
             this.bounds[0] + i,
             this.bounds[1] + j,
             cell[3 * l + 2],
@@ -111,10 +109,14 @@ export default class Zone {
         // Custom walkability
         if (cell.length == 3 * n + 1) this.walkability[k] = cell[3 * n];
       }
-      this.vertexPosBuf[j] = engine.createBuffer(vertices, engine.gl.STATIC_DRAW, 3);
-      this.vertexTexBuf[j] = engine.createBuffer(
+      this.vertexPosBuf[j] = this.engine.createBuffer(
+        vertices,
+        this.engine.gl.STATIC_DRAW,
+        3
+      );
+      this.vertexTexBuf[j] = this.engine.createBuffer(
         vertexTexCoords,
-        engine.gl.STATIC_DRAW,
+        this.engine.gl.STATIC_DRAW,
         2
       );
     }
@@ -135,9 +137,9 @@ export default class Zone {
     this.onLoadActions.run();
   }
 
-  loadActor(data) {
+  async loadActor(data) {
     data.zone = this;
-    let a = this.actorLoader.load(data.type, function (b) {
+    let a = await this.actorLoader.load(data.type, function (b) {
       b.onLoad(data);
     });
     this.actorDict[data.id] = a;
@@ -212,50 +214,50 @@ export default class Zone {
     return cell[2];
   }
 
-  drawRow(engine, row) {
-    engine.bindBuffer(
+  drawRow(row) {
+    this.engine.bindBuffer(
       this.vertexPosBuf[row],
-      engine.programInfo.program.vertexPositionAttribute
+      this.engine.programInfo.program.vertexPositionAttribute
     );
-    engine.bindBuffer(
+    this.engine.bindBuffer(
       this.vertexTexBuf[row],
-      engine.programInfo.program.textureCoordAttribute
+      this.engine.programInfo.program.textureCoordAttribute
     );
-    engine.bindTexture(this.tileset.texture);
+    this.engine.bindTexture(this.tileset.texture);
 
-    engine.programInfo.program.setMatrixUniforms();
-    engine.gl.drawArrays(
-      engine.gl.TRIANGLES,
+    this.engine.programInfo.program.setMatrixUniforms();
+    this.engine.gl.drawArrays(
+      this.engine.gl.TRIANGLES,
       0,
       this.vertexPosBuf[row].numItems
     );
   }
 
-  draw(engine) {
+  draw() {
     if (!this.loaded) return;
 
     this.actorList.sort(function (a, b) {
       return a.pos[1] - b.pos[1];
     });
-    engine.mvPushMatrix();
-    engine.setCamera();
+    this.engine.mvPushMatrix();
+    this.engine.setCamera();
 
     let k = 0,
       maxK = this.actorList.length;
     for (let j = 0; j < this.size[1]; j++) {
-      this.drawRow(engine, j);
+      this.drawRow(j);
 
       while (k < maxK && this.actorList[k].pos[1] - this.bounds[1] <= j)
-        this.actorList[k++].draw(engine);
+        this.actorList[k++].draw(this.engine);
     }
-    while (k < maxK) this.actorList[k++].draw();
-    engine.mvPopMatrix();
+    while (k < maxK) this.actorList[k++].draw(this.engine);
+    this.engine.mvPopMatrix();
   }
 
   tick(time) {
     if (!this.loaded) return;
 
-    this.actorList.each(function (a) {
+    this.actorList.forEach(function (a) {
       a.tickOuter(time);
     });
   }

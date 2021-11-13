@@ -39,7 +39,9 @@ export default class Tileset {
   // Received tileset definition JSON
   onJsonLoaded(data) {
     // Merge tileset definition into this object
-    Object.merge(this, data);
+    Object.keys(data).map((k)=>{
+      this[k] = data[k];
+    });
 
     // Definition actions must always run before loaded actions
     this.definitionLoaded = true;
@@ -70,7 +72,7 @@ export default class Tileset {
           return [v[0] + offset[0], v[1] + offset[1], v[2] + offset[2]];
         });
       })
-      .flatten();
+      .flat();
   }
 
   getWalkability(tileId) {
@@ -93,6 +95,6 @@ export default class Tileset {
           return [(v[0] + o[0]) * s[0], (v[1] + o[1]) * s[1]];
         });
       })
-      .flatten();
+      .flat();
   }
 }

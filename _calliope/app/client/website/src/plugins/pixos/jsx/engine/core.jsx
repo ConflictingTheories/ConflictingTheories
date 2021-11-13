@@ -28,10 +28,11 @@ export default class GLEngine {
     this.width = width;
     this.height = height;
     this.modelViewMatrixStack = [];
+    this.textures = [];
     this.cameraAngle = 45;
-    this.cameraPosition = Vector.create();
+    this.cameraPosition = new Vector(0, 0, 0);
     // Storage for negated camera position
-    this.cameraOffset = Vector.create();
+    this.cameraOffset = new Vector(0, 0, 0);
   }
 
   // Initialize a Scene object
@@ -55,7 +56,7 @@ export default class GLEngine {
     this.initShaderProgram(gl, scene.shaders);
 
     // Initialize Project Matrix
-    this.initProjection(gl);
+    this.initProjection();
 
     // Dummy Model Matrix
     // this.modelMatrix = create();
@@ -72,6 +73,7 @@ export default class GLEngine {
   // Load and Compile Shader Source
   loadShader(gl, type, source) {
     const shader = gl.createShader(type);
+    console.log(source);
     gl.shaderSource(shader, source);
     gl.compileShader(shader);
 
@@ -105,7 +107,7 @@ export default class GLEngine {
     // Use Shader
     gl.useProgram(shaderProgram);
 
-    this.programInfo = {
+    let shaderInfo = {
       program: shaderProgram,
       attribLocations: {
         aPos: gl.getAttribLocation(shaderProgram, "aVertexPosition"),
@@ -117,18 +119,11 @@ export default class GLEngine {
         uSampler: gl.getUniformLocation(shaderProgram, "uSampler"),
       },
     };
-
-    shaderProgram.setMatrixUniforms = function () {
-      gl.uniformMatrix4fv(
-        this.programInfo.uniformLocations.uProjMat,
-        false,
-        this.uProjMat
-      );
-      gl.uniformMatrix4fv(
-        this.programInfo.uniformLocations.uViewMat,
-        false,
-        this.uViewMat
-      );
+    this.programInfo = shaderInfo;
+    // shader uniforms
+    shaderProgram.setMatrixUniforms = () => {
+      gl.uniformMatrix4fv(shaderInfo.uniformLocations.uProjMat, false, this.uProjMat);
+      gl.uniformMatrix4fv(shaderInfo.uniformLocations.uViewMat, false, this.uViewMat);
     };
 
     gl.enableVertexAttribArray(this.programInfo.attribLocations.aPos);
@@ -139,13 +134,13 @@ export default class GLEngine {
   };
 
   // Set FOV and Perspective
-  initProjection(gl) {
+  initProjection() {
     const fieldOfView = (60 * Math.PI) / 180; // in radians
-    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    const aspect = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
     const zNear = 0.1;
     const zFar = 100.0;
     this.uProjMat = perspective(fieldOfView, aspect, zNear, zFar);
-    gl.uniformMatrix4fv(
+    this.gl.uniformMatrix4fv(
       this.programInfo.uniformLocations.uProjMat,
       false,
       this.uProjMat
@@ -167,11 +162,18 @@ export default class GLEngine {
   }
 
   setCamera() {
-    translate(this.uViewMat, [0.0, 0.0, -15.0]);
-    rotate(this.uViewMat, this.degToRad(this.cameraAngle), [1, 0, 0]);
+    translate(this.uViewMat, this.uViewMat, [0.0, 0.0, -15.0]);
+    rotate(
+      this.uViewMat,
+      this.uViewMat,
+      this.degToRad(this.cameraAngle),
+      [1, 0, 0]
+    );
 
-    Vector.negate(this.cameraPosition, this.cameraOffset);
-    translate(this.uViewMat, this.cameraOffset);
+    this.cameraPosition.negate();
+    this.cameraOffset.negate();
+
+    translate(this.uViewMat, this.uViewMat, this.cameraOffset.toArray());
   }
 
   // Clear Screen with Color (RGBA)
@@ -212,14 +214,12 @@ export default class GLEngine {
 
   loadTexture(src) {
     if (this.textures[src]) return this.textures[src];
-    this.textures[src] = new Texture();
-    this.textures[src].initialize(src);
+    this.textures[src] = new Texture(src, this);
     return this.textures[src];
   }
 
   bindTexture(texture) {
-    let { gl } = this;
-    texture.bind(gl);
+    texture.bind();
   }
 
   // Clear Render Loop
