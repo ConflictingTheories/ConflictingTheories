@@ -19,8 +19,8 @@ export default {
       [80, 144],
     ],
   },
-  drawOffset: new Vector([0, 1, 0.001]),
-  hotspotOffset: new Vector([0.5, 0.5, 0]),
+  drawOffset: new Vector(0, 1, 0.001),
+  hotspotOffset: new Vector(0.5, 0.5, 0),
 
   lastTime: 0,
   accumTime: 0,
@@ -63,11 +63,11 @@ export default {
     rotate(engine.uViewMat, engine.uViewMat, engine.degToRad(90), [1, 0, 0]);
     engine.bindBuffer(
       this.vertexPosBuf,
-      engine.programInfo.vertexPositionAttribute
+      this.engine.programInfo.attribLocations.aPos
     );
     engine.bindBuffer(
       this.vertexTexBuf,
-      engine.programInfo.textureCoordAttribute
+      this.engine.programInfo.attribLocations.aTexCoord
     );
     engine.bindTexture(this.texture);
 

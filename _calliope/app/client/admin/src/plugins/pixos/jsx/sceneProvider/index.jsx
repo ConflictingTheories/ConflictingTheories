@@ -60,10 +60,9 @@ scene.loadTextures = (engine) => {
 
 // Render Loop
 scene.render = (engine, now) => {
-  console.log('-')
   // Draw Frame
   impl.world.tick(now);
-  impl.world.draw();
+  impl.world.draw(engine);
   scene.draw(engine);
 
   // Update for next frame

@@ -50,6 +50,6 @@ export default class Texture {
   bind() {
     this.engine.gl.activeTexture(this.engine.gl.TEXTURE0);
     this.engine.gl.bindTexture(this.engine.gl.TEXTURE_2D, this.glTexture);
-    this.engine.gl.uniform1i(this.engine.programInfo.program.samplerUniform, 0);
+    this.engine.gl.uniform1i(this.engine.programInfo.uniformLocations.uSampler, 0);
   }
 }

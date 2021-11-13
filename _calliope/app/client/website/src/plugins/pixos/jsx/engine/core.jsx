@@ -45,13 +45,26 @@ export default class GLEngine {
     this.scene = scene;
 
     // Configure GL
-    gl.clearColor(0, 0, 0, 1.0);
+    // gl.clearColor(0, 0, 0, 1.0);
+    // gl.clearDepth(1.0);
+    // gl.enable(gl.DEPTH_TEST);
+    // gl.enable(gl.CULL_FACE);
+
+    // gl.depthFunc(gl.LEQUAL);
+    // gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    gl.viewportWidth = this.canvas.width;
+    gl.viewportHeight = this.canvas.height;
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clearDepth(1.0);
     gl.enable(gl.DEPTH_TEST);
-    gl.enable(gl.CULL_FACE);
-    gl.depthFunc(gl.LEQUAL);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    gl.enable(gl.BLEND);
 
+    for(var i = 0; i<8; i++)
+    gl.disableVertexAttribArray(i);
+    
+    
     // Initialize Shader
     this.initShaderProgram(gl, scene.shaders);
 
@@ -59,8 +72,8 @@ export default class GLEngine {
     this.initProjection();
 
     // Dummy Model Matrix
-    // this.modelMatrix = create();
-    // gl.uniformMatrix4fv(this.programInfo.uniformLocations.uViewMat, false, this.modelMatrix);
+    this.uViewMat = create();
+    gl.uniformMatrix4fv(this.programInfo.uniformLocations.uViewMat, false, this.uViewMat);
 
     // Initialize Scene
     scene.init(this);
@@ -119,16 +132,23 @@ export default class GLEngine {
         uSampler: gl.getUniformLocation(shaderProgram, "uSampler"),
       },
     };
+    gl.enableVertexAttribArray(shaderInfo.attribLocations.aPos);
+    gl.enableVertexAttribArray(shaderInfo.attribLocations.aTexCoord);
+    
     this.programInfo = shaderInfo;
     // shader uniforms
     shaderProgram.setMatrixUniforms = () => {
-      gl.uniformMatrix4fv(shaderInfo.uniformLocations.uProjMat, false, this.uProjMat);
-      gl.uniformMatrix4fv(shaderInfo.uniformLocations.uViewMat, false, this.uViewMat);
+      gl.uniformMatrix4fv(
+        shaderInfo.uniformLocations.uProjMat,
+        false,
+        this.uProjMat
+      );
+      gl.uniformMatrix4fv(
+        shaderInfo.uniformLocations.uViewMat,
+        false,
+        this.uViewMat
+      );
     };
-
-    gl.enableVertexAttribArray(this.programInfo.attribLocations.aPos);
-    gl.enableVertexAttribArray(this.programInfo.attribLocations.aColor);
-    gl.enableVertexAttribArray(this.programInfo.attribLocations.aTexCoord);
 
     return shaderProgram;
   };
@@ -170,9 +190,8 @@ export default class GLEngine {
       [1, 0, 0]
     );
 
-    this.cameraPosition.negate();
-    this.cameraOffset.negate();
-
+    // this.cameraPosition.negate();
+    // this.cameraOffset.negate();
     translate(this.uViewMat, this.uViewMat, this.cameraOffset.toArray());
   }
 

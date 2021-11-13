@@ -217,11 +217,11 @@ export default class Zone {
   drawRow(row) {
     this.engine.bindBuffer(
       this.vertexPosBuf[row],
-      this.engine.programInfo.program.vertexPositionAttribute
+      this.engine.programInfo.attribLocations.aPos
     );
     this.engine.bindBuffer(
       this.vertexTexBuf[row],
-      this.engine.programInfo.program.textureCoordAttribute
+      this.engine.programInfo.attribLocations.aTexCoord
     );
     this.engine.bindTexture(this.tileset.texture);
 
@@ -235,6 +235,7 @@ export default class Zone {
 
   draw() {
     if (!this.loaded) return;
+    console.log("-");
 
     this.actorList.sort(function (a, b) {
       return a.pos[1] - b.pos[1];
@@ -247,10 +248,10 @@ export default class Zone {
     for (let j = 0; j < this.size[1]; j++) {
       this.drawRow(j);
 
-      while (k < maxK && this.actorList[k].pos[1] - this.bounds[1] <= j)
-        this.actorList[k++].draw(this.engine);
+      // while (k < maxK && this.actorList[k].pos[1] - this.bounds[1] <= j)
+      //   this.actorList[k++].draw(this.engine);
     }
-    while (k < maxK) this.actorList[k++].draw(this.engine);
+    // while (k < maxK) this.actorList[k++].draw(this.engine);
     this.engine.mvPopMatrix();
   }
 
