@@ -33,7 +33,7 @@ export default class GLEngine {
     gl.clearColor(0, 0, 0, 1.0);
     gl.clearDepth(1.0);
     gl.enable(gl.DEPTH_TEST);
-    gl.enable(gl.CULL_FACE);
+    // gl.enable(gl.CULL_FACE);
     gl.depthFunc(gl.LEQUAL);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
@@ -41,11 +41,11 @@ export default class GLEngine {
     this.initShaderProgram(gl, scene.shaders);
 
     // Initialize Project Matrix
-    this.initProjection();
+    this.initProjection(gl);
 
     // Dummy Model Matrix
     this.modelMatrix = create();
-    gl.uniformMatrix4fv(this.programInfo.uniformLocations.uViewMat, false, this.modelMatrix);
+    gl.uniformMatrix4fv(this.programInfo.uniformLocations.uModelMat, false, this.modelMatrix);
 
     // Initialize Scene
     scene.init(this);
@@ -96,7 +96,7 @@ export default class GLEngine {
       },
       uniformLocations: {
         uProjMat: gl.getUniformLocation(shaderProgram, 'uProjMatrix'),
-        uViewMat: gl.getUniformLocation(shaderProgram, 'uViewMatrix'),
+        uModelMat: gl.getUniformLocation(shaderProgram, 'uModelMatrix'),
         uViewMat: gl.getUniformLocation(shaderProgram, 'uViewMatrix'),
         uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
       },
@@ -110,13 +110,13 @@ export default class GLEngine {
   };
 
   // Set FOV and Perspective
-  initProjection() {
+  initProjection(gl) {
     const fieldOfView = (60 * Math.PI) / 180; // in radians
-    const aspect = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
+    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
     const zNear = 0.1;
     const zFar = 200.0;
     this.uProjMat = perspective(fieldOfView, aspect, zNear, zFar);
-    this.gl.uniformMatrix4fv(this.programInfo.uniformLocations.uProjMat, false, this.uProjMat);
+    gl.uniformMatrix4fv(this.programInfo.uniformLocations.uProjMat, false, this.uProjMat);
   }
 
   // Set Camera Pos & Angle

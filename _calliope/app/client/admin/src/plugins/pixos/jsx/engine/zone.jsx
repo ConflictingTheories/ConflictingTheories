@@ -17,17 +17,21 @@ import ActionQueue from "./queue";
 import { ActorLoader, TilesetLoader } from "./utils/loaders";
 
 export default class Zone {
-  constructor(zoneId, engine) {
-    this.engine = engine;
+  constructor(zoneId, world) {
+    this.id = zoneId;
+    this.world = world;
     this.data = {};
     this.actorDict = {};
     this.actorList = [];
+    this.engine = world.engine;
     this.onLoadActions = new ActionQueue();
-    this.actorLoader = new ActorLoader(engine);
-    this.tsLoader = new TilesetLoader(engine);
-    // TODO: Check LocalStorage / IndexDB for cached data
-    // Pull zone data from server
-    this.id = zoneId;
+    this.actorLoader = new ActorLoader(world.engine);
+    this.tsLoader = new TilesetLoader(world.engine);
+    // bind
+    this.onTilesetDefinitionLoaded = this.onTilesetDefinitionLoaded.bind(this);
+    this.onTilesetOrActorLoaded = this.onTilesetOrActorLoaded.bind(this);
+    this.onJsonLoaded = this.onJsonLoaded.bind(this);
+    this.loadActor = this.loadActor.bind(this);
   }
 
   async load() {
@@ -61,19 +65,15 @@ export default class Zone {
 
     // Load tileset if necessary, then create level geometry
     this.tileset = await this.tsLoader.load(data.tileset);
-    this.tileset.runWhenDefinitionLoaded(
-      this.onTilesetDefinitionLoaded.bind(this)
-    );
-    this.tileset.runWhenLoaded(this.onTilesetOrActorLoaded.bind(this));
+    this.tileset.runWhenDefinitionLoaded(this.onTilesetDefinitionLoaded);
+    this.tileset.runWhenLoaded(this.onTilesetOrActorLoaded);
 
     // Load actors
-    data.actors.forEach(this.loadActor.bind(this));
+    data.actors.forEach(this.loadActor);
 
     // Notify the zone when the actor has loaded
-    this.actorList.forEach(
-      function (a) {
-        a.runWhenLoaded(this.onTilesetOrActorLoaded.bind(this));
-      }.bind(this)
+    this.actorList.forEach((actor) =>
+      actor.runWhenLoaded(this.onTilesetOrActorLoaded)
     );
   }
 
@@ -225,7 +225,7 @@ export default class Zone {
     );
     this.engine.bindTexture(this.tileset.texture);
 
-    this.engine.programInfo.program.setMatrixUniforms();
+    this.engine.programInfo.setMatrixUniforms();
     this.engine.gl.drawArrays(
       this.engine.gl.TRIANGLES,
       0,
@@ -248,10 +248,10 @@ export default class Zone {
     for (let j = 0; j < this.size[1]; j++) {
       this.drawRow(j);
 
-      // while (k < maxK && this.actorList[k].pos[1] - this.bounds[1] <= j)
-      //   this.actorList[k++].draw(this.engine);
+      while (k < maxK && this.actorList[k].pos[1] - this.bounds[1] <= j)
+        this.actorList[k++].draw(this.engine);
     }
-    // while (k < maxK) this.actorList[k++].draw(this.engine);
+    while (k < maxK) this.actorList[k++].draw(this.engine);
     this.engine.mvPopMatrix();
   }
 

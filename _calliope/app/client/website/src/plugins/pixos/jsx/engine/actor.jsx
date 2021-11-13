@@ -10,27 +10,27 @@
 **               All Rights Reserved.              **
 ** ----------------------------------------------- **
 \*                                                 */
-import { Vector,set } from "./utils/vector";
+import { Vector, set } from "./utils/vector";
 import Direction from "./utils/direction";
 import ActionQueue from "./queue";
 
-import {
-  rotate,
-  translate,
-} from "./utils/matrix4";
+import { rotate, translate } from "./utils/matrix4";
 
 export default class Actor {
   constructor(engine) {
     this.engine = engine;
     this.templateLoaded = false;
-    this.drawOffset = new Vector(0,0,0);
-    this.hotspotOffset = new Vector(0,0,0);
+    this.drawOffset = new Vector(0, 0, 0);
+    this.hotspotOffset = new Vector(0, 0, 0);
     this.animFrame = 0;
-    this.pos = new Vector(0,0,0);
+    this.pos = new Vector(0, 0, 0);
     this.facing = Direction.RIGHT;
     this.activityDict = {};
     this.activityList = [];
     this.onLoadActions = new ActionQueue();
+    // Bind
+    this.onTilesetOrTextureLoaded = this.onTilesetOrTextureLoaded.bind(this);
+    this.onTilesetDefinitionLoaded = this.onTilesetDefinitionLoaded.bind(this);
   }
 
   runWhenLoaded(a) {
@@ -52,16 +52,13 @@ export default class Actor {
     if (instanceData.facing) this.facing = instanceData.facing;
 
     this.texture = this.engine.loadTexture(this.src);
-    this.texture.runWhenLoaded(this.onTilesetOrTextureLoaded.bind(this));
+    this.texture.runWhenLoaded(this.onTilesetOrTextureLoaded);
     this.vertexTexBuf = this.engine.createBuffer(
       this.getTexCoords(),
       this.engine.gl.DYNAMIC_DRAW,
       2
     );
-
-    this.zone.tileset.runWhenDefinitionLoaded(
-      this.onTilesetDefinitionLoaded.bind(this)
-    );
+    this.zone.tileset.runWhenDefinitionLoaded(this.onTilesetDefinitionLoaded);
   }
 
   onTilesetDefinitionLoaded() {
@@ -77,9 +74,13 @@ export default class Actor {
       [v[2], v[3], v[0]],
       [v[2], v[0], v[1]],
     ].flat();
-    this.vertexPosBuf = this.engine.createBuffer(poly, this.engine.gl.STATIC_DRAW, 3);
+    this.vertexPosBuf = this.engine.createBuffer(
+      poly,
+      this.engine.gl.STATIC_DRAW,
+      3
+    );
 
-    this.zone.tileset.runWhenLoaded(this.onTilesetOrTextureLoaded.bind(this));
+    this.zone.tileset.runWhenLoaded(this.onTilesetOrTextureLoaded);
   }
 
   onTilesetOrTextureLoaded() {
@@ -114,19 +115,38 @@ export default class Actor {
     if (!this.loaded) return;
 
     this.engine.mvPushMatrix();
-    translate( this.engine.uViewMat, this.engine.uViewMat, this.pos.toArray());
+    translate(this.engine.uViewMat, this.engine.uViewMat, this.pos.toArray());
 
     // Undo rotation so that character plane is normal to LOS
-    translate( this.engine.uViewMat, this.engine.uViewMat, this.drawOffset.toArray());
-    rotate( this.engine.uViewMat, this.engine.uViewMat, this.engine.degToRad(this.engine.cameraAngle), [1, 0, 0]);
-    this.engine.bindBuffer(this.vertexPosBuf,  this.engine.programInfo.attribLocations.aPos);
-    this.engine.bindBuffer(this.vertexTexBuf,  this.engine.programInfo.attribLocations.aTexCoord);
+    translate(
+      this.engine.uViewMat,
+      this.engine.uViewMat,
+      this.drawOffset.toArray()
+    );
+    rotate(
+      this.engine.uViewMat,
+      this.engine.uViewMat,
+      this.engine.degToRad(this.engine.cameraAngle),
+      [1, 0, 0]
+    );
+    this.engine.bindBuffer(
+      this.vertexPosBuf,
+      this.engine.programInfo.attribLocations.aPos
+    );
+    this.engine.bindBuffer(
+      this.vertexTexBuf,
+      this.engine.programInfo.attribLocations.aTexCoord
+    );
     this.engine.bindTexture(this.texture);
-    this.engine.programInfo.program.setMatrixUniforms();
+    this.engine.programInfo.setMatrixUniforms();
 
     // Actors always render on top of everything behind them
     this.engine.gl.depthFunc(this.engine.gl.ALWAYS);
-    this.engine.gl.drawArrays(this.engine.gl.TRIANGLES, 0, this.vertexPosBuf.numItems);
+    this.engine.gl.drawArrays(
+      this.engine.gl.TRIANGLES,
+      0,
+      this.vertexPosBuf.numItems
+    );
     this.engine.gl.depthFunc(this.engine.gl.LESS);
 
     this.engine.mvPopMatrix();
@@ -172,11 +192,7 @@ export default class Actor {
       if (a.tick(time)) toRemove.push(a);
     });
 
-    toRemove.forEach(
-      function (a) {
-        this.removeActivity(a.id);
-      }.bind(this)
-    );
+    toRemove.forEach((a) => this.removeActivity(a.id));
 
     if (this.tick) this.tick(time);
   }

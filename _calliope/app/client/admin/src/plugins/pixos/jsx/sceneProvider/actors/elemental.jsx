@@ -2,7 +2,7 @@
 // You can redistribute and/or modify it under the terms of version 3 of the
 // GNU General Public License, as published by the Free Software Foundation.
 // See LICENSE.html for the license terms.
-import { Vector } from "../../../../blockworld/jsx/engine/utils/vector";
+import { Vector, set } from "../../engine/utils/vector";
 export default {
     src: "art/elementals.gif",
     sheetSize: [64,128],

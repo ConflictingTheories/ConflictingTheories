@@ -13,11 +13,11 @@
 
 export default function vs() {
   return `
-  uniform mat4 uViewMatrix;
+  uniform mat4 uModelMatrix;
   uniform mat4 uViewMatrix;
   uniform mat4 uProjMatrix;
 
-  attribute Vector aPos;
+  attribute vec3 aPos;
   attribute vec2 aTexCoord;
   attribute vec4 aColor;
 
@@ -25,7 +25,7 @@ export default function vs() {
   varying vec2 vTexCoord;
 
   void main(void) {
-    gl_Position = uProjMatrix * uViewMatrix * ( uViewMatrix * vec4( aPos, 1.0 ) );
+    gl_Position = uProjMatrix * uViewMatrix * ( uModelMatrix * vec4( aPos, 1.0 ) );
     vTexCoord = aTexCoord;
     vColor = vec4(aColor.rgb, 1.0);
   }

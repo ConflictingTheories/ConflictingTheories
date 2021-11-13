@@ -319,8 +319,8 @@ draw = (engine) => {
     }
   }
   // Update Model
-  const uViewMat = create();
-  gl.uniformMatrix4fv(programInfo.attribLocations.uViewMat, false, uViewMat);
+  const uModelMat = create();
+  gl.uniformMatrix4fv(programInfo.attribLocations.uModelMat, false, uModelMat);
 
 }
 
