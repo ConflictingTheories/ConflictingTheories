@@ -119,10 +119,10 @@ export default class Actor {
     // Undo rotation so that character plane is normal to LOS
     translate( this.engine.uViewMat, this.engine.uViewMat, this.drawOffset.toArray());
     rotate( this.engine.uViewMat, this.engine.uViewMat, this.engine.degToRad(this.engine.cameraAngle), [1, 0, 0]);
-    this.engine.bindBuffer(this.vertexPosBuf,  this.engine.programInfo.program.vertexPositionAttribute);
-    this.engine.bindBuffer(this.vertexTexBuf,  this.engine.programInfo.program.textureCoordAttribute);
+    this.engine.bindBuffer(this.vertexPosBuf,  this.engine.programInfo.attribLocations.aPos);
+    this.engine.bindBuffer(this.vertexTexBuf,  this.engine.programInfo.attribLocations.aTexCoord);
     this.engine.bindTexture(this.texture);
-     this.engine.programInfo.program.setMatrixUniforms();
+    this.engine.programInfo.program.setMatrixUniforms();
 
     // Actors always render on top of everything behind them
     this.engine.gl.depthFunc(this.engine.gl.ALWAYS);

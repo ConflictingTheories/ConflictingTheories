@@ -48,45 +48,18 @@ export class ActorLoader {
       this.definitions[type] = new this.baseClass(this.engine);
       this.instances[type] = [];
       var self = this;
-      var url = this.requestUrlLookup(type);
-      
-      // TODO --- NEED TO LOAD FROM CLASSES -- REPLACE BASE CLASS 
-      // const fileResponse = await fetch(url);
-      // if (fileResponse.ok) {
-      //   try {
-      //     let json = await fileResponse.text();
-      //     var def;
-      //     try {
-      //       // TODO -- FIX THIS!!! 
-      //       eval(json);
-      //     } catch (e) {
-      //       var lineNumber = "";
-      //       // Dirty browser specific hack to determine line number in loaded file
-      //       if (e.lineNumber)
-      //         lineNumber = e.lineNumber - new Error().lineNumber + 6;
+      // self.definitions[type].implement(def);
+      Object.assign(
+        self.definitions[type],
+        require("../../sceneProvider/actors/" + type + ".jsx")["default"]
+      );
+      self.definitions[type].templateLoaded = true;
 
-      //       console.error(
-      //         "Error in type definition for " + type + ":" + lineNumber
-      //       );
-      //       console.error(e.message);
-      //     }
-      //     console.log(self.definitions[type]);
-      //     console.log(def);
-
-          // self.definitions[type].implement(def);
-          Object.assign(self.definitions[type],require("../../sceneProvider/actors/"+type+".jsx")['default']);
-          self.definitions[type].templateLoaded = true;
-
-          // notify existing actor instances
-          self.instances[type].forEach(function (i) {
-            if (i.f) i.f(i.i);
-          });
-          console.log("Loaded definition for type '" + type + "'");
-        // } catch (e) {
-        //   console.error("Error fetching definition for '" + type + "'");
-        //   console.error(e);
-        // }
-      // }
+      // notify existing actor instances
+      self.instances[type].forEach(function (i) {
+        if (i.f) i.f(i.i);
+      });
+      console.log("Loaded definition for type '" + type + "'");
     }
 
     var instance = this.definitions[type];

@@ -34,6 +34,6 @@ export default {
             [48,72]
         ]
     },
-    drawOffset: new Vector([0, 1, 0.2]),
-    hotspotOffset: new Vector([0.5, 0.5, 0]),
+    drawOffset: new Vector(0, 1, 0.2),
+    hotspotOffset: new Vector(0.5, 0.5, 0),
 };
