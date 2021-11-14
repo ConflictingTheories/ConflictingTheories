@@ -28,9 +28,6 @@ export default class Actor {
     this.activityDict = {};
     this.activityList = [];
     this.onLoadActions = new ActionQueue();
-    // Bind
-    this.onTilesetOrTextureLoaded = this.onTilesetOrTextureLoaded.bind(this);
-    this.onTilesetDefinitionLoaded = this.onTilesetDefinitionLoaded.bind(this);
   }
 
   runWhenLoaded(a) {
@@ -38,26 +35,26 @@ export default class Actor {
     else this.onLoadActions.add(a);
   }
 
+  // Load Texture / Location
   onLoad(instanceData) {
     if (this.loaded) return;
-
     if (!this.src || !this.sheetSize || !this.tileSize || !this.frames) {
       console.error("Invalid actor definition");
       return;
     }
-
+    // Zone Information
     this.zone = instanceData.zone;
     if (instanceData.id) this.id = instanceData.id;
     if (instanceData.pos) set(new Vector(...instanceData.pos), this.pos);
     if (instanceData.facing) this.facing = instanceData.facing;
-
+    // Texture Buffer
     this.texture = this.engine.loadTexture(this.src);
-    this.texture.runWhenLoaded(this.onTilesetOrTextureLoaded);
-    console.log("creating -- BUFFER");
+    this.texture.runWhenLoaded(this.onTilesetOrTextureLoaded.bind(this));
     this.vertexTexBuf = this.engine.createBuffer(this.getTexCoords(), this.engine.gl.DYNAMIC_DRAW, 2);
-    this.zone.tileset.runWhenDefinitionLoaded(this.onTilesetDefinitionLoaded);
+    this.zone.tileset.runWhenDefinitionLoaded(this.onTilesetDefinitionLoaded.bind(this));
   }
 
+  // Definition Loaded
   onTilesetDefinitionLoaded() {
     let s = this.zone.tileset.tileSize;
     let ts = [this.tileSize[0] / s, this.tileSize[1] / s];
@@ -71,22 +68,23 @@ export default class Actor {
       [v[2], v[3], v[0]],
       [v[2], v[0], v[1]],
     ].flat(3);
-    console.log("creating -- BUFFER");
     this.vertexPosBuf = this.engine.createBuffer(poly, this.engine.gl.STATIC_DRAW, 3);
-    this.zone.tileset.runWhenLoaded(this.onTilesetOrTextureLoaded);
+    this.zone.tileset.runWhenLoaded(this.onTilesetOrTextureLoaded.bind(this));
   }
 
+  // After Tileset / Texture Loaded
   onTilesetOrTextureLoaded() {
     if (this.loaded || !this.zone.tileset.loaded || !this.texture.loaded) return;
 
     this.init(); // Hook for actor implementations
     this.loaded = true;
-    console.log("Initialized actor '" + this.id + "' in zone '" + this.zone.id + "'");
-
     this.onLoadActions.run();
+    
+    console.log("Initialized actor '" + this.id + "' in zone '" + this.zone.id + "'");
   }
 
-  getTexCoords(i) {
+  // Get Texture Coordinates
+  getTexCoords() {
     let t = this.frames[Direction.actorSequence(this.facing)][this.animFrame % 4];
     let ss = this.sheetSize;
     let ts = this.tileSize;
@@ -100,52 +98,52 @@ export default class Actor {
     return poly.flat(3);
   }
 
+  // Draw Actor Sprite
   draw() {
     if (!this.loaded) return;
-
     this.engine.mvPushMatrix();
-
     // Undo rotation so that character plane is normal to LOS
     translate(this.engine.uViewMat, this.engine.uViewMat, this.drawOffset.toArray());
     translate(this.engine.uViewMat, this.engine.uViewMat, this.pos.toArray());
     rotate(this.engine.uViewMat, this.engine.uViewMat, this.engine.degToRad(this.engine.cameraAngle), [1, 0, 0]);
-
-    console.log("binding actor");
+    // Bind texture
     this.engine.bindBuffer(this.vertexPosBuf, this.engine.shaderProgram.vertexPositionAttribute);
     this.engine.bindBuffer(this.vertexTexBuf, this.engine.shaderProgram.textureCoordAttribute);
     this.texture.attach();
-
+    // Draw
     this.engine.shaderProgram.setMatrixUniforms();
-
     this.engine.gl.depthFunc(this.engine.gl.ALWAYS);
     this.engine.gl.drawArrays(this.engine.gl.TRIANGLES, 0, this.vertexPosBuf.numItems);
     this.engine.gl.depthFunc(this.engine.gl.LESS);
-
     this.engine.mvPopMatrix();
   }
 
+  // Set Frame
   setFrame(frame) {
     this.animFrame = frame;
     this.engine.updateBuffer(this.vertexTexBuf, this.getTexCoords());
   }
 
+  // Set Facing
   setFacing(facing) {
     this.facing = facing;
     this.setFrame(this.animFrame);
   }
 
+  // Add Activity to Queue
   addActivity(a) {
     if (this.activityDict[a.id]) this.removeActivity(a.id);
-
     this.activityDict[a.id] = a;
     this.activityList.push(a);
   }
 
+  // Remove Activity
   removeActivity(id) {
     this.activityList.erase(this.activityDict[id]);
     delete this.activityDict[id];
   }
 
+  // Tick
   tickOuter(time) {
     if (!this.loaded) return;
     // Sort activities by increasing startTime, then by id
@@ -154,22 +152,20 @@ export default class Actor {
       if (!dt) return dt;
       return a.id > b.id ? 1 : -1;
     });
-
+    // Run & Queue for Removal when complete
     let toRemove = [];
-    this.activityList.forEach((a) => {
-      if (!a.loaded || a.startTime > time) return;
-
-      // Activity returns true when it is complete
-      if (a.tick(time)) toRemove.push(a);
+    this.activityList.forEach((activity) => {
+      if (!activity.loaded || activity.startTime > time) return;
+      if (activity.tick(time)) toRemove.push(activity);
     });
-
-    toRemove.forEach((a) => this.removeActivity(a.id));
-
+    // clear completed activities
+    toRemove.forEach((activity) => this.removeActivity(activity.id));
+    // tick
     if (this.tick) this.tick(time);
   }
 
   // Hook for actor implementations
   init() {
-    console.log("-", this.id, this.pos);
+    console.log("- actor hook", this.id, this.pos);
   }
 }

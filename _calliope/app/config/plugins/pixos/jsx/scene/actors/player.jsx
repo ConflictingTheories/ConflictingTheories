@@ -1,7 +1,16 @@
-// This file is part of webglrpg-client, Copyright (C) 2011 Paul Chote
-// You can redistribute and/or modify it under the terms of version 3 of the
-// GNU General Public License, as published by the Free Software Foundation.
-// See LICENSE.html for the license terms.
+/*                                                 *\
+** ----------------------------------------------- **
+**             Calliope - Site Generator   	       **
+** ----------------------------------------------- **
+**  Copyright (c) 2020-2021 - Kyle Derby MacInnis  **
+**                                                 **
+**    Any unauthorized distribution or transfer    **
+**       of this work is strictly prohibited.      **
+**                                                 **
+**               All Rights Reserved.              **
+** ----------------------------------------------- **
+\*                                                 */
+
 import { Vector, set } from "../../engine/utils/vector";
 import Direction from "../../engine/utils/direction";
 import { ActivityLoader } from "../../engine/utils/loaders";

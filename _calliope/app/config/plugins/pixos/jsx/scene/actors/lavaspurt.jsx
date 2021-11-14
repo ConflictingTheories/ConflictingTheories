@@ -1,7 +1,16 @@
-// This file is part of webglrpg-client, Copyright (C) 2011 Paul Chote
-// You can redistribute and/or modify it under the terms of version 3 of the
-// GNU General Public License, as published by the Free Software Foundation.
-// See LICENSE.html for the license terms.
+/*                                                 *\
+** ----------------------------------------------- **
+**             Calliope - Site Generator   	       **
+** ----------------------------------------------- **
+**  Copyright (c) 2020-2021 - Kyle Derby MacInnis  **
+**                                                 **
+**    Any unauthorized distribution or transfer    **
+**       of this work is strictly prohibited.      **
+**                                                 **
+**               All Rights Reserved.              **
+** ----------------------------------------------- **
+\*                                                 */
+
 import { Vector, set } from "../../engine/utils/vector";
 import { translate, rotate } from "../../engine/utils/matrix4";
 export default {
@@ -21,7 +30,6 @@ export default {
   },
   drawOffset: new Vector(0, 1, 0.001),
   hotspotOffset: new Vector(0.5, 0.5, 0),
-
   lastTime: 0,
   accumTime: 0,
   blowTime: 0,
@@ -52,9 +60,7 @@ export default {
 
   draw: function (engine) {
     if (!this.loaded) return;
-
     console.log("binding animated tile");
-
     engine.mvPushMatrix();
     translate(engine.uViewMat, engine.uViewMat, this.pos.toArray());
     // Lie flat on the ground
