@@ -48,7 +48,7 @@ export default class Actor {
 
     this.zone = instanceData.zone;
     if (instanceData.id) this.id = instanceData.id;
-    if (instanceData.pos) set(instanceData.pos, this.pos);
+    if (instanceData.pos) set(new Vector(...instanceData.pos), this.pos);
     if (instanceData.facing) this.facing = instanceData.facing;
 
     this.texture = this.engine.loadTexture(this.src);
@@ -73,7 +73,8 @@ export default class Actor {
     let poly = [
       [v[2], v[3], v[0]],
       [v[2], v[0], v[1]],
-    ].flat();
+    ].flat(3);
+    console.log(poly);
     this.vertexPosBuf = this.engine.createBuffer(
       poly,
       this.engine.gl.STATIC_DRAW,
@@ -108,13 +109,14 @@ export default class Actor {
       [v[0], v[1], v[2]],
       [v[0], v[2], v[3]],
     ];
-    return poly.flat();
+    return poly.flat(3);
   }
 
   draw() {
     if (!this.loaded) return;
 
     this.engine.mvPushMatrix();
+    
     translate(this.engine.uViewMat, this.engine.uViewMat, this.pos.toArray());
 
     // Undo rotation so that character plane is normal to LOS
@@ -129,24 +131,15 @@ export default class Actor {
       this.engine.degToRad(this.engine.cameraAngle),
       [1, 0, 0]
     );
-    this.engine.bindBuffer(
-      this.vertexPosBuf,
-      this.engine.programInfo.attribLocations.aPos
-    );
-    this.engine.bindBuffer(
-      this.vertexTexBuf,
-      this.engine.programInfo.attribLocations.aTexCoord
-    );
-    this.engine.bindTexture(this.texture);
-    this.engine.programInfo.setMatrixUniforms();
 
-    // Actors always render on top of everything behind them
+    this.engine.bindBuffer(this.vertexPosBuf,this.engine.shaderProgram.vertexPositionAttribute);
+    this.engine.bindBuffer(this.vertexPosBuf,this.engine.shaderProgram.textureCoordAttribute);
+    this.engine.bindTexture(this.texture)
+
+    this.engine.shaderProgram.setMatrixUniforms();
+    
     this.engine.gl.depthFunc(this.engine.gl.ALWAYS);
-    this.engine.gl.drawArrays(
-      this.engine.gl.TRIANGLES,
-      0,
-      this.vertexPosBuf.numItems
-    );
+    this.engine.gl.drawArrays(this.engine.gl.TRIANGLES,0,this.vertexPosBuf.numItems);
     this.engine.gl.depthFunc(this.engine.gl.LESS);
 
     this.engine.mvPopMatrix();

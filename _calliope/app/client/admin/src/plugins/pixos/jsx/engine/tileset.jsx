@@ -73,7 +73,7 @@ export default class Tileset {
           return [v[0] + offset[0], v[1] + offset[1], v[2] + offset[2]];
         });
       })
-      .flat();
+      .flat(3);
   }
 
   getWalkability(tileId) {
@@ -96,6 +96,6 @@ export default class Tileset {
           return [(v[0] + o[0]) * s[0], (v[1] + o[1]) * s[1]];
         });
       })
-      .flat();
+      .flat(3);
   }
 }

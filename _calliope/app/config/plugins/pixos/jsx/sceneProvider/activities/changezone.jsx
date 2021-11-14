@@ -32,7 +32,7 @@ export default {
     var endTime = this.startTime + this.length;
     var frac = (time - this.startTime) / this.length;
     if (time >= endTime) {
-      set(this.to, a.pos);
+      set(new Vector(...this.to), a.pos);
       frac = 1;
     } else Vector.lerp(this.from, this.to, frac, a.pos);
 
