@@ -23,6 +23,8 @@ import { Vector, negate } from "./utils/vector";
 import Texture from "./texture";
 export default class GLEngine {
   constructor(canvas, width, height) {
+    this.uViewMat = create();
+    this.uProjMat = create();
     this.canvas = canvas;
     this.width = width;
     this.height = height;
@@ -44,8 +46,9 @@ export default class GLEngine {
     console.log(scene);
     this.gl = gl;
     this.scene = scene;
-
     // Configure GL
+    gl.viewportWidth = this.canvas.width;
+    gl.viewportHeight = this.canvas.height; 
     gl.clearColor(0, 1.0, 0, 1.0);
     gl.clearDepth(1.0);
     gl.enable(gl.DEPTH_TEST);
@@ -126,39 +129,30 @@ export default class GLEngine {
     const zNear = 0.1;
     const zFar = 100.0;
     this.uProjMat = perspective(fieldOfView, aspect, zNear, zFar);
-    gl.uniformMatrix4fv(this.pMatrixUniform, false, this.uProjMat);
+    this.uViewMat = create();
   }
 
   // Set Camera Pos & Angle
   setCamera() {
     var gl = this.gl;
-    this.uViewMat = create();
     translate(this.uViewMat, this.uViewMat, [0.0, 0.0, -15.0]);
-    rotate(
-      this.uViewMat,
-      this.uViewMat,
-      this.degToRad(this.cameraAngle),
-      [1, 0, 0]
-    );
+    rotate(this.uViewMat,this.uViewMat,this.degToRad(this.cameraAngle),[1, 0, 0]);
     negate(this.cameraPosition, this.cameraOffset);
     translate(this.uViewMat, this.uViewMat, this.cameraOffset.toArray());
-    gl.uniformMatrix4fv(
-      this.shaderProgram.mvMatrixUniform,
-      false,
-      this.uViewMat
-    );
+    gl.uniformMatrix4fv(this.shaderProgram.mvMatrixUniform,false,this.uViewMat);
   }
 
   // Clear Screen with Color (RGBA)
   clearScreen() {
     const { gl } = this;
+    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   }
 
   // Render Frame
   render(now) {
-    this.scene.render(this, now);
     requestAnimationFrame(this.render);
+    this.scene.render(this, now);
   }
 
 

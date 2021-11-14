@@ -15,21 +15,18 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import glEngine from './engine/core';
 import { MOUSE } from "./engine/enums"
+import Keyboard from './engine/utils/keyboard';
 //
 const WebGLView = ({ width, height, SceneProvider, class: string }) => {
   const ref = useRef();
 
-  let onMouseEvent = () =>null;
-  let onKeyEvent = () =>null;
+  let onMouseEvent = SceneProvider.onMouseEvent;
 
   useEffect(async () => {
     const canvas = ref.current;
     const engine = new glEngine(canvas, width, height);
     // Initialize Scene
     await engine.init(SceneProvider);
-    // Attach Handlers
-    onMouseEvent = SceneProvider.onMouseEvent;
-    onKeyEvent = SceneProvider.onKeyEvent;
     return () => {
       engine.close();
     };
@@ -41,8 +38,8 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
     width={width}
     height={height}
     className={string}
-    onKeyDownCapture={(e)=> onKeyEvent(e.nativeEvent, true)}
-    onKeyUpCapture={(e) => onKeyEvent(e.nativeEvent, false)}
+    onKeyDownCapture={(e)=> Keyboard._instance.onKeyDown(e.nativeEvent)}
+    onKeyUpCapture={(e) => Keyboard._instance.onKeyUp(e.nativeEvent)}
     onContextMenu={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, MOUSE.UP, true, e)}
     onMouseUp={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, MOUSE.UP, e.nativeEvent.button == 3, e)}
     onMouseDown={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, MOUSE.DOWN, e.nativeEvent.button == 3, e)}

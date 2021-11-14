@@ -51,7 +51,7 @@ export class ActorLoader {
       // self.definitions[type].implement(def);
       Object.assign(
         self.definitions[type],
-        require("../../sceneProvider/actors/" + type + ".jsx")["default"]
+        require("../../scene/actors/" + type + ".jsx")["default"]
       );
       self.definitions[type].templateLoaded = true;
 
@@ -110,7 +110,7 @@ export class ActivityLoader {
 
       Object.assign(
         self.definitions[type],
-        require("../../sceneProvider/activities/" + type + ".jsx")["default"]
+        require("../../scene/activities/" + type + ".jsx")["default"]
       );
       self.definitions[type].templateLoaded = true;
 

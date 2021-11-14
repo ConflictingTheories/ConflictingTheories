@@ -72,8 +72,6 @@ export default class Scene {
   render = (engine, now) => {
     // Build
     Scene._instance.world.tick(now);
-    // // camera
-    engine.setCamera();
     // Draw Frame
     this.draw(engine);
     // Update for next frame
@@ -84,12 +82,8 @@ export default class Scene {
 
   // Draw Scene
   draw = (engine) => {
-    const { gl, shaderProgram } = engine;
-    // engine.clearScreen();
+    engine.clearScreen();
     Scene._instance.world.draw(engine);
-    // // Update Model
-    // const uModelMat = create();
-    // gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, uModelMat);
   };
 
   // Keyboard handler for Scene
