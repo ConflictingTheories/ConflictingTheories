@@ -3,6 +3,8 @@
 // GNU General Public License, as published by the Free Software Foundation.
 // See LICENSE.html for the license terms.
 import { Vector, set } from "../../engine/utils/vector";
+import Direction from "../../engine/utils/direction";
+import Keyboard from "../../engine/utils/keyboard";
 export default {
   // Character art from http://opengameart.org/content/chara-seth-scorpio
   src: "art/player.gif",
@@ -40,7 +42,7 @@ export default {
   // Should the camera follow the player?
   bindCamera: true,
 
-  tick: function (engine, time) {
+  tick: function (time) {
     if (!this.activityList.length) {
       var ret = this.checkInput();
       if (ret) {
@@ -53,7 +55,7 @@ export default {
         this.addActivity(ret);
       }
     }
-    if (this.bindCamera) set(this.pos, engine.cameraPosition);
+    if (this.bindCamera) set(this.pos, this.engine.cameraPosition);
   },
 
   checkInput: function () {
@@ -82,11 +84,11 @@ export default {
       return this.activityLoader.create("face", [facing], this);
     }.bind(this);
 
-    var from = new Vector(this.pos);
-    var dp = this.engine.Direction.toOffset(facing);
-    var to = new Vector([
-      Math.round(from[0] + dp[0]),
-      Math.round(from[1] + dp[1]),
+    var from = new Vector(...this.pos);
+    var dp = Direction.toOffset(facing);
+    var to = new Vector(...[
+      Math.round(from.x + dp[0]),
+      Math.round(from.y + dp[1]),
       0,
     ]);
 

@@ -61,7 +61,7 @@ export default class GLEngine {
     // Dummy Model Matrix
     this.uViewMat = create();
     gl.uniformMatrix4fv(
-      this.programInfo.uniformLocations.uViewMat,
+      this.shaderProgram.mvMatrixUniform,
       false,
       this.uViewMat
     );
@@ -100,7 +100,7 @@ export default class GLEngine {
     // Could Link
     if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
       throw new Error(
-        `WebGL unable to initialize the shader program: ${gl.getProgramInfoLog(
+        `WebGL unable to initialize the shader program: ${gl.getshaderProgramLog(
           shaderProgram
         )}`
       );
@@ -122,21 +122,21 @@ export default class GLEngine {
       },
       setMatrixUniforms : () => {
         gl.uniformMatrix4fv(
-          this.programInfo.uniformLocations.uProjMat,
+          this.shaderProgram.pMatrixUniform,
           false,
           this.uProjMat
         );
         gl.uniformMatrix4fv(
-          this.programInfo.uniformLocations.uViewMat,
+          this.shaderProgram.mvMatrixUniform,
           false,
           this.uViewMat
         )
       }
     };
-    gl.enableVertexAttribArray(shaderInfo.attribLocations.aPos);
-    gl.enableVertexAttribArray(shaderInfo.attribLocations.aTexCoord);
+    gl.enableVertexAttribArray(shaderInfo.vertexPositionAttribute);
+    gl.enableVertexAttribArray(shaderInfo.textureCoordAttribute);
 
-    this.programInfo = shaderInfo;
+    this.shaderProgram = shaderInfo;
 
     return shaderProgram;
   };
@@ -148,7 +148,7 @@ export default class GLEngine {
     const zNear = 0.1;
     const zFar = 100.0;
     this.uProjMat = perspective(fieldOfView, aspect, zNear, zFar);
-    gl.uniformMatrix4fv(this.programInfo.uniformLocations.uProjMat, false, this.uProjMat);
+    gl.uniformMatrix4fv(this.shaderProgram.pMatrixUniform, false, this.uProjMat);
   }
   
   mvPushMatrix() {

@@ -69,7 +69,7 @@ export default class Zone {
     this.tileset.runWhenLoaded(this.onTilesetOrActorLoaded);
 
     // Load actors
-    data.actors.forEach(this.loadActor);
+    await Promise.all(data.actors.map(this.loadActor));
 
     // Notify the zone when the actor has loaded
     this.actorList.forEach((actor) =>
@@ -78,62 +78,38 @@ export default class Zone {
   }
 
   onTilesetDefinitionLoaded() {
-    // Initialize zone geometry
     this.vertexPosBuf = [];
     this.vertexTexBuf = [];
     this.walkability = [];
+    for (var j = 0, k = 0; j < this.size[1]; j++) {
+        var vertices = [];
+        var vertexTexCoords = [];
+        for (var i = 0; i < this.size[0]; i++, k++) {
+            var cell = this.cells[k];
+            this.walkability[k] = Direction.All;
 
-    for (let j = 0, k = 0; j < this.size[1]; j++) {
-      let vertices = [];
-      let vertexTexCoords = [];
-      for (let i = 0; i < this.size[0]; i++, k++) {
-        let cell = this.cells[k];
-        this.walkability[k] = Direction.All;
-
-        let n = Math.floor(cell.length / 3);
-        for (let l = 0; l < n; l++) {
-          let tilePos = new Vector([
-            this.bounds[0] + i,
-            this.bounds[1] + j,
-            cell[3 * l + 2],
-          ]);
-          this.walkability[k] &= this.tileset.getWalkability(cell[3 * l]);
-          vertices = vertices.concat(
-            this.tileset.getTileVertices(cell[3 * l], tilePos)
-          );
-          vertexTexCoords = vertexTexCoords.concat(
-            this.tileset.getTileTexCoords(cell[3 * l], cell[3 * l + 1])
-          );
+            var n = Math.floor(cell.length / 3);
+            for (var l = 0; l < n; l++) {
+                var tilePos = new Vector(this.bounds[0] + i, this.bounds[1] + j, cell[3*l+2]);
+                this.walkability[k] &= this.tileset.getWalkability(cell[3*l]);
+                vertices = vertices.concat(this.tileset.getTileVertices(cell[3*l], tilePos));
+                vertexTexCoords = vertexTexCoords.concat(this.tileset.getTileTexCoords(cell[3*l], cell[3*l+1]));
+            }
+            // Custom walkability
+            if (cell.length == 3*n+1)
+                this.walkability[k] = cell[3*n];
         }
-
-        // Custom walkability
-        if (cell.length == 3 * n + 1) this.walkability[k] = cell[3 * n];
-      }
-      this.vertexPosBuf[j] = this.engine.createBuffer(
-        vertices,
-        this.engine.gl.STATIC_DRAW,
-        3
-      );
-      this.vertexTexBuf[j] = this.engine.createBuffer(
-        vertexTexCoords,
-        this.engine.gl.STATIC_DRAW,
-        2
-      );
+        this.vertexPosBuf[j] = this.engine.createBuffer(vertices, this.engine.gl.STATIC_DRAW, 3);
+        this.vertexTexBuf[j] = this.engine.createBuffer(vertexTexCoords, this.engine.gl.STATIC_DRAW, 2);
     }
   }
 
   onTilesetOrActorLoaded() {
-    if (
-      this.loaded ||
-      !this.tileset.loaded ||
-      !this.actorList.every(function (a) {
-        return a.loaded;
-      })
-    )
-      return;
+    if (this.loaded || !this.tileset.loaded || !this.actorList.every(function(a) { return a.loaded; }))
+    return;
 
     this.loaded = true;
-    console.log("Initialized zone '" + this.id + "'");
+    console.log("Initialized zone '"+this.id+"'");
     this.onLoadActions.run();
   }
 
@@ -215,22 +191,11 @@ export default class Zone {
   }
 
   drawRow(row) {
-    this.engine.bindBuffer(
-      this.vertexPosBuf[row],
-      this.engine.programInfo.attribLocations.aPos
-    );
-    this.engine.bindBuffer(
-      this.vertexTexBuf[row],
-      this.engine.programInfo.attribLocations.aTexCoord
-    );
-    this.engine.bindTexture(this.tileset.texture);
-
-    this.engine.programInfo.setMatrixUniforms();
-    this.engine.gl.drawArrays(
-      this.engine.gl.TRIANGLES,
-      0,
-      this.vertexPosBuf[row].numItems
-    );
+    this.engine.bindBuffer(this.vertexPosBuf[row],this.engine.shaderProgram.vertexPositionAttribute);
+    this.engine.bindBuffer(this.vertexPosBuf[row],this.engine.shaderProgram.textureCoordAttribute);
+    this.engine.bindTexture(this.tileset.texture)
+    this.engine.shaderProgram.setMatrixUniforms();
+    this.engine.gl.drawArrays(this.engine.gl.TRIANGLES,0,this.vertexPosBuf[row].numItems);
   }
 
   draw() {

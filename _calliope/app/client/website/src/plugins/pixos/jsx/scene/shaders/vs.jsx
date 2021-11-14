@@ -13,18 +13,17 @@
 
 export default function vs() {
   return `
-  uniform mat4 uModelMatrix;
-  uniform mat4 uViewMatrix;
-  uniform mat4 uProjMatrix;
-
-  attribute vec3 aPos;
-  attribute vec2 aTexCoord;
-
+  attribute vec3 aVertexPosition;
+  attribute vec2 aTextureCoord;
+  
+  uniform mat4 uMVMatrix;
+  uniform mat4 uPMatrix;
+  
   varying vec2 vTextureCoord;
-
+  
   void main(void) {
-    gl_Position = uProjMatrix * uViewMatrix * ( uModelMatrix * vec4( aPos, 1.0 ) );
-    vTextureCoord = aTexCoord;
+    gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+    vTextureCoord = aTextureCoord;
   }
 `;
 }
