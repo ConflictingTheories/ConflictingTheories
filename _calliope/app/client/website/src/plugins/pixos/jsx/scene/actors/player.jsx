@@ -4,7 +4,6 @@
 // See LICENSE.html for the license terms.
 import { Vector, set } from "../../engine/utils/vector";
 import Direction from "../../engine/utils/direction";
-import Keyboard from "../../engine/utils/keyboard";
 export default {
   // Character art from http://opengameart.org/content/chara-seth-scorpio
   src: "art/player.gif",
@@ -62,7 +61,7 @@ export default {
     var moveTime = 600; // move time in ms
 
     var facing = Direction.None;
-    switch (Keyboard.lastPressed("wsad")) {
+    switch (this.engine.keyboard.lastPressed("wsad")) {
       case "w":
         facing = Direction.Up;
         break;

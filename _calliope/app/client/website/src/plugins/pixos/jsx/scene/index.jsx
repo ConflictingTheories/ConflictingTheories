@@ -11,31 +11,20 @@
 ** ----------------------------------------------- **
 \*                                                 */
 
-import { create, translate, rotate } from "../engine/utils/matrix4";
-import { cube, modelMerge } from "../engine/utils/elements";
-import { Vector } from "../engine/utils/vector";
-import Keyboard from "../engine/utils/keyboard";
-
 // Shaders
 import fs from "./shaders/fs";
 import vs from "./shaders/vs";
-
 import World from "../engine/world";
 
 // Scene Object
 export default class Scene {
-  // Shaders
   constructor() {
+    // Shaders
     this.shaders = {
       fs: fs(),
       vs: vs(),
     };
-    // Model Vertices / Indices / Etc... (OLD Method..... - For Static Model/Scenes)
-    this.model = modelMerge(
-      new Array(5).fill(0).map((_, i) => cube(new Vector(i * 2, i * 2, i * 3)))
-    );
-
-    // Instance
+    // Singleton
     if (!Scene._instance) {
       Scene._instance = this;
     }
@@ -46,8 +35,6 @@ export default class Scene {
   init = async (engine) => {
     // game Engine & Timing
     Scene._instance.engine = engine;
-    Scene._instance.squareRotation = 0;
-    Scene._instance.from = null;
     // Init Game Engine Components
     let world = (Scene._instance.world = new World(engine));
     await world.loadZone("dungeon-top");
@@ -74,10 +61,6 @@ export default class Scene {
     Scene._instance.world.tick(now);
     // Draw Frame
     this.draw(engine);
-    // Update for next frame
-    const deltaTime = Scene._instance.from === null ? 0 : now - Scene._instance.from;
-    Scene._instance.from = now;
-    Scene._instance.squareRotation += deltaTime * 0.001;
   };
 
   // Draw Scene
@@ -87,10 +70,11 @@ export default class Scene {
   };
 
   // Keyboard handler for Scene
-  onKeyEvent = (key, down) => {
-    console.log("-----", key);
-    if (down) Keyboard.onKeyDown(key);
-    else Keyboard.onKeyUp(key);
+  onKeyEvent = (e, down) => {
+    console.log("-----", e);
+    if (down) {
+      Scene._instance.engine.keyboard.onKeyDown(e);
+    } else Scene._instance.engine.keyboard.onKeyUp(e);
   };
 
   // Mouse Handler for Scene

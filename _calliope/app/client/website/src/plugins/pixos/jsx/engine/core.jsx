@@ -17,7 +17,7 @@ import {
   translate,
   perspective,
   isPowerOf2,
-  from,
+  set,
 } from "./utils/matrix4";
 import { Vector, negate } from "./utils/vector";
 import Texture from "./texture";
@@ -38,7 +38,7 @@ export default class GLEngine {
   }
 
   // Initialize a Scene object
-  init(scene) {
+  async init(scene, keyboard) {
     const gl = this.canvas.getContext("webgl");
     if (!gl) {
       throw new Error("WebGL : unable to initialize");
@@ -46,6 +46,7 @@ export default class GLEngine {
     console.log(scene);
     this.gl = gl;
     this.scene = scene;
+    this.keyboard = keyboard;
     // Configure GL
     gl.viewportWidth = this.canvas.width;
     gl.viewportHeight = this.canvas.height; 
@@ -54,6 +55,7 @@ export default class GLEngine {
     gl.enable(gl.DEPTH_TEST);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     gl.enable(gl.BLEND);
+    this.initializedWebGl = true; // flag
 
     // Initialize Shader
     this.initShaderProgram(gl, scene.shaders);
@@ -62,10 +64,7 @@ export default class GLEngine {
     this.initProjection(gl);
 
     // Initialize Scene
-    scene.init(this);
-
-    // Render
-    this.requestId = requestAnimationFrame(this.render);
+    await scene.init(this);
   }
 
   // Load and Compile Shader Source
@@ -139,7 +138,7 @@ export default class GLEngine {
     rotate(this.uViewMat,this.uViewMat,this.degToRad(this.cameraAngle),[1, 0, 0]);
     negate(this.cameraPosition, this.cameraOffset);
     translate(this.uViewMat, this.uViewMat, this.cameraOffset.toArray());
-    gl.uniformMatrix4fv(this.shaderProgram.mvMatrixUniform,false,this.uViewMat);
+    // gl.uniformMatrix4fv(this.shaderProgram.mvMatrixUniform,false,this.uViewMat);
   }
 
   // Clear Screen with Color (RGBA)
@@ -151,7 +150,7 @@ export default class GLEngine {
 
   // Render Frame
   render(now) {
-    requestAnimationFrame(this.render);
+    this.requestId = requestAnimationFrame(this.render);
     this.scene.render(this, now);
   }
 
@@ -212,98 +211,10 @@ export default class GLEngine {
     gl.vertexAttribPointer(attribute, buffer.itemSize, gl.FLOAT, false, 0, 0);
   }
 
-  // Load Texture from URL
-  loadTexture(url) {
-    let { gl } = this;
-    const texture = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-
-    // Because images have to be downloaded over the internet
-    // they might take a moment until they are ready.
-    // Until then put a single pixel in the texture so we can
-    // use it immediately. When the image has finished downloading
-    // we'll update the texture with the contents of the image.
-    const level = 0;
-    const internalFormat = gl.RGBA;
-    const width = 1;
-    const height = 1;
-    const border = 0;
-    const srcFormat = gl.RGBA;
-    const srcType = gl.UNSIGNED_BYTE;
-    const pixel = new Uint8Array([0, 0, 255, 255]); // opaque blue
-    gl.texImage2D(
-      gl.TEXTURE_2D,
-      level,
-      internalFormat,
-      width,
-      height,
-      border,
-      srcFormat,
-      srcType,
-      pixel
-    );
-
-    const image = new Image();
-    image.onload = function () {
-      gl.bindTexture(gl.TEXTURE_2D, texture);
-      gl.texImage2D(
-        gl.TEXTURE_2D,
-        level,
-        internalFormat,
-        srcFormat,
-        srcType,
-        image
-      );
-
-      // WebGL1 has different requirements for power of 2 images
-      // vs non power of 2 images so check if the image is a
-      // power of 2 in both dimensions.
-      if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
-        // Yes, it's a power of 2. Generate mips.
-        gl.generateMipmap(gl.TEXTURE_2D);
-      } else {
-        // No, it's not a power of 2. Turn off mips and set
-        // wrapping to clamp to edge
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-      }
-    };
-    image.src = url;
-
-    return texture;
-  }
-
   loadTexture(src) {
     if (this.textures[src]) return this.textures[src];
     this.textures[src] = new Texture(src, this);
     return this.textures[src];
-  }
-
-  // Blank Texture (Colour)
-  blankTexture(color, unit) {
-    let { gl } = this;
-    const texture = gl.createTexture();
-    // Create 1px white texture for pure vertex color operations (e.g. picking)
-    gl.activeTexture(unit);
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    var white = new Uint8Array(color);
-    gl.texImage2D(
-      gl.TEXTURE_2D,
-      0,
-      gl.RGBA,
-      1,
-      1,
-      0,
-      gl.RGBA,
-      gl.UNSIGNED_BYTE,
-      white
-    );
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-    gl.uniform1i(this.shaderProgram.samplerUniform, unit);
-
-    return texture;
   }
 
   bindTexture(texture) {
@@ -311,7 +222,8 @@ export default class GLEngine {
   }
 
   mvPushMatrix() {
-    let copy = from(this.uViewMat);
+    let copy = create();
+    set(this.uViewMat, copy);
     this.modelViewMatrixStack.push(copy);
   }
 

@@ -14,7 +14,7 @@
 import React, { Component } from "react";
 import { collect } from "react-recollect";
 // WebGL Component
-import WebGLView from "./WebGLView";
+import WebGLView from "./components/WebGLView";
 // Pixos Scene Provider
 import SceneProvider from "./scene";
 // Style Plugin
@@ -49,7 +49,7 @@ class Pixos extends Component {
     const { networkString, updated, scene } = this.state;
     return (
       <>
-        <WebGLView class="pixos" key={updated} width={720} height={480} SceneProvider={scene} networkString={networkString} />
+        <WebGLView class="pixos" key={updated} width={640} height={480} SceneProvider={scene} networkString={networkString} />
       </>
     );
   }

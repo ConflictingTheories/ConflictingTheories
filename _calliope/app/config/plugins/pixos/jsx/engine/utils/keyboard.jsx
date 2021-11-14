@@ -1,4 +1,4 @@
-class Keyboard {
+export default class Keyboard {
   constructor() {
     // Instance
     if (!Keyboard._instance) {
@@ -38,4 +38,3 @@ class Keyboard {
     return max;
   }
 }
-export default new Keyboard();
