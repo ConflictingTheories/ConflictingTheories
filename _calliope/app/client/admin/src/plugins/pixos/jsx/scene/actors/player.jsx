@@ -43,7 +43,7 @@ export default {
 
   tick: function (time) {
     if (!this.activityList.length) {
-      var ret = this.checkInput();
+      let ret = this.checkInput();
       if (ret) {
         // Send activity to the server
         // network.sendActivity(ret);
@@ -58,9 +58,9 @@ export default {
   },
 
   checkInput: function () {
-    var moveTime = 600; // move time in ms
+    let moveTime = 600; // move time in ms
 
-    var facing = Direction.None;
+    let facing = Direction.None;
     switch (this.engine.keyboard.lastPressed("wsad")) {
       case "w":
         facing = Direction.Up;
@@ -78,14 +78,14 @@ export default {
         return null;
     }
 
-    var faceDir = function (facing) {
+    let faceDir = function (facing) {
       if (this.facing == facing) return null;
       return this.activityLoader.create("face", [facing], this);
     }.bind(this);
 
-    var from = new Vector(...this.pos);
-    var dp = Direction.toOffset(facing);
-    var to = new Vector(...[
+    let from = new Vector(...this.pos);
+    let dp = Direction.toOffset(facing);
+    let to = new Vector(...[
       Math.round(from.x + dp[0]),
       Math.round(from.y + dp[1]),
       0,
@@ -96,7 +96,7 @@ export default {
 
     // Check zones
     if (!this.zone.isInZone(to[0], to[1])) {
-      var z = zone.world.zoneContaining(to[0], to[1]);
+      let z = zone.world.zoneContaining(to[0], to[1]);
       if (
         !z ||
         !z.loaded ||

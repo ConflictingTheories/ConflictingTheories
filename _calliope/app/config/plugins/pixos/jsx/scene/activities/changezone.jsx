@@ -21,7 +21,7 @@ export default {
   tick: function (time) {
     if (!this.toZone.loaded || !this.fromZone.loaded) return;
 
-    var a = this.actor;
+    let a = this.actor;
 
     // Set facing
     if (this.facing != a.facing) {
@@ -29,14 +29,14 @@ export default {
       a.setFrame(0);
     }
 
-    var endTime = this.startTime + this.length;
-    var frac = (time - this.startTime) / this.length;
+    let endTime = this.startTime + this.length;
+    let frac = (time - this.startTime) / this.length;
     if (time >= endTime) {
       set(new Vector(...this.to), a.pos);
       frac = 1;
     } else Vector.lerp(this.from, this.to, frac, a.pos);
 
-    var newFrame = Math.floor(frac * 4);
+    let newFrame = Math.floor(frac * 4);
     if (newFrame != a.animFrame) a.setFrame(newFrame);
 
     // Move into the new zone
@@ -61,8 +61,8 @@ export default {
     }
 
     // Calculate new height
-    var hx = a.pos[0] + a.hotspotOffset[0];
-    var hy = a.pos[1] + a.hotspotOffset[1];
+    let hx = a.pos[0] + a.hotspotOffset[0];
+    let hy = a.pos[1] + a.hotspotOffset[1];
 
     if (!this.switchRenderZone && !this.fromZone.isInZone(hx, hy))
       this.switchRenderZone = true;

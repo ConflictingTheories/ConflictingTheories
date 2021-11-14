@@ -133,7 +133,7 @@ export default class GLEngine {
 
   // Set Camera Pos & Angle
   setCamera() {
-    var gl = this.gl;
+    let gl = this.gl;
     translate(this.uViewMat, this.uViewMat, [0.0, 0.0, -15.0]);
     rotate(this.uViewMat,this.uViewMat,this.degToRad(this.cameraAngle),[1, 0, 0]);
     negate(this.cameraPosition, this.cameraOffset);

@@ -10,7 +10,7 @@ export class TilesetLoader {
   }
 
   async load(name) {
-    var ts = this.tilesets[name];
+    let ts = this.tilesets[name];
     if (ts) return ts;
 
     this.tilesets[name] = ts = new Tileset(this.engine);
@@ -40,14 +40,14 @@ export class ActorLoader {
   }
 
   async load(type) {
-    var afterLoad = arguments[1];
-    var afterConstruct = arguments[2];
+    let afterLoad = arguments[1];
+    let afterConstruct = arguments[2];
 
     // Unknown class type - create a skeleton class to be updated once the code has downloaded
     if (typeof this.definitions[type] === "undefined") {
       this.definitions[type] = new this.baseClass(this.engine);
       this.instances[type] = [];
-      var self = this;
+      let self = this;
       // self.definitions[type].implement(def);
       Object.assign(
         self.definitions[type],
@@ -62,7 +62,7 @@ export class ActorLoader {
       console.log("Loaded definition for type '" + type + "'");
     }
 
-    var instance = this.definitions[type];
+    let instance = this.definitions[type];
     if (afterConstruct) afterConstruct(instance);
 
     if (afterLoad) {
@@ -99,14 +99,14 @@ export class ActivityLoader {
   }
 
   load(type) {
-    var afterLoad = arguments[1];
-    var afterConstruct = arguments[2];
+    let afterLoad = arguments[1];
+    let afterConstruct = arguments[2];
 
     // Unknown class type - create a skeleton class to be updated once the code has downloaded
     if (typeof this.definitions[type] === "undefined") {
       this.definitions[type] = new this.baseClass(this.engine);
       this.instances[type] = [];
-      var self = this;
+      let self = this;
 
       Object.assign(
         self.definitions[type],
@@ -121,7 +121,7 @@ export class ActivityLoader {
       console.log("Loaded definition for activity '" + type + "'");
     }
 
-    var instance = new this.definitions[type]();
+    let instance = new this.definitions[type]();
     if (afterConstruct) afterConstruct(instance);
 
     if (afterLoad) {
