@@ -12,8 +12,8 @@
 \*                                                 */
 
 // Shaders
-import fs from "../shaders/fs";
-import vs from "../shaders/vs";
+import fs from "./shaders/fs";
+import vs from "./shaders/vs";
 
 // Pixos
 import World from "../engine/world";

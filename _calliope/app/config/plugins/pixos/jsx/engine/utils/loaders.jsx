@@ -66,6 +66,7 @@ export class ActorLoader {
     if (afterConstruct) afterConstruct(instance);
 
     if (afterLoad) {
+      console.log('after load')
       if (instance.templateLoaded) afterLoad(instance);
       else this.instances[type].push({ i: instance, f: afterLoad });
     }

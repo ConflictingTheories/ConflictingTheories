@@ -11,6 +11,7 @@
 ** ----------------------------------------------- **
 \*                                                 */
 import ActionQueue from "./queue";
+import { isPowerOf2 } from "./utils/matrix4";
 export default class Texture {
   constructor(src, engine) {
     this.engine = engine;
@@ -29,27 +30,36 @@ export default class Texture {
   }
 
   onImageLoaded() {
-    console.log("loaded image '" + this.src + "'");
-    this.engine.gl.bindTexture(this.engine.gl.TEXTURE_2D, this.glTexture);
-    this.engine.gl.texImage2D(
-      this.engine.gl.TEXTURE_2D,
-      0,
-      this.engine.gl.RGBA,
-      this.engine.gl.RGBA,
-      this.engine.gl.UNSIGNED_BYTE,
-      this.image
-    );
-    this.engine.gl.texParameteri(this.engine.gl.TEXTURE_2D, this.engine.gl.TEXTURE_MAG_FILTER, this.engine.gl.NEAREST);
-    this.engine.gl.texParameteri(this.engine.gl.TEXTURE_2D, this.engine.gl.TEXTURE_MIN_FILTER, this.engine.gl.NEAREST);
-    this.engine.gl.bindTexture(this.engine.gl.TEXTURE_2D, null);
+    let { gl } = this.engine;
+    const level = 0;
+    const internalFormat = gl.RGBA;
+    const srcFormat = gl.RGBA;
+    const srcType = gl.UNSIGNED_BYTE;
+    gl.bindTexture(gl.TEXTURE_2D, this.glTexture);
+    gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
+      srcFormat, srcType, this.image);
 
+    // WebGL1 has different requirements for power of 2 images
+    // vs non power of 2 images so check if the image is a
+    // power of 2 in both dimensions.
+    if (isPowerOf2(this.image.width) && isPowerOf2(this.image.height)) {
+      // Yes, it's a power of 2. Generate mips.
+      gl.generateMipmap(gl.TEXTURE_2D);
+    } else {
+      // No, it's not a power of 2. Turn off mips and set
+      // wrapping to clamp to edge
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    }
     this.loaded = true;
     this.onLoadActions.run();
   }
 
   attach() {
-    this.engine.gl.activeTexture(this.engine.gl.TEXTURE0);
-    this.engine.gl.bindTexture(this.engine.gl.TEXTURE_2D, this.glTexture);
-    this.engine.gl.uniform1i(this.engine.programInfo.uniformLocations.uSampler, 0);
+    let { gl } = this.engine;
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, this.glTexture);
+    gl.uniform1i(this.engine.programInfo.uniformLocations.uSampler, 0);
   }
 }
