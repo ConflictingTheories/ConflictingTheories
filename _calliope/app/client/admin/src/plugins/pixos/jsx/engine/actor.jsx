@@ -110,7 +110,7 @@ export default class Actor {
     translate(this.engine.uViewMat, this.engine.uViewMat, this.pos.toArray());
     rotate(this.engine.uViewMat, this.engine.uViewMat, this.engine.degToRad(this.engine.cameraAngle), [1, 0, 0]);
 
-    console.log('binding actor');
+    console.log("binding actor");
     this.engine.bindBuffer(this.vertexPosBuf, this.engine.shaderProgram.vertexPositionAttribute);
     this.engine.bindBuffer(this.vertexTexBuf, this.engine.shaderProgram.textureCoordAttribute);
     this.texture.attach();
@@ -149,14 +149,14 @@ export default class Actor {
   tickOuter(time) {
     if (!this.loaded) return;
     // Sort activities by increasing startTime, then by id
-    this.activityList.sort(function (a, b) {
+    this.activityList.sort((a, b) => {
       let dt = a.startTime - b.startTime;
       if (!dt) return dt;
       return a.id > b.id ? 1 : -1;
     });
 
     let toRemove = [];
-    this.activityList.forEach(function (a) {
+    this.activityList.forEach((a) => {
       if (!a.loaded || a.startTime > time) return;
 
       // Activity returns true when it is complete

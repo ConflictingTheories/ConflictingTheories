@@ -39,9 +39,7 @@ export default class Scene {
     let world = (Scene._instance.world = new World(engine));
     await world.loadZone("dungeon-top");
     await world.loadZone("dungeon-bottom");
-    world.zoneList.forEach(function (z) {
-      z.runWhenLoaded(() => console.log("loading...done"));
-    });
+    world.zoneList.forEach((z) => z.runWhenLoaded(() => console.log("loading...done")));
   };
 
   // Render Loop

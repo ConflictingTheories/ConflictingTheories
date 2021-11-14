@@ -98,14 +98,7 @@ export default class Zone {
   }
 
   onTilesetOrActorLoaded() {
-    if (
-      this.loaded ||
-      !this.tileset.loaded ||
-      !this.actorList.every(function (a) {
-        return a.loaded;
-      })
-    )
-      return;
+    if (this.loaded || !this.tileset.loaded || !this.actorList.every((a) => a.loaded)) return;
 
     this.loaded = true;
     console.log("Initialized zone '" + this.id + "'");
@@ -114,9 +107,7 @@ export default class Zone {
 
   async loadActor(data) {
     data.zone = this;
-    let a = await this.actorLoader.load(data.type, function (b) {
-      b.onLoad(data);
-    });
+    let a = await this.actorLoader.load(data.type, (b) => b.onLoad(data));
     this.actorDict[data.id] = a;
     this.actorList.push(a);
   }
@@ -146,7 +137,7 @@ export default class Zone {
     let dp = [x - i, y - j];
 
     // Calculate point inside a triangle
-    let getUV = function (t, p) {
+    let getUV = (t, p) => {
       // Vectors relative to first vertex
       let u = [t[1][0] - t[0][0], t[1][1] - t[0][1]];
       let v = [t[2][0] - t[0][0], t[2][1] - t[0][1]];
@@ -214,9 +205,7 @@ export default class Zone {
 
   tick(time) {
     if (!this.loaded) return;
-    this.actorList.forEach(function (a) {
-      a.tickOuter(time);
-    });
+    this.actorList.forEach((a) => a.tickOuter(time));
   }
 
   isInZone(x, y) {

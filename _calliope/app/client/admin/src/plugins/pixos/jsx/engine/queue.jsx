@@ -22,7 +22,7 @@ export default class ActionQueue {
 
   run() {
     let args = arguments;
-    this.actions = this.actions.filter(function (a) {
+    this.actions = this.actions.filter((a) => {
       return a(args);
     });
   }

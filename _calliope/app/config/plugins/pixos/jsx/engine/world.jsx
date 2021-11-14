@@ -28,9 +28,7 @@ export default class World {
 
   // Sort zones for correct render order
   sortZones() {
-    this.zoneList.sort(function (a, b) {
-      return a.bounds[1] - b.bounds[1];
-    });
+    this.zoneList.sort((a, b) => a.bounds[1] - b.bounds[1]);
   }
 
   async loadZone(zoneId) {

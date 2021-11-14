@@ -56,18 +56,14 @@ export default class Tileset {
   }
 
   onTextureLoaded() {
-    this.loaded = true;
     console.log("Initialized tileset '" + this.name + "'");
+    this.loaded = true;
     this.onLoadActions.run();
   }
 
   getTileVertices(id, offset) {
     return this.tileGeometry[id].v
-      .map(function (poly) {
-        return poly.map(function (v) {
-          return [v[0] + offset[0], v[1] + offset[1], v[2] + offset[2]];
-        });
-      })
+      .map((poly) => poly.map((v) => [v[0] + offset[0], v[1] + offset[1], v[2] + offset[2]]))
       .flat(3);
   }
 
@@ -82,12 +78,6 @@ export default class Tileset {
   getTileTexCoords(id, texId) {
     let o = this.tiles[texId];
     let s = [this.tileSize / this.sheetSize[0], this.tileSize / this.sheetSize[1]];
-    return this.tileGeometry[id].t
-      .map(function (poly) {
-        return poly.map(function (v) {
-          return [(v[0] + o[0]) * s[0], (v[1] + o[1]) * s[1]];
-        });
-      })
-      .flat(3);
+    return this.tileGeometry[id].t.map((poly) => poly.map((v) => [(v[0] + o[0]) * s[0], (v[1] + o[1]) * s[1]])).flat(3);
   }
 }
