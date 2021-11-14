@@ -36,13 +36,10 @@ export default {
       this.lastTime = time;
       return;
     }
-
+    // wait enough time
     this.accumTime += time - this.lastTime;
-
-    if (this.accumTime < this.frameTime) return;
-
-    if (this.animFrame == 0 && this.accumTime < this.blowTime) return;
-
+    if (this.accumTime < this.frameTime || (this.animFrame == 0 && this.accumTime < this.blowTime)) return;
+    // reset animation
     if (this.animFrame == 5) {
       this.setFrame(0);
       this.blowTime = 1000 + Math.random() * 4000;
@@ -55,16 +52,17 @@ export default {
   draw: function (engine) {
     if (!this.loaded) return;
 
+    console.log('binding animated tile');
+
     engine.mvPushMatrix();
     translate(engine.uViewMat, engine.uViewMat, this.pos.toArray());
-
     // Lie flat on the ground
     translate(engine.uViewMat, engine.uViewMat, this.drawOffset.toArray());
     rotate(engine.uViewMat, engine.uViewMat, engine.degToRad(90), [1, 0, 0]);
     engine.bindBuffer(this.vertexPosBuf, engine.shaderProgram.vertexPositionAttribute);
-    engine.bindBuffer(this.vertexPosBuf, engine.shaderProgram.textureCoordAttribute);
+    engine.bindBuffer(this.vertexTexBuf, engine.shaderProgram.textureCoordAttribute);
     this.texture.attach();
-
+    // Draw
     engine.shaderProgram.setMatrixUniforms();
     engine.gl.drawArrays(engine.gl.TRIANGLES, 0, this.vertexPosBuf.numItems);
     engine.mvPopMatrix();
