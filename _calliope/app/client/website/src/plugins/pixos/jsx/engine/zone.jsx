@@ -181,9 +181,12 @@ export default class Zone {
   }
 
   drawRow(row) {
+    console.log('binding tiles');
+
     this.engine.bindBuffer(this.vertexPosBuf[row], this.engine.shaderProgram.vertexPositionAttribute);
-    this.engine.bindBuffer(this.vertexPosBuf[row], this.engine.shaderProgram.textureCoordAttribute);
+    this.engine.bindBuffer(this.vertexTexBuf[row], this.engine.shaderProgram.textureCoordAttribute);
     this.tileset.texture.attach();
+
     this.engine.shaderProgram.setMatrixUniforms();
     this.engine.gl.drawArrays(this.engine.gl.TRIANGLES, 0, this.vertexPosBuf[row].numItems);
   }

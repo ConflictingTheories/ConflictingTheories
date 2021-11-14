@@ -110,8 +110,9 @@ export default class Actor {
     translate(this.engine.uViewMat, this.engine.uViewMat, this.pos.toArray());
     rotate(this.engine.uViewMat, this.engine.uViewMat, this.engine.degToRad(this.engine.cameraAngle), [1, 0, 0]);
 
+    console.log('binding actor');
     this.engine.bindBuffer(this.vertexPosBuf, this.engine.shaderProgram.vertexPositionAttribute);
-    this.engine.bindBuffer(this.vertexPosBuf, this.engine.shaderProgram.textureCoordAttribute);
+    this.engine.bindBuffer(this.vertexTexBuf, this.engine.shaderProgram.textureCoordAttribute);
     this.texture.attach();
 
     this.engine.shaderProgram.setMatrixUniforms();

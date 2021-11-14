@@ -118,6 +118,7 @@ export default class GLEngine {
     const zFar = 100.0;
     this.uProjMat = perspective(fieldOfView, aspect, zNear, zFar);
     this.uViewMat = create();
+    this.uProjMat[5] *= -1;
   }
 
   // Set Camera Pos & Angle
@@ -135,7 +136,6 @@ export default class GLEngine {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, this.uProjMat);
     this.uViewMat = create();
-    this.uProjMat[5] *= -1;
   }
 
   // Render Frame
