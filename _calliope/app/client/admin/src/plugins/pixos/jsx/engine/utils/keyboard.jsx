@@ -10,12 +10,14 @@ class Keyboard {
   }
 
   onKeyDown(e) {
+    console.log('down');
     var c = String.fromCharCode(e.keyCode).toLowerCase();
-    if (Keyboard.activeKeys.indexOf(c) < 0) Keyboard.activeKeys.push(c);
+    if (Keyboard._instance.activeKeys.indexOf(c) < 0) Keyboard._instance.activeKeys.push(c);
     Keyboard._instance.shift = e.shiftKey;
   }
 
   onKeyUp(e) {
+    console.log('up');
     var c = String.fromCharCode(e.keyCode).toLowerCase();
     Keyboard._instance.activeKeys.erase(c);
   }

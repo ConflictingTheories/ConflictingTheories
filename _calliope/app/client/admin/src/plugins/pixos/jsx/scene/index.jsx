@@ -48,7 +48,6 @@ export default class Scene {
     Scene._instance.engine = engine;
     Scene._instance.squareRotation = 0;
     Scene._instance.from = null;
-
     // Init Game Engine Components
     let world = (Scene._instance.world = new World(engine));
     await world.loadZone("dungeon-top");
@@ -64,7 +63,6 @@ export default class Scene {
     // Create 1px white texture for pure vertex color operations (e.g. picking)
     var white = new Uint8Array([255, 255, 255, 255]);
     Scene._instance.texWhite = engine.blankTexture(white, gl.TEXTURE0);
-
     // Load Image Textures
     Scene._instance.texTerrain = engine.loadTexture("media/terrain.png");
     Scene._instance.texPlayer = engine.loadTexture("media/player.png");
@@ -74,16 +72,12 @@ export default class Scene {
   render = (engine, now) => {
     // Build
     Scene._instance.world.tick(now);
-
-    // camera
-    engine.setCamera();
-
+    // // camera
+    // engine.setCamera();
     // Draw Frame
     this.draw(engine);
-
     // Update for next frame
-    const deltaTime =
-      Scene._instance.from === null ? 0 : now - Scene._instance.from;
+    const deltaTime = Scene._instance.from === null ? 0 : now - Scene._instance.from;
     Scene._instance.from = now;
     Scene._instance.squareRotation += deltaTime * 0.001;
   };
@@ -93,9 +87,9 @@ export default class Scene {
     const { gl, shaderProgram } = engine;
     // engine.clearScreen();
     Scene._instance.world.draw(engine);
-    // Update Model
-    const uModelMat = create();
-    gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, uModelMat);
+    // // Update Model
+    // const uModelMat = create();
+    // gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, uModelMat);
   };
 
   // Keyboard handler for Scene
