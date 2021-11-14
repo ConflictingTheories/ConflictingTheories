@@ -6,7 +6,7 @@
 export default {
   init: function (facing) {
     this.facing = facing;
-    console.log('loading - face')
+    console.log("loading - face");
   },
 
   tick: function (time) {

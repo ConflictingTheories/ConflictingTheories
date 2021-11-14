@@ -4,6 +4,7 @@
 // See LICENSE.html for the license terms.
 import { Vector, set } from "../../engine/utils/vector";
 import Direction from "../../engine/utils/direction";
+import { ActivityLoader } from "../../engine/utils/loaders";
 export default {
   // Character art from http://opengameart.org/content/chara-seth-scorpio
   src: "art/player.gif",
@@ -59,7 +60,6 @@ export default {
 
   checkInput: function () {
     let moveTime = 600; // move time in ms
-
     let facing = Direction.None;
     switch (this.engine.keyboard.lastPressed("wsad")) {
       case "w":
@@ -77,43 +77,36 @@ export default {
       default:
         return null;
     }
-
+    // Loading Face
     let faceDir = function (facing) {
       if (this.facing == facing) return null;
-      return this.activityLoader.create("face", [facing], this);
+      return new ActivityLoader(this.engine, "face", [facing], this);
     }.bind(this);
-
-    let from = new Vector(...this.pos);
+    // Determine Location
+    let from = this.pos;
     let dp = Direction.toOffset(facing);
-    let to = new Vector(...[
-      Math.round(from.x + dp[0]),
-      Math.round(from.y + dp[1]),
-      0,
-    ]);
-
-    if (!this.zone.isWalkable(this.pos[0], this.pos[1], facing))
-      return faceDir(facing);
-
-    // Check zones
-    if (!this.zone.isInZone(to[0], to[1])) {
-      let z = zone.world.zoneContaining(to[0], to[1]);
-      if (
-        !z ||
-        !z.loaded ||
-        !z.isWalkable(to[0], to[1], Direction.reverse(facing))
-      )
-        return faceDir(facing);
-
-      return this.activityLoader.create(
+    let to = new Vector(...[Math.round(from.x + dp[0]), Math.round(from.y + dp[1]), 0]);
+    // Check Walking
+    if (!this.zone.isWalkable(this.pos.x, this.pos.y, facing)) return faceDir(facing);
+    else console.log("cannot walk");
+    // Check zones if changing
+    if (!this.zone.isInZone(to.x, to.y)) {
+      let z = zone.world.zoneContaining(to.x, to.y);
+      if (!z || !z.loaded || !z.isWalkable(to.x, to.y, Direction.reverse(facing))) return faceDir(facing);
+      else {
+        console.log("No zone!");
+      }
+      return new ActivityLoader(
+        this.engine,
         "changezone",
-        [this.zone.id, this.pos, z.id, to, moveTime],
+        [this.zone.id, this.pos.toArray(), z.id, to.toArray(), moveTime],
         this
       );
     }
+    // Check
+    if (!this.zone.isWalkable(to.x, to.y, Direction.reverse(facing))) return faceDir(facing);
+    else console.log("No Walk!");
 
-    if (!this.zone.isWalkable(to[0], to[1], Direction.reverse(facing)))
-      return faceDir(facing);
-
-    return this.activityLoader.create("move", [this.pos, to, moveTime], this);
+    return new ActivityLoader(this.engine, "move", [this.pos.toArray(), to.toArray(), moveTime], this);
   },
 };

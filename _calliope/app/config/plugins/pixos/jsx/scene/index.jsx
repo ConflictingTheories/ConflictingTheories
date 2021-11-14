@@ -54,14 +54,14 @@ export default class Scene {
 
   // Draw Scene
   draw = (engine) => {
-    engine.clearScreen();
+    // engine.clearScreen();
     Scene._instance.world.draw(engine);
   };
 
   // Keyboard handler for Scene
-  onKeyEvent = (e, down) => {
+  onKeyEvent = (e) => {
     console.log("-----", e);
-    if (down) {
+    if (e.type === "keydown") {
       Scene._instance.engine.keyboard.onKeyDown(e);
     } else Scene._instance.engine.keyboard.onKeyUp(e);
   };

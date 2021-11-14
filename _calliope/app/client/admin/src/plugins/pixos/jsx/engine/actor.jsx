@@ -53,8 +53,8 @@ export default class Actor {
 
     this.texture = this.engine.loadTexture(this.src);
     this.texture.runWhenLoaded(this.onTilesetOrTextureLoaded);
-    console.log('creating -- BUFFER')
-    this.vertexTexBuf = this.engine.createBuffer(this.getTexCoords(),this.engine.gl.DYNAMIC_DRAW,2);
+    console.log("creating -- BUFFER");
+    this.vertexTexBuf = this.engine.createBuffer(this.getTexCoords(), this.engine.gl.DYNAMIC_DRAW, 2);
     this.zone.tileset.runWhenDefinitionLoaded(this.onTilesetDefinitionLoaded);
   }
 
@@ -71,27 +71,23 @@ export default class Actor {
       [v[2], v[3], v[0]],
       [v[2], v[0], v[1]],
     ].flat(3);
-    console.log('creating -- BUFFER')
-    this.vertexPosBuf = this.engine.createBuffer(poly,this.engine.gl.STATIC_DRAW,3);
-    this.zone.tileset.runWhenLoaded(this.onTilesetOrTextureLoaed);
+    console.log("creating -- BUFFER");
+    this.vertexPosBuf = this.engine.createBuffer(poly, this.engine.gl.STATIC_DRAW, 3);
+    this.zone.tileset.runWhenLoaded(this.onTilesetOrTextureLoaded);
   }
 
   onTilesetOrTextureLoaded() {
-    if (this.loaded || !this.zone.tileset.loaded || !this.texture.loaded)
-      return;
+    if (this.loaded || !this.zone.tileset.loaded || !this.texture.loaded) return;
 
     this.init(); // Hook for actor implementations
     this.loaded = true;
-    console.log(
-      "Initialized actor '" + this.id + "' in zone '" + this.zone.id + "'"
-    );
+    console.log("Initialized actor '" + this.id + "' in zone '" + this.zone.id + "'");
 
     this.onLoadActions.run();
   }
 
   getTexCoords(i) {
-    let t =
-      this.frames[Direction.actorSequence(this.facing)][this.animFrame % 4];
+    let t = this.frames[Direction.actorSequence(this.facing)][this.animFrame % 4];
     let ss = this.sheetSize;
     let ts = this.tileSize;
     let bl = [(t[0] + ts[0]) / ss[0], t[1] / ss[1]];
@@ -110,18 +106,18 @@ export default class Actor {
     this.engine.mvPushMatrix();
 
     // Undo rotation so that character plane is normal to LOS
-    translate(this.engine.uViewMat,this.engine.uViewMat,this.drawOffset.toArray());
+    translate(this.engine.uViewMat, this.engine.uViewMat, this.drawOffset.toArray());
     translate(this.engine.uViewMat, this.engine.uViewMat, this.pos.toArray());
-    rotate(this.engine.uViewMat,this.engine.uViewMat,this.engine.degToRad(this.engine.cameraAngle),[1, 0, 0]);
+    rotate(this.engine.uViewMat, this.engine.uViewMat, this.engine.degToRad(this.engine.cameraAngle), [1, 0, 0]);
 
-    this.engine.bindBuffer(this.vertexPosBuf,this.engine.shaderProgram.vertexPositionAttribute);
-    this.engine.bindBuffer(this.vertexPosBuf,this.engine.shaderProgram.textureCoordAttribute);
-    this.engine.bindTexture(this.texture)
+    this.engine.bindBuffer(this.vertexPosBuf, this.engine.shaderProgram.vertexPositionAttribute);
+    this.engine.bindBuffer(this.vertexPosBuf, this.engine.shaderProgram.textureCoordAttribute);
+    this.texture.attach();
 
     this.engine.shaderProgram.setMatrixUniforms();
-    
+
     this.engine.gl.depthFunc(this.engine.gl.ALWAYS);
-    this.engine.gl.drawArrays(this.engine.gl.TRIANGLES,0,this.vertexPosBuf.numItems);
+    this.engine.gl.drawArrays(this.engine.gl.TRIANGLES, 0, this.vertexPosBuf.numItems);
     this.engine.gl.depthFunc(this.engine.gl.LESS);
 
     this.engine.mvPopMatrix();
@@ -151,7 +147,6 @@ export default class Actor {
 
   tickOuter(time) {
     if (!this.loaded) return;
-
     // Sort activities by increasing startTime, then by id
     this.activityList.sort(function (a, b) {
       let dt = a.startTime - b.startTime;
@@ -173,5 +168,7 @@ export default class Actor {
   }
 
   // Hook for actor implementations
-  init() {}
+  init() {
+    console.log("-", this.id, this.pos);
+  }
 }

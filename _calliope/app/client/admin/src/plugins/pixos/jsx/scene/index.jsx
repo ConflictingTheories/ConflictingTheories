@@ -44,17 +44,6 @@ export default class Scene {
     });
   };
 
-  // Load Scene Textures
-  loadTextures = (engine) => {
-    let { gl } = engine;
-    // Create 1px white texture for pure vertex color operations (e.g. picking)
-    let white = new Uint8Array([255, 255, 255, 255]);
-    Scene._instance.texWhite = engine.blankTexture(white, gl.TEXTURE0);
-    // Load Image Textures
-    Scene._instance.texTerrain = engine.loadTexture("media/terrain.png");
-    Scene._instance.texPlayer = engine.loadTexture("media/player.png");
-  };
-
   // Render Loop
   render = (engine, now) => {
     // Build
@@ -65,14 +54,14 @@ export default class Scene {
 
   // Draw Scene
   draw = (engine) => {
-    engine.clearScreen();
+    // engine.clearScreen();
     Scene._instance.world.draw(engine);
   };
 
   // Keyboard handler for Scene
-  onKeyEvent = (e, down) => {
+  onKeyEvent = (e) => {
     console.log("-----", e);
-    if (down) {
+    if (e.type === "keydown") {
       Scene._instance.engine.keyboard.onKeyDown(e);
     } else Scene._instance.engine.keyboard.onKeyUp(e);
   };

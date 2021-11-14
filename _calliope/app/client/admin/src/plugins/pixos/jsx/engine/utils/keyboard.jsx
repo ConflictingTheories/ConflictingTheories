@@ -10,16 +10,17 @@ export default class Keyboard {
   }
 
   onKeyDown(e) {
-    console.log('down');
+    console.log("down");
     let c = String.fromCharCode(e.keyCode).toLowerCase();
     if (Keyboard._instance.activeKeys.indexOf(c) < 0) Keyboard._instance.activeKeys.push(c);
     Keyboard._instance.shift = e.shiftKey;
   }
 
   onKeyUp(e) {
-    console.log('up');
+    console.log("up");
     let c = String.fromCharCode(e.keyCode).toLowerCase();
-    Keyboard._instance.activeKeys.erase(c);
+    let index = Keyboard._instance.activeKeys.indexOf(c);
+    Keyboard._instance.activeKeys.splice(index, 1);
   }
 
   // Return the last pressed key in keys

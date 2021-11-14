@@ -25,7 +25,7 @@ class Pixos extends Component {
     super(props);
     this.state = {
       networkString: props.networkString,
-      scene: new SceneProvider,
+      scene: new SceneProvider(),
       updated: Date.now(),
     };
   }
@@ -33,10 +33,7 @@ class Pixos extends Component {
   // Update world on Edit
   componentWillReceiveProps(nextProps) {
     console.log(nextProps);
-    if (
-      JSON.stringify(this.props.networkString) !=
-      JSON.stringify(nextProps.networkString)
-    ) {
+    if (JSON.stringify(this.props.networkString) != JSON.stringify(nextProps.networkString)) {
       this.setState({
         networkString: nextProps.networkString,
         updated: Date.now(),
@@ -49,7 +46,14 @@ class Pixos extends Component {
     const { networkString, updated, scene } = this.state;
     return (
       <>
-        <WebGLView class="pixos" key={updated} width={640} height={480} SceneProvider={scene} networkString={networkString} />
+        <WebGLView
+          class="pixos"
+          key={updated}
+          width={640}
+          height={480}
+          SceneProvider={scene}
+          networkString={networkString}
+        />
       </>
     );
   }
