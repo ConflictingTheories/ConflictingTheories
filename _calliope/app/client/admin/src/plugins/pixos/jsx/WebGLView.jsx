@@ -41,8 +41,8 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
     width={width}
     height={height}
     className={string}
-    onKeyDownCapture={(e)=> onKeyEvent(e.key, true)}
-    onKeyUpCapture={(e) => onKeyEvent(e.key, false)}
+    onKeyDownCapture={(e)=> onKeyEvent(e.nativeEvent, true)}
+    onKeyUpCapture={(e) => onKeyEvent(e.nativeEvent, false)}
     onContextMenu={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, MOUSE.UP, true, e)}
     onMouseUp={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, MOUSE.UP, e.nativeEvent.button == 3, e)}
     onMouseDown={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, MOUSE.DOWN, e.nativeEvent.button == 3, e)}

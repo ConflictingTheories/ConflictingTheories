@@ -205,8 +205,8 @@ export default class Zone {
     this.actorList.sort(function (a, b) {
       return a.pos[1] - b.pos[1];
     });
-    this.engine.mvPushMatrix();
     this.engine.setCamera();
+    this.engine.mvPushMatrix();
 
     let k = 0,
       maxK = this.actorList.length;
