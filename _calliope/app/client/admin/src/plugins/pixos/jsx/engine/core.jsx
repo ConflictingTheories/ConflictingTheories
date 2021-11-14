@@ -11,17 +11,9 @@
 ** ----------------------------------------------- **
 \*                                                 */
 
-import {
-  create,
-  rotate,
-  translate,
-  perspective,
-  from,
-} from "./utils/matrix4";
-
-import { negate, Vector } from "./utils/vector";
-import Texture from "./texture.jsx";
-
+import { create, rotate, translate, perspective, isPowerOf2, from } from './utils/matrix4';
+import { Vector, negate} from './utils/vector';
+import Texture from './texture';
 export default class GLEngine {
   constructor(canvas, width, height) {
     this.canvas = canvas;
@@ -31,22 +23,24 @@ export default class GLEngine {
     this.textures = [];
     this.cameraAngle = 45;
     this.cameraPosition = new Vector(0, 0, 0);
-    // Storage for negated camera position
     this.cameraOffset = new Vector(0, 0, 0);
+    this.setCamera = this.setCamera.bind(this);
+    this.render = this.render.bind(this);
+    this.setMatrixUniforms = this.setMatrixUniforms.bind(this);
   }
 
   // Initialize a Scene object
   init(scene) {
-    const gl = this.canvas.getContext("webgl");
+    const gl = this.canvas.getContext('webgl');
     if (!gl) {
-      throw new Error("WebGL : unable to initialize");
+      throw new Error('WebGL : unable to initialize');
     }
+    console.log(scene);
     this.gl = gl;
     this.scene = scene;
 
-    gl.viewportWidth = this.canvas.width;
-    gl.viewportHeight = this.canvas.height;
-    gl.clearColor(1.0, 0.0, 0.0, 1.0); // Initially RED!
+    // Configure GL
+    gl.clearColor(0, 0, 0, 1.0);
     gl.clearDepth(1.0);
     gl.enable(gl.DEPTH_TEST);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
@@ -56,21 +50,16 @@ export default class GLEngine {
     this.initShaderProgram(gl, scene.shaders);
 
     // Initialize Project Matrix
-    this.initProjection();
+    this.initProjection(gl);
 
     // Dummy Model Matrix
-    this.uViewMat = create();
-    gl.uniformMatrix4fv(
-      this.programInfo.uniformLocations.uViewMat,
-      false,
-      this.uViewMat
-    );
+    this.modelMatrix = create();
+    gl.uniformMatrix4fv(this.programInfo.uniformLocations.uModelMat, false, this.modelMatrix);
 
     // Initialize Scene
     scene.init(this);
 
     // Render
-    this.render = this.render.bind(this);
     this.requestId = requestAnimationFrame(this.render);
   }
 
@@ -79,13 +68,14 @@ export default class GLEngine {
     const shader = gl.createShader(type);
     gl.shaderSource(shader, source);
     gl.compileShader(shader);
+
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
       const log = gl.getShaderInfoLog(shader);
       gl.deleteShader(shader);
       throw new Error(`An error occurred compiling the shaders: ${log}`);
     }
     return shader;
-  }
+  };
 
   // Initialize Shader Program
   initShaderProgram = (gl, { vs: vsSource, fs: fsSource }) => {
@@ -99,70 +89,64 @@ export default class GLEngine {
 
     // Could Link
     if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-      throw new Error(
-        `WebGL unable to initialize the shader program: ${gl.getProgramInfoLog(
-          shaderProgram
-        )}`
-      );
+      throw new Error(`WebGL unable to initialize the shader program: ${gl.getProgramInfoLog(shaderProgram)}`);
     }
 
     // Use Shader
     gl.useProgram(shaderProgram);
 
-    let shaderInfo = {
+    this.programInfo = {
       program: shaderProgram,
       attribLocations: {
-        aPos: gl.getAttribLocation(shaderProgram, "aVertexPosition"),
-        aTexCoord: gl.getAttribLocation(shaderProgram, "aTextureCoord"),
+        aPos: gl.getAttribLocation(shaderProgram, 'aPos'),
+        aTexCoord: gl.getAttribLocation(shaderProgram, 'aTexCoord'),
       },
       uniformLocations: {
-        uProjMat: gl.getUniformLocation(shaderProgram, "uPMatrix"),
-        uViewMat: gl.getUniformLocation(shaderProgram, "uMVMatrix"),
-        uSampler: gl.getUniformLocation(shaderProgram, "uSampler"),
+        uProjMat: gl.getUniformLocation(shaderProgram, 'uProjMatrix'),
+        uModelMat: gl.getUniformLocation(shaderProgram, 'uModelMatrix'),
+        uViewMat: gl.getUniformLocation(shaderProgram, 'uViewMatrix'),
+        uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
       },
-      setMatrixUniforms : () => {
-        gl.uniformMatrix4fv(
-          this.programInfo.uniformLocations.uProjMat,
-          false,
-          this.uProjMat
-        );
-        gl.uniformMatrix4fv(
-          this.programInfo.uniformLocations.uViewMat,
-          false,
-          this.uViewMat
-        )
-      }
+      setMatrixUniforms : this.setMatrixUniforms
     };
-    gl.enableVertexAttribArray(shaderInfo.attribLocations.aPos);
-    gl.enableVertexAttribArray(shaderInfo.attribLocations.aTexCoord);
 
-    this.programInfo = shaderInfo;
+    gl.enableVertexAttribArray(this.programInfo.attribLocations.aPos);
+    gl.enableVertexAttribArray(this.programInfo.attribLocations.aTexCoord);
 
     return shaderProgram;
   };
 
+  setMatrixUniforms() {
+    let {gl} = this;
+    gl.uniformMatrix4fv(
+      this.programInfo.uniformLocations.uProjMat,
+      false,
+      this.uProjMat
+    );
+    gl.uniformMatrix4fv(
+      this.programInfo.uniformLocations.uViewMat,
+      false,
+      this.uViewMat
+    )
+  }
+
   // Set FOV and Perspective
-  initProjection() {
-    this.gl.viewport(0, 0, this.gl.viewportWidth, this.gl.viewportHeight);
-    this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-    this.uProjMat = perspective(45, this.gl.viewportWidth / this.gl.viewportHeight, 0.1, 100.0, this.uProjMat);
-    // Flip y axis
-    this.uProjMat[5] *= -1;
-  }
-  
-  mvPushMatrix() {
-    let copy = from(this.uViewMat);
-    this.modelViewMatrixStack.push(copy);
+  initProjection(gl) {
+    const fieldOfView = (60 * Math.PI) / 180; // in radians
+    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    const zNear = 0.1;
+    const zFar = 200.0;
+    this.uProjMat = perspective(fieldOfView, aspect, zNear, zFar);
+    gl.uniformMatrix4fv(this.programInfo.uniformLocations.uProjMat, false, this.uProjMat);
   }
 
-  mvPopMatrix() {
-    if (this.modelViewMatrixStack.length == 0) {
-      throw "Invalid popMatrix!";
-    }
-    this.uViewMat = this.modelViewMatrixStack.pop();
-  }
-
+  // Set Camera Pos & Angle
   setCamera() {
+    var gl = this.gl;
+    // var ang = this.cameraAngle.toArray();
+    // var pos = this.cameraOffset.toArray();
+
+    this.uViewMat = create();
     translate(this.uViewMat, this.uViewMat, [0.0, 0.0, -15.0]);
     rotate(
       this.uViewMat,
@@ -173,6 +157,13 @@ export default class GLEngine {
 
     negate(this.cameraPosition, this.cameraOffset);
     translate(this.uViewMat, this.uViewMat, this.cameraOffset.toArray());
+
+    // rotate(this.uViewMat, this.uViewMat, -ang[0] - Math.PI / 2, [1, 0, 0]);
+    // rotate(this.uViewMat, this.uViewMat, ang[1], [0, 0, 1]);
+    // rotate(this.uViewMat, this.uViewMat, -ang[2], [0, 1, 0]);
+    // translate(this.uViewMat, this.uViewMat, [-pos[0], -pos[1], -pos[2]],);
+
+    gl.uniformMatrix4fv(this.programInfo.uniformLocations.uViewMat, false, this.uViewMat);
   }
 
   // Clear Screen with Color (RGBA)
@@ -187,6 +178,7 @@ export default class GLEngine {
     requestAnimationFrame(this.render);
   }
 
+// individual buffer
   createBuffer(contents, type, itemSize) {
     let { gl } = this;
     let buf = gl.createBuffer();
@@ -196,6 +188,108 @@ export default class GLEngine {
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(contents), type);
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
     return buf;
+  }
+
+  // Build Buffers for Rendering Vertices / Indices
+  buildBuffers({ positions, indices, aTexCoordinates }) {
+    const { gl } = this;
+    // Vertex Buffer
+    const vertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+    // Texture Buffer
+    const aTexCoordBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, aTexCoordBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(aTexCoordinates), gl.STATIC_DRAW);
+    // Indices
+    const indexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+    // Return
+    this.buffers = {
+      position: vertexBuffer,
+      texture: aTexCoordBuffer,
+      index: indexBuffer,
+    };
+  }
+
+  // Draw Chunk Buffer
+  drawBuffer(buffer) {
+    var gl = this.gl;
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.vertexAttribPointer(this.programInfo.attribLocations.aPos, 3, gl.FLOAT, false, 9 * 4, 0);
+    gl.vertexAttribPointer(this.programInfo.attribLocations.aTexCoord, 2, gl.FLOAT, false, 9 * 4, 3 * 4);
+    gl.drawArrays(gl.TRIANGLES, 0, buffer.vertices);
+  };
+
+  // Load Texture from URL
+  loadTexture(url) {
+    let { gl } = this;
+    const texture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+
+    // Because images have to be downloaded over the internet
+    // they might take a moment until they are ready.
+    // Until then put a single pixel in the texture so we can
+    // use it immediately. When the image has finished downloading
+    // we'll update the texture with the contents of the image.
+    const level = 0;
+    const internalFormat = gl.RGBA;
+    const width = 1;
+    const height = 1;
+    const border = 0;
+    const srcFormat = gl.RGBA;
+    const srcType = gl.UNSIGNED_BYTE;
+    const pixel = new Uint8Array([0, 0, 255, 255]);  // opaque blue
+    gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
+      width, height, border, srcFormat, srcType,
+      pixel);
+
+    const image = new Image();
+    image.onload = function () {
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
+        srcFormat, srcType, image);
+
+      // WebGL1 has different requirements for power of 2 images
+      // vs non power of 2 images so check if the image is a
+      // power of 2 in both dimensions.
+      if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
+        // Yes, it's a power of 2. Generate mips.
+        gl.generateMipmap(gl.TEXTURE_2D);
+      } else {
+        // No, it's not a power of 2. Turn off mips and set
+        // wrapping to clamp to edge
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      }
+    };
+    image.src = url;
+
+    return texture;
+  }
+
+  loadTexture(src) {
+    if (this.textures[src]) return this.textures[src];
+    this.textures[src] = new Texture(src, this);
+    return this.textures[src];
+  }
+
+  // Blank Texture (Colour)
+  blankTexture(color, unit) {
+    let { gl } = this;
+    const texture = gl.createTexture();
+    // Create 1px white texture for pure vertex color operations (e.g. picking)
+    gl.activeTexture(unit);
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    var white = new Uint8Array(color);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, white);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.uniform1i(this.programInfo.uniformLocations.uSampler, unit);
+
+    return texture;
   }
 
   updateBuffer(buffer, contents) {
@@ -211,14 +305,20 @@ export default class GLEngine {
     gl.vertexAttribPointer(attribute, buffer.itemSize, gl.FLOAT, false, 0, 0);
   }
 
-  loadTexture(src) {
-    if (this.textures[src]) return this.textures[src];
-    this.textures[src] = new Texture(src, this);
-    return this.textures[src];
-  }
-
   bindTexture(texture) {
     texture.attach();
+  }
+
+  mvPushMatrix() {
+    let copy = from(this.uViewMat);
+    this.modelViewMatrixStack.push(copy);
+  }
+
+  mvPopMatrix() {
+    if (this.modelViewMatrixStack.length == 0) {
+      throw "Invalid popMatrix!";
+    }
+    this.uViewMat = this.modelViewMatrixStack.pop();
   }
 
   // Clear Render Loop

@@ -2,10 +2,8 @@
 // You can redistribute and/or modify it under the terms of version 3 of the
 // GNU General Public License, as published by the Free Software Foundation.
 // See LICENSE.html for the license terms.
-import {
-  Vector,
-  set,
-} from "../../../../_calliope/app/config/plugins/pixos/jsx/engine/utils/vector";
+import { Vector, set } from "../../engine/utils/vector";
+import Direction from "../../engine/utils/direction";
 export default {
   init: function (from, to, length) {
     this.from = new Vector(from);
@@ -14,6 +12,7 @@ export default {
       Math.round(to[0] - from[0]),
       Math.round(to[1] - from[1]),
     ]);
+    console.log('loading - move')
     this.length = length;
   },
 

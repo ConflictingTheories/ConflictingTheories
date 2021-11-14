@@ -16,7 +16,7 @@ import { collect } from "react-recollect";
 // WebGL Component
 import WebGLView from "./WebGLView";
 // Pixos Scene Provider
-import SceneProvider from "./sceneProvider";
+import SceneProvider from "./scene";
 // Style Plugin
 import "../less/pixos.less";
 
@@ -25,6 +25,7 @@ class Pixos extends Component {
     super(props);
     this.state = {
       networkString: props.networkString,
+      scene: new SceneProvider,
       updated: Date.now(),
     };
   }
@@ -45,10 +46,10 @@ class Pixos extends Component {
 
   // Render World as Passed in String or FlatLand (Default)
   render() {
-    const { networkString, updated } = this.state;
+    const { networkString, updated, scene } = this.state;
     return (
       <>
-        <WebGLView class="pixos" key={updated} width={720} height={480} SceneProvider={SceneProvider} networkString={networkString} />
+        <WebGLView class="pixos" key={updated} width={720} height={480} SceneProvider={scene} networkString={networkString} />
       </>
     );
   }
