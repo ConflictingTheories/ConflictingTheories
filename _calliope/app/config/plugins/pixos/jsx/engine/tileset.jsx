@@ -40,7 +40,7 @@ export default class Tileset {
   // Received tileset definition JSON
   onJsonLoaded(data) {
     // Merge tileset definition into this object
-    Object.keys(data).map((k)=>{
+    Object.keys(data).map((k) => {
       this[k] = data[k];
     });
 
@@ -52,12 +52,7 @@ export default class Tileset {
     this.texture.runWhenLoaded(this.onTextureLoaded);
 
     if (this.bgColor)
-      this.engine.gl.clearColor(
-        this.bgColor[0] / 255,
-        this.bgColor[1] / 255,
-        this.bgColor[2] / 255,
-        1.0
-      );
+      this.engine.gl.clearColor(this.bgColor[0] / 255, this.bgColor[1] / 255, this.bgColor[2] / 255, 1.0);
   }
 
   onTextureLoaded() {
@@ -67,14 +62,13 @@ export default class Tileset {
   }
 
   getTileVertices(id, offset) {
-    let geo = this.tileGeometry[id].v
+    return this.tileGeometry[id].v
       .map(function (poly) {
         return poly.map(function (v) {
           return [v[0] + offset[0], v[1] + offset[1], v[2] + offset[2]];
         });
-      });
-      console.log(geo);
-    return geo.flat(3);
+      })
+      .flat(3);
   }
 
   getWalkability(tileId) {
@@ -87,10 +81,7 @@ export default class Tileset {
 
   getTileTexCoords(id, texId) {
     let o = this.tiles[texId];
-    let s = [
-      this.tileSize / this.sheetSize[0],
-      this.tileSize / this.sheetSize[1],
-    ];
+    let s = [this.tileSize / this.sheetSize[0], this.tileSize / this.sheetSize[1]];
     return this.tileGeometry[id].t
       .map(function (poly) {
         return poly.map(function (v) {

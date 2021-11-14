@@ -19,6 +19,14 @@ export default class Activity {
     this.creationArgs = args;
   }
 
+  onConstruct(type, actor, id, time, args) {
+    this.actor = actor;
+    this.id = id;
+    this.type = type;
+    this.startTime = time;
+    this.creationArgs = args;
+  }
+
   onLoad(args) {
     this.init.apply(this, args);
     this.loaded = true;

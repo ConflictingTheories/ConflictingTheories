@@ -11,14 +11,7 @@
 ** ----------------------------------------------- **
 \*                                                 */
 
-import {
-  create,
-  rotate,
-  translate,
-  perspective,
-  isPowerOf2,
-  set,
-} from "./utils/matrix4";
+import { create, rotate, translate, perspective, isPowerOf2, set } from "./utils/matrix4";
 import { Vector, negate } from "./utils/vector";
 import Texture from "./texture";
 export default class GLEngine {
@@ -49,7 +42,7 @@ export default class GLEngine {
     this.keyboard = keyboard;
     // Configure GL
     gl.viewportWidth = this.canvas.width;
-    gl.viewportHeight = this.canvas.height; 
+    gl.viewportHeight = this.canvas.height;
     gl.clearColor(0, 1.0, 0, 1.0);
     gl.clearDepth(1.0);
     gl.enable(gl.DEPTH_TEST);
@@ -92,11 +85,7 @@ export default class GLEngine {
     gl.attachShader(shaderProgram, fragmentShader);
     gl.linkProgram(shaderProgram);
     if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-      throw new Error(
-        `WebGL unable to initialize the shader program: ${gl.getshaderProgramLog(
-          shaderProgram
-        )}`
-      );
+      throw new Error(`WebGL unable to initialize the shader program: ${gl.getshaderProgramLog(shaderProgram)}`);
     }
 
     // Configure Shader
@@ -112,9 +101,9 @@ export default class GLEngine {
     shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
     shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
     // Uniform apply
-    shaderProgram.setMatrixUniforms = function() {
-        gl.uniformMatrix4fv(this.pMatrixUniform, false, self.uProjMat);
-        gl.uniformMatrix4fv(this.mvMatrixUniform, false, self.uViewMat);
+    shaderProgram.setMatrixUniforms = function () {
+      gl.uniformMatrix4fv(this.pMatrixUniform, false, self.uProjMat);
+      gl.uniformMatrix4fv(this.mvMatrixUniform, false, self.uViewMat);
     };
 
     this.shaderProgram = shaderProgram;
@@ -133,12 +122,10 @@ export default class GLEngine {
 
   // Set Camera Pos & Angle
   setCamera() {
-    let gl = this.gl;
     translate(this.uViewMat, this.uViewMat, [0.0, 0.0, -15.0]);
-    rotate(this.uViewMat,this.uViewMat,this.degToRad(this.cameraAngle),[1, 0, 0]);
+    rotate(this.uViewMat, this.uViewMat, this.degToRad(this.cameraAngle), [1, 0, 0]);
     negate(this.cameraPosition, this.cameraOffset);
     translate(this.uViewMat, this.uViewMat, this.cameraOffset.toArray());
-    // gl.uniformMatrix4fv(this.shaderProgram.mvMatrixUniform,false,this.uViewMat);
   }
 
   // Clear Screen with Color (RGBA)
@@ -146,14 +133,17 @@ export default class GLEngine {
     const { gl } = this;
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, this.uProjMat);
+    this.uViewMat = create();
+    this.uProjMat[5] *= -1;
   }
 
   // Render Frame
   render(now) {
     this.requestId = requestAnimationFrame(this.render);
+    this.clearScreen();
     this.scene.render(this, now);
   }
-
 
   // individual buffer
   createBuffer(contents, type, itemSize) {
@@ -165,37 +155,6 @@ export default class GLEngine {
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(contents), type);
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
     return buf;
-  }
-
-  // Build Buffers for Rendering Vertices / Indices
-  buildBuffers({ positions, indices, aTexCoordinates }) {
-    const { gl } = this;
-    // Vertex Buffer
-    const vertexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
-    // Texture Buffer
-    const aTexCoordBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, aTexCoordBuffer);
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array(aTexCoordinates),
-      gl.STATIC_DRAW
-    );
-    // Indices
-    const indexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bufferData(
-      gl.ELEMENT_ARRAY_BUFFER,
-      new Uint16Array(indices),
-      gl.STATIC_DRAW
-    );
-    // Return
-    this.buffers = {
-      position: vertexBuffer,
-      texture: aTexCoordBuffer,
-      index: indexBuffer,
-    };
   }
 
   updateBuffer(buffer, contents) {
@@ -215,10 +174,6 @@ export default class GLEngine {
     if (this.textures[src]) return this.textures[src];
     this.textures[src] = new Texture(src, this);
     return this.textures[src];
-  }
-
-  bindTexture(texture) {
-    texture.attach();
   }
 
   mvPushMatrix() {
