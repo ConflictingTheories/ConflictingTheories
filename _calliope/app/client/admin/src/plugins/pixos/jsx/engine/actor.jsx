@@ -108,21 +108,11 @@ export default class Actor {
     if (!this.loaded) return;
 
     this.engine.mvPushMatrix();
-    
-    translate(this.engine.uViewMat, this.engine.uViewMat, this.pos.toArray());
 
     // Undo rotation so that character plane is normal to LOS
-    translate(
-      this.engine.uViewMat,
-      this.engine.uViewMat,
-      this.drawOffset.toArray()
-    );
-    rotate(
-      this.engine.uViewMat,
-      this.engine.uViewMat,
-      this.engine.degToRad(this.engine.cameraAngle),
-      [1, 0, 0]
-    );
+    translate(this.engine.uViewMat,this.engine.uViewMat,this.drawOffset.toArray());
+    translate(this.engine.uViewMat, this.engine.uViewMat, this.pos.toArray());
+    rotate(this.engine.uViewMat,this.engine.uViewMat,this.engine.degToRad(this.engine.cameraAngle),[1, 0, 0]);
 
     this.engine.bindBuffer(this.vertexPosBuf,this.engine.shaderProgram.vertexPositionAttribute);
     this.engine.bindBuffer(this.vertexPosBuf,this.engine.shaderProgram.textureCoordAttribute);

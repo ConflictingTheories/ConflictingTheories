@@ -17,24 +17,24 @@ export default {
   },
 
   tick: function (time) {
-    var a = this.actor;
+    let a = this.actor;
     if (!this.loaded) return;
 
     // Set facing
     if (this.facing != a.facing) a.setFacing(this.facing);
 
-    var endTime = this.startTime + this.length;
-    var frac = (time - this.startTime) / this.length;
+    let endTime = this.startTime + this.length;
+    let frac = (time - this.startTime) / this.length;
     if (time >= endTime) {
       set(new Vector(...this.to), a.pos);
       frac = 1;
     } else Vector.lerp(this.from, this.to, frac, a.pos);
 
-    var newFrame = Math.floor(frac * 4);
+    let newFrame = Math.floor(frac * 4);
     if (newFrame != a.animFrame) a.setFrame(newFrame);
 
-    var hx = a.pos[0] + a.hotspotOffset[0];
-    var hy = a.pos[1] + a.hotspotOffset[1];
+    let hx = a.pos[0] + a.hotspotOffset[0];
+    let hy = a.pos[1] + a.hotspotOffset[1];
     a.pos[2] = a.zone.getHeight(hx, hy);
 
     return time >= endTime;

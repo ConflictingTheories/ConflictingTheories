@@ -81,16 +81,16 @@ export default class Zone {
     this.vertexPosBuf = [];
     this.vertexTexBuf = [];
     this.walkability = [];
-    for (var j = 0, k = 0; j < this.size[1]; j++) {
-        var vertices = [];
-        var vertexTexCoords = [];
-        for (var i = 0; i < this.size[0]; i++, k++) {
-            var cell = this.cells[k];
+    for (let j = 0, k = 0; j < this.size[1]; j++) {
+        let vertices = [];
+        let vertexTexCoords = [];
+        for (let i = 0; i < this.size[0]; i++, k++) {
+            let cell = this.cells[k];
             this.walkability[k] = Direction.All;
 
-            var n = Math.floor(cell.length / 3);
-            for (var l = 0; l < n; l++) {
-                var tilePos = new Vector(this.bounds[0] + i, this.bounds[1] + j, cell[3*l+2]);
+            let n = Math.floor(cell.length / 3);
+            for (let l = 0; l < n; l++) {
+                let tilePos = new Vector(this.bounds[0] + i, this.bounds[1] + j, cell[3*l+2]);
                 this.walkability[k] &= this.tileset.getWalkability(cell[3*l]);
                 vertices = vertices.concat(this.tileset.getTileVertices(cell[3*l], tilePos.toArray()));
                 vertexTexCoords = vertexTexCoords.concat(this.tileset.getTileTexCoords(cell[3*l], cell[3*l+1]));

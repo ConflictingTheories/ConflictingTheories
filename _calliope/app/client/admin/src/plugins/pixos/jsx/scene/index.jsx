@@ -48,7 +48,7 @@ export default class Scene {
   loadTextures = (engine) => {
     let { gl } = engine;
     // Create 1px white texture for pure vertex color operations (e.g. picking)
-    var white = new Uint8Array([255, 255, 255, 255]);
+    let white = new Uint8Array([255, 255, 255, 255]);
     Scene._instance.texWhite = engine.blankTexture(white, gl.TEXTURE0);
     // Load Image Textures
     Scene._instance.texTerrain = engine.loadTexture("media/terrain.png");
