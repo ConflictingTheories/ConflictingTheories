@@ -61,9 +61,15 @@ export default {
     // Lie flat on the ground
     translate(engine.uViewMat, engine.uViewMat, this.drawOffset.toArray());
     rotate(engine.uViewMat, engine.uViewMat, engine.degToRad(90), [1, 0, 0]);
-    engine.bindBuffer(this.vertexPosBuf,engine.shaderProgram.vertexPositionAttribute);
-    engine.bindBuffer(this.vertexPosBuf,engine.shaderProgram.textureCoordAttribute);
-    engine.bindTexture(this.texture)
+    engine.bindBuffer(
+      this.vertexPosBuf,
+      engine.shaderProgram.vertexPositionAttribute
+    );
+    engine.bindBuffer(
+      this.vertexPosBuf,
+      engine.shaderProgram.textureCoordAttribute
+    );
+    engine.bindTexture(this.texture);
 
     engine.shaderProgram.setMatrixUniforms();
     engine.gl.drawArrays(engine.gl.TRIANGLES, 0, this.vertexPosBuf.numItems);

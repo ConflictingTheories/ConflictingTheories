@@ -219,7 +219,7 @@ export function pushQuad(v, p1, p2, p3, p4) {
 }
 
 // apply values from one vector to another
-export function set(v, w) {
+export function set(w, v) {
   v.x = w.x;
   v.y = w.y;
   v.z = w.z;

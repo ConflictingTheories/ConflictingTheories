@@ -152,4 +152,24 @@ function isPowerOf2(value) {
   return (value & (value - 1)) == 0;
 }
 
-export { from, create, perspective, translate, rotate, isPowerOf2 };
+function set(mat, dest) {
+  dest[0] = mat[0];
+  dest[1] = mat[1];
+  dest[2] = mat[2];
+  dest[3] = mat[3];
+  dest[4] = mat[4];
+  dest[5] = mat[5];
+  dest[6] = mat[6];
+  dest[7] = mat[7];
+  dest[8] = mat[8];
+  dest[9] = mat[9];
+  dest[10] = mat[10];
+  dest[11] = mat[11];
+  dest[12] = mat[12];
+  dest[13] = mat[13];
+  dest[14] = mat[14];
+  dest[15] = mat[15];
+  return dest;
+};
+
+export { from, create, perspective, translate, rotate, isPowerOf2, set };

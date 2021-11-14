@@ -92,13 +92,14 @@ export default class Zone {
             for (var l = 0; l < n; l++) {
                 var tilePos = new Vector(this.bounds[0] + i, this.bounds[1] + j, cell[3*l+2]);
                 this.walkability[k] &= this.tileset.getWalkability(cell[3*l]);
-                vertices = vertices.concat(this.tileset.getTileVertices(cell[3*l], tilePos));
+                vertices = vertices.concat(this.tileset.getTileVertices(cell[3*l], tilePos.toArray()));
                 vertexTexCoords = vertexTexCoords.concat(this.tileset.getTileTexCoords(cell[3*l], cell[3*l+1]));
             }
             // Custom walkability
             if (cell.length == 3*n+1)
                 this.walkability[k] = cell[3*n];
         }
+        console.log('creating -- BUFFER')
         this.vertexPosBuf[j] = this.engine.createBuffer(vertices, this.engine.gl.STATIC_DRAW, 3);
         this.vertexTexBuf[j] = this.engine.createBuffer(vertexTexCoords, this.engine.gl.STATIC_DRAW, 2);
     }

@@ -53,11 +53,8 @@ export default class Actor {
 
     this.texture = this.engine.loadTexture(this.src);
     this.texture.runWhenLoaded(this.onTilesetOrTextureLoaded);
-    this.vertexTexBuf = this.engine.createBuffer(
-      this.getTexCoords(),
-      this.engine.gl.DYNAMIC_DRAW,
-      2
-    );
+    console.log('creating -- BUFFER')
+    this.vertexTexBuf = this.engine.createBuffer(this.getTexCoords(),this.engine.gl.DYNAMIC_DRAW,2);
     this.zone.tileset.runWhenDefinitionLoaded(this.onTilesetDefinitionLoaded);
   }
 
@@ -74,14 +71,9 @@ export default class Actor {
       [v[2], v[3], v[0]],
       [v[2], v[0], v[1]],
     ].flat(3);
-    console.log(poly);
-    this.vertexPosBuf = this.engine.createBuffer(
-      poly,
-      this.engine.gl.STATIC_DRAW,
-      3
-    );
-
-    this.zone.tileset.runWhenLoaded(this.onTilesetOrTextureLoaded);
+    console.log('creating -- BUFFER')
+    this.vertexPosBuf = this.engine.createBuffer(poly,this.engine.gl.STATIC_DRAW,3);
+    this.zone.tileset.runWhenLoaded(this.onTilesetOrTextureLoaed);
   }
 
   onTilesetOrTextureLoaded() {
@@ -116,21 +108,11 @@ export default class Actor {
     if (!this.loaded) return;
 
     this.engine.mvPushMatrix();
-    
-    translate(this.engine.uViewMat, this.engine.uViewMat, this.pos.toArray());
 
     // Undo rotation so that character plane is normal to LOS
-    translate(
-      this.engine.uViewMat,
-      this.engine.uViewMat,
-      this.drawOffset.toArray()
-    );
-    rotate(
-      this.engine.uViewMat,
-      this.engine.uViewMat,
-      this.engine.degToRad(this.engine.cameraAngle),
-      [1, 0, 0]
-    );
+    translate(this.engine.uViewMat,this.engine.uViewMat,this.drawOffset.toArray());
+    translate(this.engine.uViewMat, this.engine.uViewMat, this.pos.toArray());
+    rotate(this.engine.uViewMat,this.engine.uViewMat,this.engine.degToRad(this.engine.cameraAngle),[1, 0, 0]);
 
     this.engine.bindBuffer(this.vertexPosBuf,this.engine.shaderProgram.vertexPositionAttribute);
     this.engine.bindBuffer(this.vertexPosBuf,this.engine.shaderProgram.textureCoordAttribute);
