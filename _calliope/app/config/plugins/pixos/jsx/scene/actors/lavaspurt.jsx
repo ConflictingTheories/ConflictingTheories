@@ -46,13 +46,14 @@ export default {
     } else {
       this.setFrame(this.animFrame + 1);
       this.accumTime = 0;
+      this.lastTime = time;
     }
   },
 
   draw: function (engine) {
     if (!this.loaded) return;
 
-    console.log('binding animated tile');
+    console.log("binding animated tile");
 
     engine.mvPushMatrix();
     translate(engine.uViewMat, engine.uViewMat, this.pos.toArray());

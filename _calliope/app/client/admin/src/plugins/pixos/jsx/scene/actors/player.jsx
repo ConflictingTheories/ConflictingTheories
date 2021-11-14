@@ -61,6 +61,7 @@ export default {
   checkInput: function () {
     let moveTime = 600; // move time in ms
     let facing = Direction.None;
+    console.log('checking', this.engine.keyboard.lastPressed("wsad"));
     switch (this.engine.keyboard.lastPressed("wsad")) {
       case "w":
         facing = Direction.Up;
@@ -77,7 +78,8 @@ export default {
       default:
         return null;
     }
-    // Loading Face
+
+    // Change Direction
     let faceDir = function (facing) {
       if (this.facing == facing) return null;
       return new ActivityLoader(this.engine, "face", [facing], this);
