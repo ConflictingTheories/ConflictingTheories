@@ -11,8 +11,8 @@
 ** ----------------------------------------------- **
 \*                                                 */
 
-import { create, rotate, translate, perspective, isPowerOf2, set } from "./utils/matrix4";
-import { Vector, negate } from "./utils/vector";
+import { create, rotate, translate, perspective, set } from "./utils/math/matrix4";
+import { Vector, negate } from "./utils/math/vector";
 import Texture from "./texture";
 export default class GLEngine {
   constructor(canvas, width, height) {
@@ -36,7 +36,6 @@ export default class GLEngine {
     if (!gl) {
       throw new Error("WebGL : unable to initialize");
     }
-    console.log(scene);
     this.gl = gl;
     this.scene = scene;
     this.keyboard = keyboard;
@@ -49,13 +48,10 @@ export default class GLEngine {
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     gl.enable(gl.BLEND);
     this.initializedWebGl = true; // flag
-
     // Initialize Shader
     this.initShaderProgram(gl, scene.shaders);
-
     // Initialize Project Matrix
     this.initProjection(gl);
-
     // Initialize Scene
     await scene.init(this);
   }
@@ -65,7 +61,7 @@ export default class GLEngine {
     const shader = gl.createShader(type);
     gl.shaderSource(shader, source);
     gl.compileShader(shader);
-
+    // if error clear
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
       const log = gl.getShaderInfoLog(shader);
       gl.deleteShader(shader);
@@ -79,7 +75,7 @@ export default class GLEngine {
     const self = this;
     const vertexShader = this.loadShader(gl, gl.VERTEX_SHADER, vsSource);
     const fragmentShader = this.loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
-
+    // generate shader
     let shaderProgram = gl.createProgram();
     gl.attachShader(shaderProgram, vertexShader);
     gl.attachShader(shaderProgram, fragmentShader);
@@ -87,7 +83,6 @@ export default class GLEngine {
     if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
       throw new Error(`WebGL unable to initialize the shader program: ${gl.getshaderProgramLog(shaderProgram)}`);
     }
-
     // Configure Shader
     gl.useProgram(shaderProgram);
     // Vertices
@@ -105,14 +100,14 @@ export default class GLEngine {
       gl.uniformMatrix4fv(this.pMatrixUniform, false, self.uProjMat);
       gl.uniformMatrix4fv(this.mvMatrixUniform, false, self.uViewMat);
     };
-
+    // return
     this.shaderProgram = shaderProgram;
     return shaderProgram;
   };
 
   // Set FOV and Perspective
   initProjection(gl) {
-    const fieldOfView = (45 * Math.PI) / 180; // in radians
+    const fieldOfView = this.degToRad(45);
     const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
     const zNear = 0.1;
     const zFar = 100.0;
@@ -134,15 +129,15 @@ export default class GLEngine {
     const { gl } = this;
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, this.uProjMat);
+    perspective(this.degToRad(45), gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, this.uProjMat);
     this.uViewMat = create();
   }
 
   // Render Frame
-  render(now) {
+  render() {
     this.requestId = requestAnimationFrame(this.render);
     this.clearScreen();
-    this.scene.render(this, now);
+    this.scene.render(this, new Date().getTime());
   }
 
   // individual buffer
@@ -157,6 +152,7 @@ export default class GLEngine {
     return buf;
   }
 
+  // update buffer
   updateBuffer(buffer, contents) {
     let { gl } = this;
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -164,24 +160,28 @@ export default class GLEngine {
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
   }
 
+  // bind buffer
   bindBuffer(buffer, attribute) {
     let { gl } = this;
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.vertexAttribPointer(attribute, buffer.itemSize, gl.FLOAT, false, 0, 0);
   }
 
+  // load texture
   loadTexture(src) {
     if (this.textures[src]) return this.textures[src];
     this.textures[src] = new Texture(src, this);
     return this.textures[src];
   }
 
+  // push new matrix to model stack
   mvPushMatrix() {
     let copy = create();
     set(this.uViewMat, copy);
     this.modelViewMatrixStack.push(copy);
   }
 
+  // pop model stack and apply view
   mvPopMatrix() {
     if (this.modelViewMatrixStack.length == 0) {
       throw "Invalid popMatrix!";
@@ -194,6 +194,7 @@ export default class GLEngine {
     cancelAnimationFrame(this.requestId);
   }
 
+  // Degrees to Radians
   degToRad(degrees) {
     return (degrees * Math.PI) / 180;
   }

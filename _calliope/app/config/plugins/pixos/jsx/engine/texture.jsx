@@ -10,6 +10,7 @@
 **               All Rights Reserved.              **
 ** ----------------------------------------------- **
 \*                                                 */
+
 import ActionQueue from "./queue";
 export default class Texture {
   constructor(src, engine) {
@@ -28,6 +29,7 @@ export default class Texture {
     else this.onLoadActions.add(action);
   }
 
+  // Load Texture from Image
   onImageLoaded() {
     let { gl } = this.engine;
     console.log("loaded image '" + this.src + "'");
@@ -40,6 +42,7 @@ export default class Texture {
     this.onLoadActions.run();
   }
 
+  // Bind texture to Uniform
   attach() {
     let { gl } = this.engine;
     gl.activeTexture(gl.TEXTURE0);

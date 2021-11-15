@@ -11,7 +11,7 @@
 ** ----------------------------------------------- **
 \*                                                 */
 
-import { Vector, set } from "../../engine/utils/vector";
+import { Vector } from "../../engine/utils/vector";
 import { translate, rotate } from "../../engine/utils/matrix4";
 export default {
   // Character art from http://opengameart.org/content/twelve-16x18-rpg-character-sprites-including-npcs-and-elementals

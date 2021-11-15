@@ -10,7 +10,7 @@
 **               All Rights Reserved.              **
 ** ----------------------------------------------- **
 \*                                                 */
-import Direction from "./utils/direction";
+import { Direction } from "./utils/enums";
 import Resources from "./utils/resources";
 import ActionQueue from "./queue";
 import { ActorLoader, TilesetLoader } from "./utils/loaders";
@@ -117,7 +117,7 @@ export default class Zone {
 
   // Remove an actor from the zone
   removeActor(id) {
-    this.actorList.erase(this.actorDict[id]);
+    this.actorList = this.actorList.filter((actor)=>actor.id !== id);
     delete this.actorDict[id];
   }
 

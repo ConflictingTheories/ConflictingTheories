@@ -14,8 +14,10 @@ export default class Activity {
   constructor(type, actor) {
     this.type = type;
     this.actor = actor;
+    this.time = new Date().getTime();
+    this.id = actor.id + "-" + type + "-" + this.time;
   }
-
+  // configure activity
   configure(type, actor, id, time, args) {
     this.actor = actor;
     this.id = id;
@@ -23,12 +25,12 @@ export default class Activity {
     this.startTime = time;
     this.creationArgs = args;
   }
-
+  // initialize on load
   onLoad(args) {
     this.init.apply(this, args);
     this.loaded = true;
   }
-
+  // serialize
   serialize() {
     return {
       id: this.id,

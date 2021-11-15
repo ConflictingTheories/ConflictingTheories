@@ -12,7 +12,8 @@
 \*                                                 */
 
 import { Vector, set, lerp } from "../../engine/utils/vector";
-import Direction from "../../engine/utils/direction";
+import { Direction } from "../../engine/utils/enums";
+
 export default {
   init: async function (fromZoneId, from, toZoneId, to, length) {
     console.log("loading - change zone");

@@ -16,19 +16,20 @@ import Actor from "../actor";
 import Tileset from "../tileset";
 import Activity from "../activity";
 
+// Helps Loads New Tileset Instance
 export class TilesetLoader {
   constructor(engine) {
     this.engine = engine;
     this.tilesets = {};
   }
-
+  // Load Tileset
   async load(name) {
     let ts = this.tilesets[name];
     if (ts) return ts;
-
+    // Generate Tileset
     this.tilesets[name] = ts = new Tileset(this.engine);
     ts.name = name;
-
+    // Fetch Image and Apply
     const fileResponse = await fetch(Resources.tilesetRequestUrl(name));
     if (fileResponse.ok) {
       try {
@@ -43,6 +44,7 @@ export class TilesetLoader {
   }
 }
 
+// Helps Loads New Actor Instance
 export class ActorLoader {
   constructor(engine) {
     this.engine = engine;
@@ -50,7 +52,7 @@ export class ActorLoader {
     this.instances = {};
     this.requestUrlLookup = Resources.actorRequestUrl;
   }
-
+  // Load Actor
   async load(type) {
     let afterLoad = arguments[1];
     let runConfigure = arguments[2];
@@ -78,6 +80,7 @@ export class ActorLoader {
   }
 }
 
+// Helps Loads New Activity Instance
 export class ActivityLoader {
   constructor(engine, type, args, actor, id, time) {
     this.engine = engine;
@@ -103,7 +106,7 @@ export class ActivityLoader {
       }
     );
   }
-
+  // Load Activity
   load(type) {
     let afterLoad = arguments[1];
     let runConfigure = arguments[2];
