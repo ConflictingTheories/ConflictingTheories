@@ -11,8 +11,9 @@
 ** ----------------------------------------------- **
 \*                                                 */
 
-import { Vector, set, lerp } from "../../engine/utils/vector";
-import Direction from "../../engine/utils/direction";
+import { Vector, set, lerp } from "../../engine/utils/math/vector";
+import { Direction } from "../../engine/utils/enums";
+
 export default {
   init: function (from, to, length) {
     console.log("loading - move");

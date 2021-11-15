@@ -10,11 +10,11 @@
 **               All Rights Reserved.              **
 ** ----------------------------------------------- **
 \*                                                 */
-import { Vector, set } from "./utils/vector";
-import Direction from "./utils/direction";
+import { Vector, set } from "./utils/math/vector";
+import { Direction } from "./utils/enums";
 import ActionQueue from "./queue";
 
-import { rotate, translate } from "./utils/matrix4";
+import { rotate, translate } from "./utils/math/matrix4";
 
 export default class Actor {
   constructor(engine) {
@@ -24,7 +24,7 @@ export default class Actor {
     this.hotspotOffset = new Vector(0, 0, 0);
     this.animFrame = 0;
     this.pos = new Vector(0, 0, 0);
-    this.facing = Direction.RIGHT;
+    this.facing = Direction.None;
     this.activityDict = {};
     this.activityList = [];
     this.onLoadActions = new ActionQueue();
@@ -132,6 +132,7 @@ export default class Actor {
 
   // Add Activity to Queue
   addActivity(activity) {
+    console.log('adding activity')
     if (this.activityDict[activity.id]) this.removeActivity(activity.id);
     this.activityDict[activity.id] = activity;
     this.activityList.push(activity);
@@ -139,7 +140,8 @@ export default class Actor {
 
   // Remove Activity
   removeActivity(id) {
-    this.activityList.erase(this.activityDict[id]);
+    console.log('removing activity')
+    this.activityList = this.activityList.filter((activity)=>activity.id !== id);
     delete this.activityDict[id];
   }
 

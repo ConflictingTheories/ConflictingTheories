@@ -10,6 +10,7 @@
 **               All Rights Reserved.              **
 ** ----------------------------------------------- **
 \*                                                 */
+
 import Zone from "./zone.jsx";
 import ActionQueue from "./queue.jsx";
 
@@ -47,7 +48,7 @@ export default class World {
 
   // Remove Zone
   removeZone(zoneId) {
-    this.actorList.erase(this.zoneDict[zoneId]);
+    this.zoneList = this.zoneList.filter((zone)=>zone.id !== zoneId);
     delete this.zoneDict[zoneId];
   }
 

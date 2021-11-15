@@ -43,41 +43,45 @@ export default class Tileset {
     Object.keys(data).map((k) => {
       this[k] = data[k];
     });
-
     // Definition actions must always run before loaded actions
     this.definitionLoaded = true;
     this.onDefinitionLoadActions.run();
-
+    // load texture
     this.texture = this.engine.loadTexture(this.src);
     this.texture.runWhenLoaded(this.onTextureLoaded);
-
+    // set background colour
     if (this.bgColor)
       this.engine.gl.clearColor(this.bgColor[0] / 255, this.bgColor[1] / 255, this.bgColor[2] / 255, 1.0);
   }
 
+  // run when loaded
   onTextureLoaded() {
     console.log("Initialized tileset '" + this.name + "'");
     this.loaded = true;
     this.onLoadActions.run();
   }
 
+  // Get vertices for tile
   getTileVertices(id, offset) {
     return this.tileGeometry[id].v
       .map((poly) => poly.map((v) => [v[0] + offset[0], v[1] + offset[1], v[2] + offset[2]]))
       .flat(3);
   }
 
-  getWalkability(tileId) {
-    return this.tileGeometry[tileId].d;
-  }
-
-  getTileWalkPoly(tileId) {
-    return this.tileGeometry[tileId].w;
-  }
-
+  // get texture coordinates
   getTileTexCoords(id, texId) {
     let o = this.tiles[texId];
     let s = [this.tileSize / this.sheetSize[0], this.tileSize / this.sheetSize[1]];
     return this.tileGeometry[id].t.map((poly) => poly.map((v) => [(v[0] + o[0]) * s[0], (v[1] + o[1]) * s[1]])).flat(3);
+  }
+
+  // determine walkability
+  getWalkability(tileId) {
+    return this.tileGeometry[tileId].d;
+  }
+
+  // get poly for walk
+  getTileWalkPoly(tileId) {
+    return this.tileGeometry[tileId].w;
   }
 }

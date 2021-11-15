@@ -11,8 +11,8 @@
 ** ----------------------------------------------- **
 \*                                                 */
 
-import { Vector, set } from "../../engine/utils/vector";
-import Direction from "../../engine/utils/direction";
+import { Vector, set } from "../../engine/utils/math/vector";
+import { Direction } from "../../engine/utils/enums";
 import { ActivityLoader } from "../../engine/utils/loaders";
 export default {
   // Character art from http://opengameart.org/content/chara-seth-scorpio
@@ -102,7 +102,7 @@ export default {
     else console.log("cannot walk");
     // Check zones if changing
     if (!this.zone.isInZone(to.x, to.y)) {
-      let z = zone.world.zoneContaining(to.x, to.y);
+      let z = this.zone.world.zoneContaining(to.x, to.y);
       if (!z || !z.loaded || !z.isWalkable(to.x, to.y, Direction.reverse(facing))) return faceDir(facing);
       else {
         console.log("No zone!");

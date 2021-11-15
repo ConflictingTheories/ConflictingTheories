@@ -14,7 +14,7 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import glEngine from '../engine/core';
-import { MOUSE } from "../engine/utils/enums"
+import { Mouse } from "../engine/utils/enums"
 import Keyboard from '../engine/utils/keyboard';
 //
 const WebGLView = ({ width, height, SceneProvider, class: string }) => {
@@ -44,10 +44,10 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
     className={string}
     onKeyDownCapture={(e)=> onKeyEvent(e.nativeEvent)}
     onKeyUpCapture={(e) => onKeyEvent(e.nativeEvent)}
-    onContextMenu={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, MOUSE.UP, true, e)}
-    onMouseUp={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, MOUSE.UP, e.nativeEvent.button == 3, e)}
-    onMouseDown={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, MOUSE.DOWN, e.nativeEvent.button == 3, e)}
-    onMouseMove={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, MOUSE.MOVE, e.nativeEvent.button == 3, e)} />;
+    onContextMenu={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.UP, true, e)}
+    onMouseUp={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.UP, e.nativeEvent.button == 3, e)}
+    onMouseDown={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.DOWN, e.nativeEvent.button == 3, e)}
+    onMouseMove={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.MOVE, e.nativeEvent.button == 3, e)} />;
 };
 
 WebGLView.propTypes = {

@@ -23,14 +23,12 @@ export default class Keyboard {
   }
 
   onKeyDown(e) {
-    console.log("down");
     let c = String.fromCharCode(e.keyCode).toLowerCase();
     if (Keyboard._instance.activeKeys.indexOf(c) < 0) Keyboard._instance.activeKeys.push(c);
     Keyboard._instance.shift = e.shiftKey;
   }
 
   onKeyUp(e) {
-    console.log("up");
     let c = String.fromCharCode(e.keyCode).toLowerCase();
     let index = Keyboard._instance.activeKeys.indexOf(c);
     Keyboard._instance.activeKeys.splice(index, 1);
