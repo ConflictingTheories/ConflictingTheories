@@ -24,7 +24,7 @@ export default class Actor {
     this.hotspotOffset = new Vector(0, 0, 0);
     this.animFrame = 0;
     this.pos = new Vector(0, 0, 0);
-    this.facing = Direction.None;
+    this.facing = Direction.Right;
     this.activityDict = {};
     this.activityList = [];
     this.onLoadActions = new ActionQueue();
