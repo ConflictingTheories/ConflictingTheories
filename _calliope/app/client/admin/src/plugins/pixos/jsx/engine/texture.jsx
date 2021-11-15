@@ -23,9 +23,9 @@ export default class Texture {
     this.onLoadActions = new ActionQueue();
   }
 
-  runWhenLoaded(a) {
-    if (this.loaded) a();
-    else this.onLoadActions.add(a);
+  runWhenLoaded(action) {
+    if (this.loaded) action();
+    else this.onLoadActions.add(action);
   }
 
   onImageLoaded() {

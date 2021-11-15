@@ -30,9 +30,9 @@ export default class Actor {
     this.onLoadActions = new ActionQueue();
   }
 
-  runWhenLoaded(a) {
-    if (this.loaded) a();
-    else this.onLoadActions.add(a);
+  runWhenLoaded(action) {
+    if (this.loaded) action();
+    else this.onLoadActions.add(action);
   }
 
   // Load Texture / Location
@@ -131,10 +131,10 @@ export default class Actor {
   }
 
   // Add Activity to Queue
-  addActivity(a) {
-    if (this.activityDict[a.id]) this.removeActivity(a.id);
-    this.activityDict[a.id] = a;
-    this.activityList.push(a);
+  addActivity(activity) {
+    if (this.activityDict[activity.id]) this.removeActivity(activity.id);
+    this.activityDict[activity.id] = activity;
+    this.activityList.push(activity);
   }
 
   // Remove Activity

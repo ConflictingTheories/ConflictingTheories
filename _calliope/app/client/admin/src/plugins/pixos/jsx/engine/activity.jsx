@@ -11,15 +11,12 @@
 ** ----------------------------------------------- **
 \*                                                 */
 export default class Activity {
-  constructor(type, actor, id, time, args) {
+  constructor(type, actor) {
     this.type = type;
     this.actor = actor;
-    this.id = id;
-    this.startTime = time;
-    this.creationArgs = args;
   }
 
-  onConstruct(type, actor, id, time, args) {
+  configure(type, actor, id, time, args) {
     this.actor = actor;
     this.id = id;
     this.type = type;

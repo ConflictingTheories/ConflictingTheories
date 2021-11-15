@@ -29,17 +29,27 @@ export default class Zone {
     // bind
     this.onTilesetDefinitionLoaded = this.onTilesetDefinitionLoaded.bind(this);
     this.onTilesetOrActorLoaded = this.onTilesetOrActorLoaded.bind(this);
-    this.onJsonLoaded = this.onJsonLoaded.bind(this);
     this.loadActor = this.loadActor.bind(this);
   }
 
+  // Load Resource from URL
   async load() {
-    let self = this;
     const fileResponse = await fetch(Resources.zoneRequestUrl(this.id));
     if (fileResponse.ok) {
       try {
-        let content = await fileResponse.json();
-        await self.onJsonLoaded(content);
+        // Extract and Read in Information
+        let data = await fileResponse.json();
+        this.bounds = data.bounds;
+        this.size = [data.bounds[2] - data.bounds[0], data.bounds[3] - data.bounds[1]];
+        this.cells = data.cells;
+        // Load tileset and create level geometry & trigger updates
+        this.tileset = await this.tsLoader.load(data.tileset);
+        this.tileset.runWhenDefinitionLoaded(this.onTilesetDefinitionLoaded.bind(this));
+        this.tileset.runWhenLoaded(this.onTilesetOrActorLoaded.bind(this));
+        // Load actors from tileset
+        await Promise.all(data.actors.map(this.loadActor));
+        // Notify the zone actors when the new actor has loaded
+        this.actorList.forEach((actor) => actor.runWhenLoaded(this.onTilesetOrActorLoaded.bind(this)));
       } catch (e) {
         console.error("Error parsing zone " + this.id);
         console.error(e);
@@ -48,41 +58,26 @@ export default class Zone {
   }
 
   // Actions to run when the map has loaded
-  runWhenLoaded(a) {
-    if (this.loaded) a();
-    else this.onLoadActions.add(a);
+  runWhenLoaded(action) {
+    if (this.loaded) action();
+    else this.onLoadActions.add(action);
   }
 
-  // Recieved zone definition JSON
-  async onJsonLoaded(data) {
-    this.bounds = data.bounds;
-    this.size = [data.bounds[2] - data.bounds[0], data.bounds[3] - data.bounds[1]];
-    this.cells = data.cells;
-
-    // Load tileset if necessary, then create level geometry
-    this.tileset = await this.tsLoader.load(data.tileset);
-    this.tileset.runWhenDefinitionLoaded(this.onTilesetDefinitionLoaded);
-    this.tileset.runWhenLoaded(this.onTilesetOrActorLoaded);
-
-    // Load actors
-    await Promise.all(data.actors.map(this.loadActor));
-
-    // Notify the zone when the actor has loaded
-    this.actorList.forEach((actor) => actor.runWhenLoaded(this.onTilesetOrActorLoaded));
-  }
-
+  // When tileset loads
   onTilesetDefinitionLoaded() {
     this.vertexPosBuf = [];
     this.vertexTexBuf = [];
     this.walkability = [];
+    // Determine Walkability and Load Vertices
     for (let j = 0, k = 0; j < this.size[1]; j++) {
       let vertices = [];
       let vertexTexCoords = [];
+      // Loop over Tiles
       for (let i = 0; i < this.size[0]; i++, k++) {
         let cell = this.cells[k];
         this.walkability[k] = Direction.All;
-
         let n = Math.floor(cell.length / 3);
+        // Calc Walk, Vertex positions and Textures for each cell
         for (let l = 0; l < n; l++) {
           let tilePos = [this.bounds[0] + i, this.bounds[1] + j, cell[3 * l + 2]];
           this.walkability[k] &= this.tileset.getWalkability(cell[3 * l]);
@@ -97,26 +92,27 @@ export default class Zone {
     }
   }
 
+  // run after each tileset / actor is loaded
   onTilesetOrActorLoaded() {
-    if (this.loaded || !this.tileset.loaded || !this.actorList.every((a) => a.loaded)) return;
-
-    this.loaded = true;
+    if (this.loaded || !this.tileset.loaded || !this.actorList.every((actor) => actor.loaded)) return;
     console.log("Initialized zone '" + this.id + "'");
+    this.loaded = true;
     this.onLoadActions.run();
   }
 
+  // Load Actor
   async loadActor(data) {
     data.zone = this;
-    let a = await this.actorLoader.load(data.type, (b) => b.onLoad(data));
-    this.actorDict[data.id] = a;
-    this.actorList.push(a);
+    let newActor = await this.actorLoader.load(data.type, (actor) => actor.onLoad(data));
+    this.actorDict[data.id] = newActor;
+    this.actorList.push(newActor);
   }
 
   // Add an existing actor to the zone
-  addActor(a) {
-    a.zone = this;
-    this.actorDict[a.id] = a;
-    this.actorList.push(a);
+  addActor(actor) {
+    actor.zone = this;
+    this.actorDict[actor.id] = actor;
+    this.actorList.push(actor);
   }
 
   // Remove an actor from the zone
@@ -171,20 +167,19 @@ export default class Zone {
     return cell[2];
   }
 
+  // Draw Row of Zone
   drawRow(row) {
-    // console.log('binding tiles');
-
     this.engine.bindBuffer(this.vertexPosBuf[row], this.engine.shaderProgram.vertexPositionAttribute);
     this.engine.bindBuffer(this.vertexTexBuf[row], this.engine.shaderProgram.textureCoordAttribute);
     this.tileset.texture.attach();
-
     this.engine.shaderProgram.setMatrixUniforms();
     this.engine.gl.drawArrays(this.engine.gl.TRIANGLES, 0, this.vertexPosBuf[row].numItems);
   }
 
+  // Draw Frame
   draw() {
     if (!this.loaded) return;
-
+    // Organize by Depth
     this.actorList.sort((a, b) => a.pos.y - b.pos.y);
     this.engine.mvPushMatrix();
     this.engine.setCamera();
@@ -203,21 +198,20 @@ export default class Zone {
     this.engine.mvPopMatrix();
   }
 
+  // Update
   tick(time) {
     if (!this.loaded) return;
-    this.actorList.forEach((a) => a.tickOuter(time));
+    this.actorList.forEach((actor) => actor.tickOuter(time));
   }
 
+  // Check for zone inclusion
   isInZone(x, y) {
     return x >= this.bounds[0] && y >= this.bounds[1] && x < this.bounds[2] && y < this.bounds[3];
   }
 
+  // Cell Walkable
   isWalkable(x, y, direction) {
     if (!this.isInZone(x, y)) return null;
-
-    let i = Math.floor();
-    let j = Math.floor(y - this.bounds[1]);
-
     return (this.walkability[(y - this.bounds[1]) * this.size[0] + x - this.bounds[0]] & direction) != 0;
   }
 }

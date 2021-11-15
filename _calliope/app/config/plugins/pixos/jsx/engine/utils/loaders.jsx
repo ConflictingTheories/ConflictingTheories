@@ -53,31 +53,25 @@ export class ActorLoader {
 
   async load(type) {
     let afterLoad = arguments[1];
-    let afterConstruct = arguments[2];
-
-    // Unknown class type - create a skeleton class to be updated once the code has downloaded
-    if (typeof this.definitions[type] === "undefined") {
-      this.definitions[type] = new Actor(this.engine);
+    let runConfigure = arguments[2];
+    if (!this.instances[type]) {
       this.instances[type] = [];
-      let self = this;
-      // self.definitions[type].implement(def);
-      Object.assign(self.definitions[type], require("../../scene/actors/" + type + ".jsx")["default"]);
-      self.definitions[type].templateLoaded = true;
-
-      // notify existing actor instances
-      self.instances[type].forEach(function (i) {
-        if (i.f) i.f(i.i);
-      });
-      console.log("Loaded definition for type '" + type + "'");
     }
-
-    let instance = this.definitions[type];
-    if (afterConstruct) afterConstruct(instance);
-
+    // New Instance
+    let instance = new Actor(this.engine);
+    Object.assign(instance, require("../../scene/actors/" + type + ".jsx")["default"]);
+    instance.templateLoaded = true;
+    // Update Existing
+    this.instances[type].forEach(function (instance) {
+      if (instance.afterLoad) instance.afterLoad(instance.instance);
+    });
+    // Configure if needed
+    if (runConfigure) runConfigure(instance);
+    // once loaded
     if (afterLoad) {
       console.log("after load");
       if (instance.templateLoaded) afterLoad(instance);
-      else this.instances[type].push({ i: instance, f: afterLoad });
+      else this.instances[type].push({ instance, afterLoad });
     }
 
     return instance;
@@ -101,35 +95,35 @@ export class ActivityLoader {
     }
     return this.load(
       type,
-      function (a) {
-        a.onLoad(args);
+      function (activity) {
+        activity.onLoad(args);
       },
-      function (a) {
-        a.onConstruct(type, actor, id, time, args);
+      function (activity) {
+        activity.configure(type, actor, id, time, args);
       }
     );
   }
 
   load(type) {
     let afterLoad = arguments[1];
-    let afterConstruct = arguments[2];
+    let runConfigure = arguments[2];
     if (!this.instances[type]) {
       this.instances[type] = [];
     }
-    // New Instance
+    // New Instance (assigns properties loaded by type)
     let instance = new Activity(this.type, this.actor);
     Object.assign(instance, require("../../scene/activities/" + type + ".jsx")["default"]);
     instance.templateLoaded = true;
     // Notify existing
-    this.instances[type].forEach(function (i) {
-      if (i.f) i.f(i.i);
+    this.instances[type].forEach(function (instance) {
+      if (instance.afterLoad) instance.afterLoad(instance.instance);
     });
     // construct
-    if (afterConstruct) afterConstruct(instance);
+    if (runConfigure) runConfigure(instance);
     // load
     if (afterLoad) {
       if (instance.templateLoaded) afterLoad(instance);
-      else this.instances[type].push({ i: instance, f: afterLoad });
+      else this.instances[type].push({ instance, afterLoad });
     }
 
     return instance;

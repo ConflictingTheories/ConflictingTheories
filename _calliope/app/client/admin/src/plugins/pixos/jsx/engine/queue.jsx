@@ -15,15 +15,15 @@ export default class ActionQueue {
   constructor() {
     this.actions = [];
   }
-
-  add(a) {
-    this.actions.push(a);
+  // Add to Queue
+  add(action) {
+    this.actions.push(action);
   }
-
+  // Run Action
   run() {
     let args = arguments;
-    this.actions = this.actions.filter((a) => {
-      return a(args);
+    this.actions = this.actions.filter((action) => {
+      return action(args);
     });
   }
 }
