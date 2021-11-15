@@ -25,16 +25,16 @@ export default class Tileset {
     this.onTextureLoaded = this.onTextureLoaded.bind(this);
   }
 
-  runWhenLoaded(a) {
-    if (this.loaded) a();
-    else this.onLoadActions.add(a);
+  runWhenLoaded(action) {
+    if (this.loaded) action();
+    else this.onLoadActions.add(action);
   }
 
   // Actions to run after the tileset definition has loaded,
   // but before the texture is ready
-  runWhenDefinitionLoaded(a) {
-    if (this.definitionLoaded) a();
-    else this.onDefinitionLoadActions.add(a);
+  runWhenDefinitionLoaded(action) {
+    if (this.definitionLoaded) action();
+    else this.onDefinitionLoadActions.add(action);
   }
 
   // Received tileset definition JSON

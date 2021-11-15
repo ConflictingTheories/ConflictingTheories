@@ -22,8 +22,8 @@ export default class World {
     this.sortZones = this.sortZones.bind(this);
   }
 
-  runAfterTick(a) {
-    this.afterTickActions.add(a);
+  runAfterTick(action) {
+    this.afterTickActions.add(action);
   }
 
   // Sort zones for correct render order
