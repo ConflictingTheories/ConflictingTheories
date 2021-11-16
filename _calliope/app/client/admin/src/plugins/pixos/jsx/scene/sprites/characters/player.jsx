@@ -20,6 +20,7 @@ export default {
   src: Resources.artResourceUrl("player.gif"),
   sheetSize: [128, 256],
   tileSize: [24, 32],
+  // Frames & Faces
   frames: {
     up: [
       [0, 0],
@@ -46,12 +47,12 @@ export default {
       [24, 96],
     ],
   },
+  // Offsets
   drawOffset: new Vector(-0.25, 1, 0.125),
   hotspotOffset: new Vector(0.5, 0.5, 0),
-
   // Should the camera follow the player?
   bindCamera: true,
-
+  // Update
   tick: function (time) {
     if (!this.actionList.length) {
       let ret = this.checkInput();
@@ -67,7 +68,6 @@ export default {
     }
     if (this.bindCamera) set(this.pos, this.engine.cameraPosition);
   },
-
   // Reads for Input to Respond to
   checkInput: function () {
     let moveTime = 600; // move time in ms

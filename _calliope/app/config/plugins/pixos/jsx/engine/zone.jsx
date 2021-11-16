@@ -32,8 +32,8 @@ export default class Zone {
     this.loadSprite = this.loadSprite.bind(this);
   }
 
-  // Load Resource from URL
-  async load() {
+  // Load Map Resource from URL
+  async loadRemote() {
     const fileResponse = await fetch(Resources.zoneRequestUrl(this.id));
     if (fileResponse.ok) {
       try {
@@ -54,6 +54,28 @@ export default class Zone {
         console.error("Error parsing zone " + this.id);
         console.error(e);
       }
+    }
+  }
+
+  // Load Tileset Directly (precompiled)
+  async load() {
+    try {
+      // Extract and Read in Information
+      let data = require("../scene/maps/" + this.id + ".map.jsx")["default"];
+      this.bounds = data.bounds;
+      this.size = [data.bounds[2] - data.bounds[0], data.bounds[3] - data.bounds[1]];
+      this.cells = data.cells;
+      // Load tileset and create level geometry & trigger updates
+      this.tileset = await this.tsLoader.load(data.tileset);
+      this.tileset.runWhenDefinitionLoaded(this.onTilesetDefinitionLoaded.bind(this));
+      this.tileset.runWhenLoaded(this.onTilesetOrSpriteLoaded.bind(this));
+      // Load sprites from tileset
+      await Promise.all(data.sprites.map(this.loadSprite));
+      // Notify the zone sprites when the new sprite has loaded
+      this.spriteList.forEach((sprite) => sprite.runWhenLoaded(this.onTilesetOrSpriteLoaded.bind(this)));
+    } catch (e) {
+      console.error("Error parsing zone " + this.id);
+      console.error(e);
     }
   }
 
@@ -117,7 +139,7 @@ export default class Zone {
 
   // Remove an sprite from the zone
   removeSprite(id) {
-    this.spriteList = this.spriteList.filter((sprite)=>sprite.id !== id);
+    this.spriteList = this.spriteList.filter((sprite) => sprite.id !== id);
     delete this.spriteDict[id];
   }
 

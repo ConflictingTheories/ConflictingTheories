@@ -1,8 +1,23 @@
+/*                                                 *\
+** ----------------------------------------------- **
+**             Calliope - Site Generator   	       **
+** ----------------------------------------------- **
+**  Copyright (c) 2020-2021 - Kyle Derby MacInnis  **
+**                                                 **
+**    Any unauthorized distribution or transfer    **
+**       of this work is strictly prohibited.      **
+**                                                 **
+**               All Rights Reserved.              **
+** ----------------------------------------------- **
+\*                                                 */
+
+import Resources from "../../engine/utils/resources";
 export default {
-  src: "pixos/art/sewer.png",
+  src: Resources.artResourceUrl("sewer.png"),
   sheetSize: [256, 256],
   tileSize: 16,
   bgColor: [31, 20, 29],
+  // Tile Locations on resource
   tiles: {
     0: [1, 1],
     1: [2, 2],
@@ -39,6 +54,7 @@ export default {
     101: [0, 5],
     102: [0, 6],
   },
+  // Shapes of Each Tile
   tileGeometry: {
     0: {
       vertices: [
