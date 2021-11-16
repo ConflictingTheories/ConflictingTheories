@@ -66,7 +66,8 @@ export default class Scene {
 
   // Mouse Handler for Scene
   onMouseEvent = (x, y, type, rmb, e) => {
-    e.preventDefault();
+    // e.preventDefault();
+
     console.log(`pos -- ${x}, ${y}`, rmb, e);
   };
 }

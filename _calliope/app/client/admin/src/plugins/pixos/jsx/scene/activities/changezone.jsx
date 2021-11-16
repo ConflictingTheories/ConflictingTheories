@@ -27,7 +27,7 @@ export default {
   tick: function (time) {
     if (!this.toZone.loaded || !this.fromZone.loaded) return;
     // Set facing
-    if (this.facing != this.actor.facing) {
+    if (this.facing && this.facing != this.actor.facing) {
       this.actor.facing = this.facing;
       this.actor.setFrame(0);
     }
