@@ -17,7 +17,7 @@ export default {
   sheetSize: [256, 256],
   tileSize: 16,
   bgColor: [31, 20, 29],
-  // Tile Locations on resource
+  // Tile Locations on resource (based on size)
   tiles: {
     0: [1, 1],
     1: [2, 2],
@@ -54,7 +54,7 @@ export default {
     101: [0, 5],
     102: [0, 6],
   },
-  // Shapes of Each Tile
+  // Geometries for the tileset
   tileGeometry: {
     0: {
       vertices: [
