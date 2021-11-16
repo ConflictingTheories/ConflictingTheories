@@ -25,7 +25,7 @@ export default {
   tick: function (time) {
     if (!this.loaded) return;
     // Set facing
-    if (this.facing != this.actor.facing) this.actor.setFacing(this.facing);
+    if (this.facing && this.facing != this.actor.facing) this.actor.setFacing(this.facing);
     // Transition & Move
     let endTime = this.startTime + this.length;
     let frac = (time - this.startTime) / this.length;

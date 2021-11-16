@@ -70,7 +70,6 @@ export default {
   checkInput: function () {
     let moveTime = 600; // move time in ms
     let facing = Direction.None;
-    console.log('checking', this.engine.keyboard.lastPressed("wsad"));
     switch (this.engine.keyboard.lastPressed("wsad")) {
       case "w":
         facing = Direction.Up;
@@ -87,37 +86,31 @@ export default {
       default:
         return null;
     }
-
     // Change Direction
     let faceDir = function (facing) {
-      if (this.facing == facing) return null;
+      if (this.facing == facing || facing === Direction.None) return null;
       return new ActivityLoader(this.engine, "face", [facing], this);
     }.bind(this);
+    // Check Direction
+    if (this.facing !== facing) return faceDir(facing);
     // Determine Location
     let from = this.pos;
     let dp = Direction.toOffset(facing);
     let to = new Vector(...[Math.round(from.x + dp[0]), Math.round(from.y + dp[1]), 0]);
-    // Check Walking
-    if (!this.zone.isWalkable(this.pos.x, this.pos.y, facing)) return faceDir(facing);
-    else console.log("cannot walk");
     // Check zones if changing
     if (!this.zone.isInZone(to.x, to.y)) {
       let z = this.zone.world.zoneContaining(to.x, to.y);
       if (!z || !z.loaded || !z.isWalkable(to.x, to.y, Direction.reverse(facing))) return faceDir(facing);
-      else {
-        console.log("No zone!");
-      }
       return new ActivityLoader(
         this.engine,
         "changezone",
         [this.zone.id, this.pos.toArray(), z.id, to.toArray(), moveTime],
         this
-      );
-    }
-    // Check
+        );
+      }
+      // Check Walking
+    if (!this.zone.isWalkable(this.pos.x, this.pos.y, facing)) return faceDir(facing);
     if (!this.zone.isWalkable(to.x, to.y, Direction.reverse(facing))) return faceDir(facing);
-    else console.log("No Walk!");
-
     return new ActivityLoader(this.engine, "move", [this.pos.toArray(), to.toArray(), moveTime], this);
   },
 };
