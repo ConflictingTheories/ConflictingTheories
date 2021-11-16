@@ -67,6 +67,7 @@ export default {
     if (this.bindCamera) set(this.pos, this.engine.cameraPosition);
   },
 
+  // Reads for Input to Respond to
   checkInput: function () {
     let moveTime = 600; // move time in ms
     let facing = Direction.None;
