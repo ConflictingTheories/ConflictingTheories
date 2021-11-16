@@ -60,7 +60,6 @@ export default {
 
   draw: function (engine) {
     if (!this.loaded) return;
-    console.log("binding animated tile");
     engine.mvPushMatrix();
     translate(engine.uViewMat, engine.uViewMat, this.pos.toArray());
     // Lie flat on the ground

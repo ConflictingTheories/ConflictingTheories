@@ -28,6 +28,7 @@ export default class Actor {
     this.activityDict = {};
     this.activityList = [];
     this.onLoadActions = new ActionQueue();
+    this.getTexCoords = this.getTexCoords.bind(this)
   }
 
   runWhenLoaded(action) {
@@ -46,7 +47,8 @@ export default class Actor {
     this.zone = instanceData.zone;
     if (instanceData.id) this.id = instanceData.id;
     if (instanceData.pos) set(new Vector(...instanceData.pos), this.pos);
-    if (instanceData.facing) this.facing = instanceData.facing;
+    if (instanceData.facing && instanceData.facing !== 0) this.facing = instanceData.facing;
+    console.log('facing', Direction.actorSequence(this.facing))
     // Texture Buffer
     this.texture = this.engine.loadTexture(this.src);
     this.texture.runWhenLoaded(this.onTilesetOrTextureLoaded.bind(this));
@@ -85,6 +87,8 @@ export default class Actor {
 
   // Get Texture Coordinates
   getTexCoords() {
+    if(this.id == 'player')
+    console.log('texture frames', this.facing, Direction.actorSequence(this.facing))
     let t = this.frames[Direction.actorSequence(this.facing)][this.animFrame % 4];
     let ss = this.sheetSize;
     let ts = this.tileSize;
@@ -126,7 +130,9 @@ export default class Actor {
 
   // Set Facing
   setFacing(facing) {
-    this.facing = facing;
+    console.log('setting face to ' + Direction.actorSequence(facing))
+    if(facing)
+      this.facing = facing;
     this.setFrame(this.animFrame);
   }
 
