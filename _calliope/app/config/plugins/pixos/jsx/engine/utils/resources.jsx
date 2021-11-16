@@ -12,8 +12,7 @@
 \*                                                 */
 
 export default {
-  activityRequestUrl: (id) => "activities/" + id + ".js",
-  actorRequestUrl: (id) => "actors/" + id + ".js",
-  tilesetRequestUrl: (id) => "tilesets/" + id + ".tileset",
-  zoneRequestUrl: (id) => "maps/" + id + ".map",
+  tilesetRequestUrl: (id) => "pixos/tilesets/" + id + ".tileset",
+  zoneRequestUrl: (id) => "pixos/maps/" + id + ".map",
+  artResourceUrl: (art) => "pixos/art/" + art,
 };

@@ -11,15 +11,15 @@
 ** ----------------------------------------------- **
 \*                                                 */
 export default class Activity {
-  constructor(type, actor) {
+  constructor(type, sprite) {
     this.type = type;
-    this.actor = actor;
+    this.sprite = sprite;
     this.time = new Date().getTime();
-    this.id = actor.id + "-" + type + "-" + this.time;
+    this.id = sprite.id + "-" + type + "-" + this.time;
   }
   // configure activity
-  configure(type, actor, id, time, args) {
-    this.actor = actor;
+  configure(type, sprite, id, time, args) {
+    this.sprite = sprite;
     this.id = id;
     this.type = type;
     this.startTime = time;
@@ -35,8 +35,8 @@ export default class Activity {
     return {
       id: this.id,
       time: this.startTime,
-      zone: this.actor.zone.id,
-      actor: this.actor.id,
+      zone: this.sprite.zone.id,
+      sprite: this.sprite.id,
       type: this.type,
       args: this.creationArgs,
     };

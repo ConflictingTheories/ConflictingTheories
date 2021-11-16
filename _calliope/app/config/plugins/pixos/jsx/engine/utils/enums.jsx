@@ -63,7 +63,7 @@ export const Direction = {
     return Direction.None;
   },
 
-  actorSequence(dir) {
+  spriteSequence(dir) {
     switch (dir) {
       case Direction.Right:
         return "right";

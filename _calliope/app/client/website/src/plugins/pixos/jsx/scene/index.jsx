@@ -52,13 +52,11 @@ export default class Scene {
 
   // Draw Scene
   draw = (engine) => {
-    // engine.clearScreen();
     Scene._instance.world.draw(engine);
   };
 
   // Keyboard handler for Scene
   onKeyEvent = (e) => {
-    console.log("-----", e);
     if (e.type === "keydown") {
       Scene._instance.engine.keyboard.onKeyDown(e);
     } else Scene._instance.engine.keyboard.onKeyUp(e);
@@ -66,8 +64,8 @@ export default class Scene {
 
   // Mouse Handler for Scene
   onMouseEvent = (x, y, type, rmb, e) => {
-    // e.preventDefault();
-
-    console.log(`pos -- ${x}, ${y}`, rmb, e);
+    // console.log(`pos -- ${x}, ${y}`, rmb, e);
+    //
+    // TODO
   };
 }
