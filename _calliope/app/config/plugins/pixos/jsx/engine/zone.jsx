@@ -13,23 +13,23 @@
 import { Direction } from "./utils/enums";
 import Resources from "./utils/resources";
 import ActionQueue from "./queue";
-import { ActorLoader, TilesetLoader } from "./utils/loaders";
+import { SpriteLoader, TilesetLoader } from "./utils/loaders";
 
 export default class Zone {
   constructor(zoneId, world) {
     this.id = zoneId;
     this.world = world;
     this.data = {};
-    this.actorDict = {};
-    this.actorList = [];
+    this.spriteDict = {};
+    this.spriteList = [];
     this.engine = world.engine;
     this.onLoadActions = new ActionQueue();
-    this.actorLoader = new ActorLoader(world.engine);
+    this.spriteLoader = new SpriteLoader(world.engine);
     this.tsLoader = new TilesetLoader(world.engine);
     // bind
     this.onTilesetDefinitionLoaded = this.onTilesetDefinitionLoaded.bind(this);
-    this.onTilesetOrActorLoaded = this.onTilesetOrActorLoaded.bind(this);
-    this.loadActor = this.loadActor.bind(this);
+    this.onTilesetOrSpriteLoaded = this.onTilesetOrSpriteLoaded.bind(this);
+    this.loadSprite = this.loadSprite.bind(this);
   }
 
   // Load Resource from URL
@@ -45,11 +45,11 @@ export default class Zone {
         // Load tileset and create level geometry & trigger updates
         this.tileset = await this.tsLoader.load(data.tileset);
         this.tileset.runWhenDefinitionLoaded(this.onTilesetDefinitionLoaded.bind(this));
-        this.tileset.runWhenLoaded(this.onTilesetOrActorLoaded.bind(this));
-        // Load actors from tileset
-        await Promise.all(data.actors.map(this.loadActor));
-        // Notify the zone actors when the new actor has loaded
-        this.actorList.forEach((actor) => actor.runWhenLoaded(this.onTilesetOrActorLoaded.bind(this)));
+        this.tileset.runWhenLoaded(this.onTilesetOrSpriteLoaded.bind(this));
+        // Load sprites from tileset
+        await Promise.all(data.sprites.map(this.loadSprite));
+        // Notify the zone sprites when the new sprite has loaded
+        this.spriteList.forEach((sprite) => sprite.runWhenLoaded(this.onTilesetOrSpriteLoaded.bind(this)));
       } catch (e) {
         console.error("Error parsing zone " + this.id);
         console.error(e);
@@ -92,33 +92,33 @@ export default class Zone {
     }
   }
 
-  // run after each tileset / actor is loaded
-  onTilesetOrActorLoaded() {
-    if (this.loaded || !this.tileset.loaded || !this.actorList.every((actor) => actor.loaded)) return;
+  // run after each tileset / sprite is loaded
+  onTilesetOrSpriteLoaded() {
+    if (this.loaded || !this.tileset.loaded || !this.spriteList.every((sprite) => sprite.loaded)) return;
     console.log("Initialized zone '" + this.id + "'");
     this.loaded = true;
     this.onLoadActions.run();
   }
 
-  // Load Actor
-  async loadActor(data) {
+  // Load Sprite
+  async loadSprite(data) {
     data.zone = this;
-    let newActor = await this.actorLoader.load(data.type, (actor) => actor.onLoad(data));
-    this.actorDict[data.id] = newActor;
-    this.actorList.push(newActor);
+    let newSprite = await this.spriteLoader.load(data.type, (sprite) => sprite.onLoad(data));
+    this.spriteDict[data.id] = newSprite;
+    this.spriteList.push(newSprite);
   }
 
-  // Add an existing actor to the zone
-  addActor(actor) {
-    actor.zone = this;
-    this.actorDict[actor.id] = actor;
-    this.actorList.push(actor);
+  // Add an existing sprite to the zone
+  addSprite(sprite) {
+    sprite.zone = this;
+    this.spriteDict[sprite.id] = sprite;
+    this.spriteList.push(sprite);
   }
 
-  // Remove an actor from the zone
-  removeActor(id) {
-    this.actorList = this.actorList.filter((actor)=>actor.id !== id);
-    delete this.actorDict[id];
+  // Remove an sprite from the zone
+  removeSprite(id) {
+    this.spriteList = this.spriteList.filter((sprite)=>sprite.id !== id);
+    delete this.spriteDict[id];
   }
 
   // Calculate the height of a point in the zone
@@ -180,20 +180,20 @@ export default class Zone {
   draw() {
     if (!this.loaded) return;
     // Organize by Depth
-    this.actorList.sort((a, b) => a.pos.y - b.pos.y);
+    this.spriteList.sort((a, b) => a.pos.y - b.pos.y);
     this.engine.mvPushMatrix();
     this.engine.setCamera();
     // Draw Terrain
     let k = 0;
     for (let j = 0; j < this.size[1]; j++) {
       this.drawRow(j);
-      while (k < this.actorList.length && this.actorList[k].pos.y - this.bounds[1] <= j) {
-        this.actorList[k++].draw(this.engine);
+      while (k < this.spriteList.length && this.spriteList[k].pos.y - this.bounds[1] <= j) {
+        this.spriteList[k++].draw(this.engine);
       }
     }
-    // draw each Actor
-    while (k < this.actorList.length) {
-      this.actorList[k++].draw(this.engine);
+    // draw each Sprite
+    while (k < this.spriteList.length) {
+      this.spriteList[k++].draw(this.engine);
     }
     this.engine.mvPopMatrix();
   }
@@ -201,7 +201,7 @@ export default class Zone {
   // Update
   tick(time) {
     if (!this.loaded) return;
-    this.actorList.forEach((actor) => actor.tickOuter(time));
+    this.spriteList.forEach((sprite) => sprite.tickOuter(time));
   }
 
   // Check for zone inclusion

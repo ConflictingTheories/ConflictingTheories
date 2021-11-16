@@ -12,7 +12,7 @@
 \*                                                 */
 
 import Resources from "./resources";
-import Actor from "../actor";
+import Sprite from "../sprite";
 import Tileset from "../tileset";
 import Activity from "../activity";
 
@@ -44,15 +44,14 @@ export class TilesetLoader {
   }
 }
 
-// Helps Loads New Actor Instance
-export class ActorLoader {
+// Helps Loads New Sprite Instance
+export class SpriteLoader {
   constructor(engine) {
     this.engine = engine;
     this.definitions = [];
     this.instances = {};
-    this.requestUrlLookup = Resources.actorRequestUrl;
   }
-  // Load Actor
+  // Load Sprite
   async load(type) {
     let afterLoad = arguments[1];
     let runConfigure = arguments[2];
@@ -60,8 +59,8 @@ export class ActorLoader {
       this.instances[type] = [];
     }
     // New Instance
-    let instance = new Actor(this.engine);
-    Object.assign(instance, require("../../scene/actors/" + type + ".jsx")["default"]);
+    let instance = new Sprite(this.engine);
+    Object.assign(instance, require("../../scene/sprites/" + type + ".jsx")["default"]);
     instance.templateLoaded = true;
     // Update Existing
     this.instances[type].forEach(function (instance) {
@@ -82,11 +81,11 @@ export class ActorLoader {
 
 // Helps Loads New Activity Instance
 export class ActivityLoader {
-  constructor(engine, type, args, actor, id, time) {
+  constructor(engine, type, args, sprite, id, time) {
     this.engine = engine;
     this.type = type;
     this.args = args;
-    this.actor = actor;
+    this.sprite = sprite;
     this.instances = {};
     this.definitions = [];
 
@@ -94,7 +93,7 @@ export class ActivityLoader {
       time = new Date().getTime();
     }
     if (!id) {
-      id = actor.id + "-" + type + "-" + time;
+      id = sprite.id + "-" + type + "-" + time;
     }
     return this.load(
       type,
@@ -102,7 +101,7 @@ export class ActivityLoader {
         activity.onLoad(args);
       },
       function (activity) {
-        activity.configure(type, actor, id, time, args);
+        activity.configure(type, sprite, id, time, args);
       }
     );
   }
@@ -114,7 +113,7 @@ export class ActivityLoader {
       this.instances[type] = [];
     }
     // New Instance (assigns properties loaded by type)
-    let instance = new Activity(this.type, this.actor);
+    let instance = new Activity(this.type, this.sprite);
     Object.assign(instance, require("../../scene/activities/" + type + ".jsx")["default"]);
     instance.templateLoaded = true;
     // Notify existing

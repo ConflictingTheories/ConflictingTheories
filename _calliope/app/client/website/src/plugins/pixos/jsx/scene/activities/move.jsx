@@ -25,21 +25,21 @@ export default {
   tick: function (time) {
     if (!this.loaded) return;
     // Set facing
-    if (this.facing && this.facing != this.actor.facing) this.actor.setFacing(this.facing);
+    if (this.facing && this.facing != this.sprite.facing) this.sprite.setFacing(this.facing);
     // Transition & Move
     let endTime = this.startTime + this.length;
     let frac = (time - this.startTime) / this.length;
     if (time >= endTime) {
-      set(this.to, this.actor.pos);
+      set(this.to, this.sprite.pos);
       frac = 1;
-    } else lerp(this.from, this.to, frac, this.actor.pos);
+    } else lerp(this.from, this.to, frac, this.sprite.pos);
     // Get next frame
     let newFrame = Math.floor(frac * 4);
-    if (newFrame != this.actor.animFrame) this.actor.setFrame(newFrame);
+    if (newFrame != this.sprite.animFrame) this.sprite.setFrame(newFrame);
     // Determine height
-    let hx = this.actor.pos.x + this.actor.hotspotOffset.x;
-    let hy = this.actor.pos.y + this.actor.hotspotOffset.y;
-    this.actor.pos.z = this.actor.zone.getHeight(hx, hy);
+    let hx = this.sprite.pos.x + this.sprite.hotspotOffset.x;
+    let hy = this.sprite.pos.y + this.sprite.hotspotOffset.y;
+    this.sprite.pos.z = this.sprite.zone.getHeight(hx, hy);
 
     return time >= endTime;
   },

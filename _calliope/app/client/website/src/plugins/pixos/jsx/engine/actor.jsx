@@ -16,7 +16,7 @@ import ActionQueue from "./queue";
 
 import { rotate, translate } from "./utils/math/matrix4";
 
-export default class Actor {
+export default class Sprite {
   constructor(engine) {
     this.engine = engine;
     this.templateLoaded = false;
@@ -40,7 +40,7 @@ export default class Actor {
   onLoad(instanceData) {
     if (this.loaded) return;
     if (!this.src || !this.sheetSize || !this.tileSize || !this.frames) {
-      console.error("Invalid actor definition");
+      console.error("Invalid sprite definition");
       return;
     }
     // Zone Information
@@ -48,7 +48,7 @@ export default class Actor {
     if (instanceData.id) this.id = instanceData.id;
     if (instanceData.pos) set(new Vector(...instanceData.pos), this.pos);
     if (instanceData.facing && instanceData.facing !== 0) this.facing = instanceData.facing;
-    console.log('facing', Direction.actorSequence(this.facing))
+    console.log('facing', Direction.spriteSequence(this.facing))
     // Texture Buffer
     this.texture = this.engine.loadTexture(this.src);
     this.texture.runWhenLoaded(this.onTilesetOrTextureLoaded.bind(this));
@@ -78,18 +78,18 @@ export default class Actor {
   onTilesetOrTextureLoaded() {
     if (this.loaded || !this.zone.tileset.loaded || !this.texture.loaded) return;
 
-    this.init(); // Hook for actor implementations
+    this.init(); // Hook for sprite implementations
     this.loaded = true;
     this.onLoadActions.run();
     
-    console.log("Initialized actor '" + this.id + "' in zone '" + this.zone.id + "'");
+    console.log("Initialized sprite '" + this.id + "' in zone '" + this.zone.id + "'");
   }
 
   // Get Texture Coordinates
   getTexCoords() {
     if(this.id == 'player')
-    console.log('texture frames', this.facing, Direction.actorSequence(this.facing))
-    let t = this.frames[Direction.actorSequence(this.facing)][this.animFrame % 4];
+    console.log('texture frames', this.facing, Direction.spriteSequence(this.facing))
+    let t = this.frames[Direction.spriteSequence(this.facing)][this.animFrame % 4];
     let ss = this.sheetSize;
     let ts = this.tileSize;
     let bl = [(t[0] + ts[0]) / ss[0], t[1] / ss[1]];
@@ -102,7 +102,7 @@ export default class Actor {
     return poly.flat(3);
   }
 
-  // Draw Actor Sprite
+  // Draw Sprite Sprite
   draw() {
     if (!this.loaded) return;
     this.engine.mvPushMatrix();
@@ -130,7 +130,7 @@ export default class Actor {
 
   // Set Facing
   setFacing(facing) {
-    console.log('setting face to ' + Direction.actorSequence(facing))
+    console.log('setting face to ' + Direction.spriteSequence(facing))
     if(facing)
       this.facing = facing;
     this.setFrame(this.animFrame);
@@ -172,8 +172,8 @@ export default class Actor {
     if (this.tick) this.tick(time);
   }
 
-  // Hook for actor implementations
+  // Hook for sprite implementations
   init() {
-    console.log("- actor hook", this.id, this.pos);
+    console.log("- sprite hook", this.id, this.pos);
   }
 }

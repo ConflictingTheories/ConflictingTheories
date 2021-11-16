@@ -17,7 +17,7 @@ export default {
     this.facing = facing;
   },
   tick: function (time) {
-    if (this.facing && this.facing != this.actor.facing) this.actor.setFacing(this.facing);
+    if (this.facing && this.facing != this.sprite.facing) this.sprite.setFacing(this.facing);
     return true;
   },
 };
