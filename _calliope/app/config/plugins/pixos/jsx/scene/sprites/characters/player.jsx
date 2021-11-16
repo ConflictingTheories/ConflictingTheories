@@ -13,7 +13,7 @@
 
 import { Vector, set } from "../../../engine/utils/math/vector";
 import { Direction } from "../../../engine/utils/enums";
-import { ActivityLoader } from "../../../engine/utils/loaders";
+import { ActionLoader } from "../../../engine/utils/loaders";
 import Resources from "../../../engine/utils/resources";
 export default {
   // Character art from http://opengameart.org/content/chara-seth-scorpio
@@ -53,16 +53,16 @@ export default {
   bindCamera: true,
 
   tick: function (time) {
-    if (!this.activityList.length) {
+    if (!this.actionList.length) {
       let ret = this.checkInput();
       if (ret) {
-        // Send activity to the server
-        // network.sendActivity(ret);
+        // Send action to the server
+        // network.sendAction(ret);
 
-        // Start running activity locally to avoid latency
-        // Local activity will be replaced with a server-sanitised
+        // Start running action locally to avoid latency
+        // Local action will be replaced with a server-sanitised
         // version on the next update
-        this.addActivity(ret);
+        this.addAction(ret);
       }
     }
     if (this.bindCamera) set(this.pos, this.engine.cameraPosition);
@@ -91,7 +91,7 @@ export default {
     // Change Direction
     let faceDir = function (facing) {
       if (this.facing == facing || facing === Direction.None) return null;
-      return new ActivityLoader(this.engine, "face", [facing], this);
+      return new ActionLoader(this.engine, "face", [facing], this);
     }.bind(this);
     // Check Direction
     if (this.facing !== facing) return faceDir(facing);
@@ -103,7 +103,7 @@ export default {
     if (!this.zone.isInZone(to.x, to.y)) {
       let z = this.zone.world.zoneContaining(to.x, to.y);
       if (!z || !z.loaded || !z.isWalkable(to.x, to.y, Direction.reverse(facing))) return faceDir(facing);
-      return new ActivityLoader(
+      return new ActionLoader(
         this.engine,
         "changezone",
         [this.zone.id, this.pos.toArray(), z.id, to.toArray(), moveTime],
@@ -113,6 +113,6 @@ export default {
     // Check Walking
     if (!this.zone.isWalkable(this.pos.x, this.pos.y, facing)) return faceDir(facing);
     if (!this.zone.isWalkable(to.x, to.y, Direction.reverse(facing))) return faceDir(facing);
-    return new ActivityLoader(this.engine, "move", [this.pos.toArray(), to.toArray(), moveTime], this);
+    return new ActionLoader(this.engine, "move", [this.pos.toArray(), to.toArray(), moveTime], this);
   },
 };

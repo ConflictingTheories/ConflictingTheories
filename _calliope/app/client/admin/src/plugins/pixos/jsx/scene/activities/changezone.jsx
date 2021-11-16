@@ -11,7 +11,7 @@
 ** ----------------------------------------------- **
 \*                                                 */
 
-import { Vector, set, lerp } from "../../engine/utils/vector";
+import { Vector, set, lerp } from "../../engine/utils/math/vector";
 import { Direction } from "../../engine/utils/enums";
 
 export default {

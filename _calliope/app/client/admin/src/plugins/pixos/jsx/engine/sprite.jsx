@@ -25,8 +25,8 @@ export default class Sprite {
     this.animFrame = 0;
     this.pos = new Vector(0, 0, 0);
     this.facing = Direction.Right;
-    this.activityDict = {};
-    this.activityList = [];
+    this.actionDict = {};
+    this.actionList = [];
     this.onLoadActions = new ActionQueue();
     this.getTexCoords = this.getTexCoords.bind(this)
   }
@@ -136,38 +136,38 @@ export default class Sprite {
     this.setFrame(this.animFrame);
   }
 
-  // Add Activity to Queue
-  addActivity(activity) {
-    console.log('adding activity')
-    if (this.activityDict[activity.id]) this.removeActivity(activity.id);
-    this.activityDict[activity.id] = activity;
-    this.activityList.push(activity);
+  // Add Action to Queue
+  addAction(action) {
+    console.log('adding action')
+    if (this.actionDict[action.id]) this.removeAction(action.id);
+    this.actionDict[action.id] = action;
+    this.actionList.push(action);
   }
 
-  // Remove Activity
-  removeActivity(id) {
-    console.log('removing activity')
-    this.activityList = this.activityList.filter((activity)=>activity.id !== id);
-    delete this.activityDict[id];
+  // Remove Action
+  removeAction(id) {
+    console.log('removing action')
+    this.actionList = this.actionList.filter((action)=>action.id !== id);
+    delete this.actionDict[id];
   }
 
   // Tick
   tickOuter(time) {
     if (!this.loaded) return;
     // Sort activities by increasing startTime, then by id
-    this.activityList.sort((a, b) => {
+    this.actionList.sort((a, b) => {
       let dt = a.startTime - b.startTime;
       if (!dt) return dt;
       return a.id > b.id ? 1 : -1;
     });
     // Run & Queue for Removal when complete
     let toRemove = [];
-    this.activityList.forEach((activity) => {
-      if (!activity.loaded || activity.startTime > time) return;
-      if (activity.tick(time)) toRemove.push(activity);
+    this.actionList.forEach((action) => {
+      if (!action.loaded || action.startTime > time) return;
+      if (action.tick(time)) toRemove.push(action);
     });
     // clear completed activities
-    toRemove.forEach((activity) => this.removeActivity(activity.id));
+    toRemove.forEach((action) => this.removeAction(action.id));
     // tick
     if (this.tick) this.tick(time);
   }

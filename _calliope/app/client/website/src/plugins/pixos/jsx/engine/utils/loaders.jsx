@@ -14,7 +14,7 @@
 import Resources from "./resources";
 import Sprite from "../sprite";
 import Tileset from "../tileset";
-import Activity from "../activity";
+import Action from "../action";
 
 // Helps Loads New Tileset Instance
 export class TilesetLoader {
@@ -22,25 +22,36 @@ export class TilesetLoader {
     this.engine = engine;
     this.tilesets = {};
   }
-  // Load Tileset
-  async load(name) {
-    let ts = this.tilesets[name];
-    if (ts) return ts;
+  // Load tileset asynchronously over network
+  async loadRemote(name) {
+    let tileset = this.tilesets[name];
+    if (tileset) return tileset;
     // Generate Tileset
-    this.tilesets[name] = ts = new Tileset(this.engine);
-    ts.name = name;
+    this.tilesets[name] = tileset = new Tileset(this.engine);
+    tileset.name = name;
     // Fetch Image and Apply
     const fileResponse = await fetch(Resources.tilesetRequestUrl(name));
     if (fileResponse.ok) {
       try {
         let content = await fileResponse.json();
-        await ts.onJsonLoaded(content);
+        await tileset.onJsonLoaded(content);
       } catch (e) {
-        console.error("Error parsing tileset '" + ts.name + "' definition");
+        console.error("Error parsing tileset '" + tileset.name + "' definition");
         console.error(e);
       }
     }
     return this.tilesets[name];
+  }
+
+  // Load Tileset Directly (precompiled)
+  async load(type) {
+    let tileset = this.tilesets[type];
+    if (tileset) return tileset;
+    let instance = new Tileset(this.engine);
+    this.tilesets[type] = instance;
+    let json = require("../../scene/tilesets/" + type + ".tileset.jsx")["default"];
+    instance.onJsonLoaded(json);
+    return instance;
   }
 }
 
@@ -79,8 +90,8 @@ export class SpriteLoader {
   }
 }
 
-// Helps Loads New Activity Instance
-export class ActivityLoader {
+// Helps Loads New Action Instance
+export class ActionLoader {
   constructor(engine, type, args, sprite, id, time) {
     this.engine = engine;
     this.type = type;
@@ -97,15 +108,15 @@ export class ActivityLoader {
     }
     return this.load(
       type,
-      function (activity) {
-        activity.onLoad(args);
+      function (action) {
+        action.onLoad(args);
       },
-      function (activity) {
-        activity.configure(type, sprite, id, time, args);
+      function (action) {
+        action.configure(type, sprite, id, time, args);
       }
     );
   }
-  // Load Activity
+  // Load Action
   load(type) {
     let afterLoad = arguments[1];
     let runConfigure = arguments[2];
@@ -113,7 +124,7 @@ export class ActivityLoader {
       this.instances[type] = [];
     }
     // New Instance (assigns properties loaded by type)
-    let instance = new Activity(this.type, this.sprite);
+    let instance = new Action(this.type, this.sprite);
     Object.assign(instance, require("../../scene/activities/" + type + ".jsx")["default"]);
     instance.templateLoaded = true;
     // Notify existing
