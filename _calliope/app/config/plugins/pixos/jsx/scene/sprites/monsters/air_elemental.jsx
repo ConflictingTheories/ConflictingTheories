@@ -11,13 +11,14 @@
 ** ----------------------------------------------- **
 \*                                                 */
 
-import { Vector, set } from "../../../engine/utils/math/vector";
+import { Vector } from "../../../engine/utils/math/vector";
 import Resources from "../../../engine/utils/resources";
 
 export default {
   src: Resources.artResourceUrl("elementals.gif"),
   sheetSize: [64, 128],
   tileSize: [16, 18],
+  // Frame Locations
   frames: {
     up: [
       [0, 0],
@@ -44,6 +45,7 @@ export default {
       [48, 18],
     ],
   },
+  // offsets
   drawOffset: new Vector(0, 1, 0.2),
   hotspotOffset: new Vector(0.5, 0.5, 0),
 };
