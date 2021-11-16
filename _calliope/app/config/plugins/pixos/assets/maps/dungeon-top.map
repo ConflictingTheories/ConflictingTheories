@@ -25,6 +25,6 @@
 	   { "id": "spurt5", "type": "effects/lavaspurt", "pos":[6,7,-1.5], "facing":2 },
 	   { "id": "spurt6", "type": "effects/lavaspurt", "pos":[6,9,-1.5], "facing":2 },
 	   { "id": "spurt8", "type": "effects/lavaspurt", "pos":[9,9,-1.5], "facing":2 },
-	   { "id": "player", "type": "player", "pos":[8,8,-1], "facing":8 }
+	   { "id": "player", "type": "characters/player", "pos":[8,8,-1], "facing":8 }
 	]
 }
