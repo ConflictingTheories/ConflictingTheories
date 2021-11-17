@@ -11,21 +11,23 @@
 ** ----------------------------------------------- **
 \*                                                 */
 
-import React, { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import glEngine from '../engine/core';
-import { Mouse } from "../engine/utils/enums"
-import Keyboard from '../engine/utils/keyboard';
+import React, { useEffect, useRef } from "react";
+import PropTypes from "prop-types";
+import glEngine from "../engine/core";
+import { Mouse } from "../engine/utils/enums";
+import Keyboard from "../engine/utils/keyboard";
 //
 const WebGLView = ({ width, height, SceneProvider, class: string }) => {
   const ref = useRef();
+  const hudRef = useRef();
   let keyboard = new Keyboard();
   let onMouseEvent = SceneProvider.onMouseEvent;
   let onKeyEvent = SceneProvider.onKeyEvent;
 
   useEffect(async () => {
     const canvas = ref.current;
-    const engine = new glEngine(canvas, width, height);
+    const hud = hudRef.current;
+    const engine = new glEngine(canvas, hud, width, height);
     // Initialize Scene
     await engine.init(SceneProvider, keyboard);
     // render loop
@@ -36,18 +38,40 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
     };
   }, [SceneProvider]);
 
-  return <canvas
-    tabIndex={0}
-    ref={ref}
-    width={width}
-    height={height}
-    className={string}
-    onKeyDownCapture={(e)=> onKeyEvent(e.nativeEvent)}
-    onKeyUpCapture={(e) => onKeyEvent(e.nativeEvent)}
-    onContextMenu={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.UP, true, e)}
-    onMouseUp={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.UP, e.nativeEvent.button == 3, e)}
-    onMouseDown={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.DOWN, e.nativeEvent.button == 3, e)}
-    onMouseMove={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.MOVE, e.nativeEvent.button == 3, e)} />;
+  return (
+    <div         style={{ position:'relative' }}
+    >
+    {/* // WEBGL */}
+    <canvas
+        style={{ position:'absolute', zIndex: 1, top: 0, left: 0}}
+        ref={ref}
+        width={width}
+        height={height}
+        className={string}
+      />
+      {/* HUD */}
+      <canvas
+        style={{ zIndex: 2, top: 0, left: 0, background:'none' }}
+        tabIndex={0}
+        ref={hudRef}
+        width={width}
+        height={height}
+        className={string}
+        onKeyDownCapture={(e) => onKeyEvent(e.nativeEvent)}
+        onKeyUpCapture={(e) => onKeyEvent(e.nativeEvent)}
+        onContextMenu={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.UP, true, e)}
+        onMouseUp={(e) =>
+          onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.UP, e.nativeEvent.button == 3, e)
+        }
+        onMouseDown={(e) =>
+          onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.DOWN, e.nativeEvent.button == 3, e)
+        }
+        onMouseMove={(e) =>
+          onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.MOVE, e.nativeEvent.button == 3, e)
+        }
+      />
+    </div>
+  );
 };
 
 WebGLView.propTypes = {

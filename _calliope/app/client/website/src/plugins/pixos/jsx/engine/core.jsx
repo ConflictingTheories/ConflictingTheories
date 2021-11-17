@@ -15,10 +15,11 @@ import { create, rotate, translate, perspective, set } from "./utils/math/matrix
 import { Vector, negate } from "./utils/math/vector";
 import Texture from "./texture";
 export default class GLEngine {
-  constructor(canvas, width, height) {
+  constructor(canvas, hud, width, height) {
     this.uViewMat = create();
     this.uProjMat = create();
     this.canvas = canvas;
+    this.hud = hud;
     this.width = width;
     this.height = height;
     this.modelViewMatrixStack = [];
@@ -32,13 +33,21 @@ export default class GLEngine {
 
   // Initialize a Scene object
   async init(scene, keyboard) {
+    const ctx = this.hud.getContext("2d");
     const gl = this.canvas.getContext("webgl");
     if (!gl) {
       throw new Error("WebGL : unable to initialize");
     }
+    if (!ctx) {
+      throw new Error("Canvas : unable to initialize HUD");
+    }
     this.gl = gl;
+    this.ctx = ctx;
     this.scene = scene;
     this.keyboard = keyboard;
+    // Configure HUD
+    ctx.canvas.width = this.canvas.width;
+    ctx.canvas.height = this.canvas.height;
     // Configure GL
     gl.viewportWidth = this.canvas.width;
     gl.viewportHeight = this.canvas.height;
@@ -133,11 +142,29 @@ export default class GLEngine {
     this.uViewMat = create();
   }
 
+  // clear HUD overlay
+  clearHud() {
+    const { ctx } = this;
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  }
+
+  writeText(text){
+    const { ctx } = this;
+    ctx.font = "20px monospace";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "white";
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.fillText(text, ctx.canvas.width / 2, ctx.canvas.height / 2);
+  }
+
   // Render Frame
   render() {
     this.requestId = requestAnimationFrame(this.render);
     this.clearScreen();
     this.scene.render(this, new Date().getTime());
+    this.clearHud();
+    this.writeText('Hello World!')
   }
 
   // individual buffer
