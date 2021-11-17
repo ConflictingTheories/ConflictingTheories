@@ -12,13 +12,13 @@
 \*                                                 */
 
 import Resources from "../../engine/utils/resources";
+// Tileset Schema
 export default {
   src: Resources.artResourceUrl("sewer.png"),
   sheetSize: [256, 256],
   tileSize: 16,
   bgColor: [31, 20, 29],
   // Tile Locations on resource (based on size)
-  // TODO - Apply Labels for each
   tiles: {
     0: [1, 1],
     1: [2, 2],
@@ -56,7 +56,6 @@ export default {
     102: [0, 6],
   },
   // Geometries for the tileset
-  // TODO - Apply Labels to each Tile
   tileGeometry: {
     0: {
       vertices: [
@@ -1018,3 +1017,4 @@ export default {
     },
   },
 };
+
