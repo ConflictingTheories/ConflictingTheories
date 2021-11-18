@@ -14,6 +14,7 @@
 import { create, rotate, translate, perspective, set } from "./utils/math/matrix4";
 import { Vector, negate } from "./utils/math/vector";
 import Texture from "./texture";
+import { textScrollBox } from "./hud";
 export default class GLEngine {
   constructor(canvas, hud, width, height) {
     this.uViewMat = create();
@@ -43,6 +44,7 @@ export default class GLEngine {
     }
     this.gl = gl;
     this.ctx = ctx;
+    this.time = new Date().getTime();
     this.scene = scene;
     this.keyboard = keyboard;
     // Configure HUD
@@ -148,23 +150,100 @@ export default class GLEngine {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   }
 
-  writeText(text){
+  // Write Text to HUD
+  writeText(text, x, y){
     const { ctx } = this;
+    ctx.save();
     ctx.font = "20px monospace";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "white";
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.fillText(text, ctx.canvas.width / 2, ctx.canvas.height / 2);
+    ctx.fillText(text, x ?? ctx.canvas.width / 2, y ?? ctx.canvas.height / 2);
+    ctx.restore();
   }
+
+  // Scrolling Textbox
+  scrollText(text, options = {}){
+   let txt = new textScrollBox(this.ctx);
+   let time = new Date().getTime();
+   txt.init(text, 10, 2 * this.canvas.height/3, this.canvas.width - 20, this.canvas.height/3 - 20, options);
+   txt.scroll((Math.sin(time/3000) + 1) * txt.maxScroll * 0.5);
+   txt.render();
+  }
+
+  // Draws a button
+  drawButton(x, y, w, h, colours) {
+    const { ctx } = this;
+
+    let halfHeight = h / 2;
+
+    ctx.save();
+
+    // draw the button
+    ctx.fillStyle = colours.background;
+
+    ctx.beginPath();
+    ctx.rect(x, y, w, h);
+    ctx.rect(x, y, w, h);
+    ctx.fill();
+    ctx.clip();
+
+    // light gradient
+    var grad = ctx.createLinearGradient(
+      x, y,
+      x, y + halfHeight
+    );
+    grad.addColorStop(0, 'rgb(221,181,155)');
+    grad.addColorStop(1, 'rgb(22,13,8)');
+    ctx.fillStyle = grad;
+    ctx.globalAlpha = 0.5;
+    ctx.fillRect(x, y, w, h);
+
+    // draw the top half of the button
+    ctx.fillStyle = colours.top;
+
+    // draw the top and bottom particles
+    for (var i = 0; i < h; i += halfHeight) {
+
+      ctx.fillStyle = (i === 0 ? colours.top : colours.bottom);
+
+      for (var j = 0; j < 50; j++) {
+        // get random values for particle
+        var partX = x + Math.random() * w;
+        var partY = y + i + Math.random() * halfHeight;
+        var width = Math.random() * 10;
+        var height = Math.random() * 10;
+        var rotation = Math.random() * 360;
+        var alpha = Math.random();
+
+        ctx.save();
+
+        // rotate the canvas by 'rotation'
+        ctx.translate(partX, partY);
+        ctx.rotate(rotation * Math.PI / 180);
+        ctx.translate(-partX, -partY);
+
+        // set alpha transparency to 'alpha'
+        ctx.globalAlpha = alpha;
+
+        ctx.fillRect(partX, partY, width, height);
+
+        ctx.restore();
+      }
+    }
+
+    ctx.restore();
+  }
+
 
   // Render Frame
   render() {
     this.requestId = requestAnimationFrame(this.render);
     this.clearScreen();
-    this.scene.render(this, new Date().getTime());
     this.clearHud();
+    this.scene.render(this, new Date().getTime());
     this.writeText('Hello World!')
+    this.scrollText("And timmy learned: Tyranny is bad......... Waiting....Waiting..... Waiting....Waiting..... Waiting....Waiting.....Waiting....Waiting..... Waiting....Waiting..... Waiting....Waiting..... Waiting....Waiting..... Waiting....Waiting..... Waiting....Waiting..... Waiting....Waiting..... Waiting....Waiting.....")
   }
 
   // individual buffer
