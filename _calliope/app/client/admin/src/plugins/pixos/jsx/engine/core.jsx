@@ -151,7 +151,7 @@ export default class GLEngine {
   }
 
   // Write Text to HUD
-  writeText(text, x, y){
+  writeText(text, x, y) {
     const { ctx } = this;
     ctx.save();
     ctx.font = "20px monospace";
@@ -163,12 +163,14 @@ export default class GLEngine {
   }
 
   // Scrolling Textbox
-  scrollText(text, options = {}){
-   let txt = new textScrollBox(this.ctx);
-   let time = new Date().getTime();
-   txt.init(text, 10, 2 * this.canvas.height/3, this.canvas.width - 20, this.canvas.height/3 - 20, options);
-   txt.scroll((Math.sin(time/3000) + 1) * txt.maxScroll * 0.5);
-   txt.render();
+  scrollText(text, scrolling = false, options = {}) {
+    let txt = new textScrollBox(this.ctx);
+    txt.init(text, 10, (2 * this.canvas.height) / 3, this.canvas.width - 20, this.canvas.height / 3 - 20, options);
+    if (scrolling) {
+      txt.scroll((Math.sin(new Date().getTime() / 3000) + 1) * txt.maxScroll * 0.5); // default oscillate
+    }
+    txt.render();
+    return txt;
   }
 
   // Draws a button
@@ -189,12 +191,9 @@ export default class GLEngine {
     ctx.clip();
 
     // light gradient
-    var grad = ctx.createLinearGradient(
-      x, y,
-      x, y + halfHeight
-    );
-    grad.addColorStop(0, 'rgb(221,181,155)');
-    grad.addColorStop(1, 'rgb(22,13,8)');
+    var grad = ctx.createLinearGradient(x, y, x, y + halfHeight);
+    grad.addColorStop(0, "rgb(221,181,155)");
+    grad.addColorStop(1, "rgb(22,13,8)");
     ctx.fillStyle = grad;
     ctx.globalAlpha = 0.5;
     ctx.fillRect(x, y, w, h);
@@ -204,8 +203,7 @@ export default class GLEngine {
 
     // draw the top and bottom particles
     for (var i = 0; i < h; i += halfHeight) {
-
-      ctx.fillStyle = (i === 0 ? colours.top : colours.bottom);
+      ctx.fillStyle = i === 0 ? colours.top : colours.bottom;
 
       for (var j = 0; j < 50; j++) {
         // get random values for particle
@@ -220,7 +218,7 @@ export default class GLEngine {
 
         // rotate the canvas by 'rotation'
         ctx.translate(partX, partY);
-        ctx.rotate(rotation * Math.PI / 180);
+        ctx.rotate((rotation * Math.PI) / 180);
         ctx.translate(-partX, -partY);
 
         // set alpha transparency to 'alpha'
@@ -235,15 +233,13 @@ export default class GLEngine {
     ctx.restore();
   }
 
-
   // Render Frame
   render() {
     this.requestId = requestAnimationFrame(this.render);
     this.clearScreen();
     this.clearHud();
     this.scene.render(this, new Date().getTime());
-    this.writeText('Hello World!')
-    this.scrollText("And timmy learned: Tyranny is bad......... Waiting....Waiting..... Waiting....Waiting..... Waiting....Waiting.....Waiting....Waiting..... Waiting....Waiting..... Waiting....Waiting..... Waiting....Waiting..... Waiting....Waiting..... Waiting....Waiting..... Waiting....Waiting..... Waiting....Waiting.....")
+    this.writeText("Hello World!");
   }
 
   // individual buffer

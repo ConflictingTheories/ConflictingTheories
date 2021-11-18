@@ -1,3 +1,5 @@
+export const minecraftia = new FontFace('minecraftia', 'url(/minecraftia.ttf)')
+
 // Scrolling Text Box UI (For Dialogue)
 export class textScrollBox {
   // courtesy of https://stackoverflow.com/questions/44488996/create-a-scrollable-text-inside-canvas
@@ -6,7 +8,7 @@ export class textScrollBox {
     this.dirty = true; // indicates that variouse setting need update
     this.scrollY = 0;
     this.fontSize = 24;
-    this.font = "Arial";
+    this.font = "minecraftia";
     this.align = "left";
     this.background = "#999";
     this.border = {
