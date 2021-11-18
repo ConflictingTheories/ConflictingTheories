@@ -125,7 +125,7 @@ export class ActionLoader {
     }
     // New Instance (assigns properties loaded by type)
     let instance = new Action(this.type, this.sprite);
-    Object.assign(instance, require("../../scene/activities/" + type + ".jsx")["default"]);
+    Object.assign(instance, require("../actions/" + type + ".jsx")["default"]);
     instance.templateLoaded = true;
     // Notify existing
     this.instances[type].forEach(function (instance) {

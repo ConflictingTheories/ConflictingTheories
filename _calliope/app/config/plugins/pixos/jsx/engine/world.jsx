@@ -48,7 +48,7 @@ export default class World {
 
   // Remove Zone
   removeZone(zoneId) {
-    this.zoneList = this.zoneList.filter((zone)=>zone.id !== zoneId);
+    this.zoneList = this.zoneList.filter((zone) => zone.id !== zoneId);
     delete this.zoneDict[zoneId];
   }
 

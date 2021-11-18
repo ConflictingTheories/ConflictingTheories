@@ -72,7 +72,7 @@ export default {
   checkInput: function () {
     let moveTime = 600; // move time in ms
     let facing = Direction.None;
-    switch (this.engine.keyboard.lastPressed("wsad")) {
+    switch (this.engine.keyboard.lastPressed("wsadhm")) {
       case "w":
         facing = Direction.Up;
         break;
@@ -85,6 +85,8 @@ export default {
       case "d":
         facing = Direction.Right;
         break;
+      case "h":
+        return new ActionLoader(this.engine, "dialogue", ["Welcome! You pressed help!", false, {autoclose:true}], this);
       default:
         return null;
     }

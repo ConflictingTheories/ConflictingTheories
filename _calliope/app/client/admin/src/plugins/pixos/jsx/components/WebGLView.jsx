@@ -16,6 +16,7 @@ import PropTypes from "prop-types";
 import glEngine from "../engine/core";
 import { Mouse } from "../engine/utils/enums";
 import Keyboard from "../engine/utils/keyboard";
+import { minecraftia } from "../engine/hud";
 //
 const WebGLView = ({ width, height, SceneProvider, class: string }) => {
   const ref = useRef();
@@ -27,7 +28,11 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
   useEffect(async () => {
     const canvas = ref.current;
     const hud = hudRef.current;
+    // Webgl Engine
     const engine = new glEngine(canvas, hud, width, height);
+    // load fonts
+    await minecraftia.load();
+    document.fonts.add(minecraftia);
     // Initialize Scene
     await engine.init(SceneProvider, keyboard);
     // render loop

@@ -223,7 +223,7 @@ export default class Zone {
   // Update
   tick(time) {
     if (!this.loaded) return;
-    this.spriteList.forEach((sprite) => sprite.tickOuter(time));
+    this.spriteList.forEach(async (sprite) => sprite.tickOuter(time));
   }
 
   // Check for zone inclusion
