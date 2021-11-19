@@ -37,20 +37,12 @@ export default {
     // Handle Input
     this.checkInput(time);
     this.textbox = this.engine.scrollText(this.prompt + this.text, this.scrolling, this.options);
-    this.textbox.scrollLines(this.line);
     return this.completed;
   },
   // Handle Keyboard
   checkInput: function (time) {
-    // throttle keypresses
     if (time > this.lastKey + 100) {
       switch (this.engine.keyboard.lastPressedCode()) {
-        case "ArrowDown":
-          this.line++;
-          break;
-        case "ArrowUp":
-          this.line--;
-          break;
         case "Escape":
           this.completed = true;
           break;
@@ -58,17 +50,19 @@ export default {
           let arr = this.text.split("");
           arr.pop();
           this.text = arr.join("");
+          this.lastKey = time;
           break;
         case "Enter":
           this.engine.setGreeting(this.text);
           this.completed = true;
           break;
       }
+      // debounce keypresses
       // write to chat box
       let char = this.engine.keyboard.lastPressed("abcdefghijklmnopqrstuvwxyz., ");
       if (char) {
-        this.text += "" + char;
         this.lastKey = time;
+        this.text += "" + char;
       }
     }
   },
