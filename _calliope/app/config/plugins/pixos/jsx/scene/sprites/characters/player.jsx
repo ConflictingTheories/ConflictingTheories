@@ -73,7 +73,7 @@ export default {
     let moveTime = 600; // move time in ms
     let facing = Direction.None;
     // Read Key presses
-    switch (this.engine.keyboard.lastPressed("wsadhm")) {
+    switch (this.engine.keyboard.lastPressedKey("wsadhm")) {
       // Movement
       case "w":
         facing = Direction.Up;
@@ -141,4 +141,13 @@ export default {
     if (this.facing == facing || facing === Direction.None) return null;
     return new ActionLoader(this.engine, "face", [facing], this);
   },
+  // set message (for chat bubbles)
+  setGreeting: function(greeting){
+    return new ActionLoader(
+      this.engine,
+      "greeting",
+      [greeting, { autoclose: true }],
+      this
+    );
+  }
 };

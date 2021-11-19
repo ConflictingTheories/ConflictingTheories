@@ -55,12 +55,20 @@ export default class Keyboard {
   }
 
   // Return the last pressed key in keys
-  lastPressedCode() {
-    return Keyboard._instance.activeCodes.pop();
+  lastPressedCode(ignore = "") {
+    let last = Keyboard._instance.activeCodes[Keyboard._instance.activeCodes.length-1];
+    let lower = ignore.toLowerCase();
+    for (let i = 0; i < lower.length; i++) {
+        let index = Keyboard._instance.activeKeys.indexOf(last);
+        if(index < 0){
+          last = Keyboard._instance.activeCodes.pop();
+        }
+    }
+    return last ;
   }
 
   // Return the last pressed key in keys
   lastPressedKey() {
-    return Keyboard._instance.activeKeys.pop();
+    return Keyboard._instance.activeKeys[Keyboard._instance.activeCodes.length-1];
   }
 }
