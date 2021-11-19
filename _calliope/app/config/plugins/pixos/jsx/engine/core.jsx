@@ -24,6 +24,7 @@ export default class GLEngine {
     this.width = width;
     this.height = height;
     this.modelViewMatrixStack = [];
+    this.globalStore = {};
     this.textures = [];
     this.cameraAngle = 45;
     this.cameraPosition = new Vector(0, 0, 0);
@@ -154,12 +155,17 @@ export default class GLEngine {
   writeText(text, x, y) {
     const { ctx } = this;
     ctx.save();
-    ctx.font = "20px monospace";
+    ctx.font = "20px minecraftia";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "white";
     ctx.fillText(text, x ?? ctx.canvas.width / 2, y ?? ctx.canvas.height / 2);
     ctx.restore();
+  }
+
+  // Greeting Text
+  setGreeting(text) {
+    this.globalStore.greeting = text;
   }
 
   // Scrolling Textbox
@@ -239,7 +245,7 @@ export default class GLEngine {
     this.clearScreen();
     this.clearHud();
     this.scene.render(this, new Date().getTime());
-    this.writeText("Hello World!");
+    this.writeText(this.globalStore.greeting ?? ""); // greeting text
   }
 
   // individual buffer

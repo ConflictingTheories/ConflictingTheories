@@ -60,7 +60,8 @@ export default {
           this.text = arr.join("");
           break;
         case "Enter":
-          this.text += "\n";
+          this.engine.setGreeting(this.text);
+          this.completed = true;
           break;
       }
       // write to chat box
