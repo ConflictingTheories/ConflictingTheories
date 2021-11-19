@@ -1,4 +1,4 @@
-export const minecraftia = new FontFace('minecraftia', 'url(/minecraftia.ttf)')
+export const minecraftia = new FontFace("minecraftia", "url(/minecraftia.ttf)");
 
 // Scrolling Text Box UI (For Dialogue)
 export class textScrollBox {
@@ -23,9 +23,8 @@ export class textScrollBox {
     };
     this.fontStyle = "white";
     this.lines = [];
-    // assign options
   }
-
+  // initialize widget
   init(text, x, y, width, height, options = {}) {
     this.text = text;
     this.x = x;
@@ -35,7 +34,7 @@ export class textScrollBox {
     this.setOptions(options);
     this.cleanit();
   }
-
+  // Clean & format text
   cleanit(dontFitText) {
     if (this.dirty) {
       this.setFont();
@@ -46,6 +45,7 @@ export class textScrollBox {
       }
     }
   }
+  // Apply options
   setOptions(options) {
     Object.keys(this).forEach((key) => {
       if (options[key] !== undefined) {
@@ -54,10 +54,12 @@ export class textScrollBox {
       }
     });
   }
+  // Apply font
   setFont() {
     this.fontStr = this.fontSize + "px " + this.font;
     this.textHeight = this.fontSize + Math.ceil(this.fontSize * 0.05);
   }
+  // Get Text Position
   getTextPos() {
     if (this.align === "left") {
       this.textPos = 0;
@@ -67,6 +69,7 @@ export class textScrollBox {
       this.textPos = Math.floor((this.width - -this.scrollBox.width) / 2);
     }
   }
+  // Fit to Text box
   fitText() {
     let { ctx } = this;
     this.cleanit(true); // MUST PASS TRUE or will recurse to call stack overflow
@@ -100,6 +103,7 @@ export class textScrollBox {
     }
     this.maxScroll = (this.lines.length + 0.5) * this.textHeight - this.height;
   }
+  // Draw Textbox border
   drawBorder() {
     let { ctx } = this;
     let bw = this.border.lineWidth / 2;
@@ -108,19 +112,25 @@ export class textScrollBox {
     ctx.strokeStyle = this.border.style;
     ctx.strokeRect(this.x - bw, this.y - bw, this.width + 2 * bw, this.height + 2 * bw);
   }
+  // Draw Scrollbar on the side
   drawScrollBox() {
     let { ctx } = this;
     let scale = this.height / (this.lines.length * this.textHeight);
     ctx.fillStyle = this.scrollBox.background;
-    ctx.fillRect(this.x + this.width - this.scrollBox.width, this.y, this.scrollBox.width, this.height/2);
+    ctx.fillRect(this.x + this.width - this.scrollBox.width, this.y, this.scrollBox.width, this.height);
     ctx.fillStyle = this.scrollBox.color;
+    let barsize = this.height * scale; 
+    if(barsize > this.height){
+      barsize = this.height;
+    }
     ctx.fillRect(
       this.x + this.width - this.scrollBox.width,
       this.y - this.scrollY * scale,
       this.scrollBox.width,
-      this.height * scale
+      barsize
     );
   }
+  // Scroll to position
   scroll(pos) {
     this.cleanit();
     this.scrollY = -pos;
@@ -130,6 +140,17 @@ export class textScrollBox {
       this.scrollY = -this.maxScroll;
     }
   }
+  // Scroll to position
+  scrollLines(x) {
+    this.cleanit();
+    this.scrollY = -this.textHeight * x;
+    if (this.scrollY > 0) {
+      this.scrollY = 0;
+    } else if (this.scrollY < -this.maxScroll) {
+      this.scrollY = -this.maxScroll;
+    }
+  }
+  // Draw
   render() {
     let { ctx } = this;
     this.cleanit();
@@ -137,7 +158,6 @@ export class textScrollBox {
     ctx.textAlign = this.align;
     this.drawBorder();
     ctx.save(); // need this to reset the clip area
-
     ctx.fillStyle = this.background;
     ctx.fillRect(this.x, this.y, this.width, this.height);
     this.drawScrollBox();
@@ -145,13 +165,10 @@ export class textScrollBox {
     ctx.rect(this.x, this.y, this.width - this.scrollBox.width, this.height);
     ctx.clip();
     // Important text does not like being place at fractions of a pixel
-    // make sure you round the y pos;
     ctx.setTransform(1, 0, 0, 1, this.x, Math.floor(this.y + this.scrollY));
     ctx.fillStyle = this.fontStyle;
-
     for (let i = 0; i < this.lines.length; i++) {
       // Important text does not like being place at fractions of a pixel
-      // make sure you round the y pos;
       ctx.fillText(this.lines[i], this.textPos, Math.floor(i * this.textHeight));
     }
     ctx.restore(); // remove the clipping

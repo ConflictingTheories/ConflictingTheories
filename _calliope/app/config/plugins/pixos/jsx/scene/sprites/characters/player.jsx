@@ -72,7 +72,9 @@ export default {
   checkInput: function () {
     let moveTime = 600; // move time in ms
     let facing = Direction.None;
+    // Read Key presses
     switch (this.engine.keyboard.lastPressed("wsadhm")) {
+      // Movement
       case "w":
         facing = Direction.Up;
         break;
@@ -85,18 +87,29 @@ export default {
       case "d":
         facing = Direction.Right;
         break;
+      // Help Dialogue
       case "h":
-        return new ActionLoader(this.engine, "dialogue", ["Welcome! You pressed help!", false, {autoclose:true}], this);
+        return new ActionLoader(
+          this.engine,
+          "dialogue",
+          ["Welcome! You pressed help!", false, { autoclose: true }],
+          this
+        );
+        // Chat Message
+        case "m":
+          return new ActionLoader(
+            this.engine,
+            "chat",
+            [">:", true, { autoclose: false }],
+            this
+          );
       default:
         return null;
     }
-    // Change Direction
-    let faceDir = function (facing) {
-      if (this.facing == facing || facing === Direction.None) return null;
-      return new ActionLoader(this.engine, "face", [facing], this);
-    }.bind(this);
     // Check Direction
-    if (this.facing !== facing) return faceDir(facing);
+    if (this.facing !== facing) {
+      return this.faceDir(facing);
+    }
     // Determine Location
     let from = this.pos;
     let dp = Direction.toOffset(facing);
@@ -104,7 +117,9 @@ export default {
     // Check zones if changing
     if (!this.zone.isInZone(to.x, to.y)) {
       let z = this.zone.world.zoneContaining(to.x, to.y);
-      if (!z || !z.loaded || !z.isWalkable(to.x, to.y, Direction.reverse(facing))) return faceDir(facing);
+      if (!z || !z.loaded || !z.isWalkable(to.x, to.y, Direction.reverse(facing))) {
+        return this.faceDir(facing);
+      }
       return new ActionLoader(
         this.engine,
         "changezone",
@@ -113,8 +128,17 @@ export default {
       );
     }
     // Check Walking
-    if (!this.zone.isWalkable(this.pos.x, this.pos.y, facing)) return faceDir(facing);
-    if (!this.zone.isWalkable(to.x, to.y, Direction.reverse(facing))) return faceDir(facing);
+    if (
+      !this.zone.isWalkable(this.pos.x, this.pos.y, facing) ||
+      !this.zone.isWalkable(to.x, to.y, Direction.reverse(facing))
+    ) {
+      return this.faceDir(facing);
+    }
     return new ActionLoader(this.engine, "move", [this.pos.toArray(), to.toArray(), moveTime], this);
+  },
+  // Set Facing
+  faceDir: function (facing) {
+    if (this.facing == facing || facing === Direction.None) return null;
+    return new ActionLoader(this.engine, "face", [facing], this);
   },
 };
