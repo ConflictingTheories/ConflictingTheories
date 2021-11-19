@@ -16,6 +16,7 @@ export default class Keyboard {
     // Instance
     if (!Keyboard._instance) {
       this.activeKeys = [];
+      this.activeCodes = [];
       this.shift = false;
       Keyboard._instance = this;
     }
@@ -23,8 +24,10 @@ export default class Keyboard {
   }
 
   onKeyDown(e) {
+    e.preventDefault();
     let c = String.fromCharCode(e.keyCode).toLowerCase();
     if (Keyboard._instance.activeKeys.indexOf(c) < 0) Keyboard._instance.activeKeys.push(c);
+    if (Keyboard._instance.activeCodes.indexOf(e.key) < 0) Keyboard._instance.activeCodes.push(e.key);
     Keyboard._instance.shift = e.shiftKey;
   }
 
@@ -32,9 +35,10 @@ export default class Keyboard {
     let c = String.fromCharCode(e.keyCode).toLowerCase();
     let index = Keyboard._instance.activeKeys.indexOf(c);
     Keyboard._instance.activeKeys.splice(index, 1);
+    Keyboard._instance.activeCodes.splice(index, 1);
   }
 
-  // Return the last pressed key in keys
+  // Return the last pressed key from provided keys
   lastPressed(keys) {
     let lower = keys.toLowerCase();
     let max = null;
@@ -48,5 +52,15 @@ export default class Keyboard {
       }
     }
     return max;
+  }
+
+  // Return the last pressed key in keys
+  lastPressedCode() {
+    return Keyboard._instance.activeCodes.pop();
+  }
+
+  // Return the last pressed key in keys
+  lastPressedKey() {
+    return Keyboard._instance.activeKeys.pop();
   }
 }
