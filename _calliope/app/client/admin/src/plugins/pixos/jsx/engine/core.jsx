@@ -11,6 +11,7 @@
 ** ----------------------------------------------- **
 \*                                                 */
 
+import React from "react";
 import { create, rotate, translate, perspective, set } from "./utils/math/matrix4.jsx";
 import { Vector, negate } from "./utils/math/vector.jsx";
 import Texture from "./texture.jsx";
@@ -30,7 +31,7 @@ export default class GLEngine {
     this.textures = [];
     this.speeches = [];
     this.cameraAngle = 45;
-    this.cameraPosition = new Vector(0, 0, 0);
+    this.cameraPosition = new Vector(8, 8, -1);
     this.cameraOffset = new Vector(0, 0, 0);
     this.setCamera = this.setCamera.bind(this);
     this.render = this.render.bind(this);
@@ -248,7 +249,7 @@ export default class GLEngine {
     this.clearScreen();
     this.clearHud();
     this.scene.render(this, new Date().getTime());
-    this.writeText(this.globalStore.greeting ?? ""); // greeting text
+    // this.writeText(this.globalStore.greeting ?? ""); // greeting text
   }
 
   // individual buffer

@@ -51,12 +51,13 @@ export default {
   drawOffset: new Vector(-0.25, 1, 0.125),
   hotspotOffset: new Vector(0.5, 0.5, 0),
   // Should the camera follow the player?
-  bindCamera: true,
+  bindCamera: false,
   // Update
   tick: function (time) {
     // console.log('sprite', this);
 
-    if (!this.actionList.length) { // ONLY ONE MOVE AT A TIME
+    if (!this.actionList.length) {
+      // ONLY ONE MOVE AT A TIME
       let ret = this.checkInput();
       if (ret) {
         // Send action to the server
@@ -89,6 +90,12 @@ export default {
       case "d":
         facing = Direction.Right;
         break;
+      case "b":
+        this.bindCamera = true;
+        break;
+      case "c":
+        this.bindCamera = false;
+        break;
       // Help Dialogue
       case "h":
         return new ActionLoader(
@@ -97,14 +104,9 @@ export default {
           ["Welcome! You pressed help!", false, { autoclose: true }],
           this
         );
-        // Chat Message
-        case "m":
-          return new ActionLoader(
-            this.engine,
-            "chat",
-            [">:", true, { autoclose: false }],
-            this
-          );
+      // Chat Message
+      case "m":
+        return new ActionLoader(this.engine, "chat", [">:", true, { autoclose: false }], this);
       default:
         return null;
     }
@@ -144,12 +146,7 @@ export default {
     return new ActionLoader(this.engine, "face", [facing], this);
   },
   // set message (for chat bubbles)
-  setGreeting: function(greeting){
-    return new ActionLoader(
-      this.engine,
-      "greeting",
-      [greeting, { autoclose: true }],
-      this
-    );
-  }
+  setGreeting: function (greeting) {
+    return new ActionLoader(this.engine, "greeting", [greeting, { autoclose: true }], this);
+  },
 };
