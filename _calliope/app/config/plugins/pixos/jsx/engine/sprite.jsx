@@ -85,9 +85,11 @@ export default class Sprite {
     if (this.loaded || !this.zone.tileset.loaded || !this.texture.loaded) return;
 
     this.init(); // Hook for sprite implementations
+    this.speech.clearHud();
+    this.speech.writeText(this.id);
+    this.speech.loadImage();
     this.loaded = true;
     this.onLoadActions.run();
-    this.speech.writeText(this.id);
     console.log("Initialized sprite '" + this.id + "' in zone '" + this.zone.id + "'");
   }
 
@@ -120,14 +122,13 @@ export default class Sprite {
 
   // speech bubble position
   getSpeechBubbleVertices() {
-    console.log(this, this.pos)
     return [
       this.pos.add(new Vector(...[-1, 3, 3])).toArray(),
       this.pos.add(new Vector(...[1, 3, 3])).toArray(),
       this.pos.add(new Vector(...[1, 3, 5])).toArray(),
       this.pos.add(new Vector(...[-1, 3, 3])).toArray(),
       this.pos.add(new Vector(...[-1, 3, 5])).toArray(),
-      this.pos.add(new Vector(...[1, 3, 5])).toArray()
+      this.pos.add(new Vector(...[1, 3, 5])).toArray(),
     ].flat(3);
   }
 

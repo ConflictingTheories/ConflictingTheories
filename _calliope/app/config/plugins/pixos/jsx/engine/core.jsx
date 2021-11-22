@@ -288,8 +288,9 @@ export default class GLEngine {
 
   // load texture
   loadSpeech(src, canvas) {
+    console.log('requesting speech', src)
     if (this.speeches[src]) return this.speeches[src];
-    this.speeches[src] = new Speech(canvas, this);
+    this.speeches[src] = new Speech(canvas, this, src);
     return this.speeches[src];
   }
 

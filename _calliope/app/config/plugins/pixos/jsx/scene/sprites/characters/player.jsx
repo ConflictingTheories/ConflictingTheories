@@ -147,6 +147,9 @@ export default {
   },
   // set message (for chat bubbles)
   setGreeting: function (greeting) {
+    this.speech.clearHud();
+    this.speech.writeText(greeting);
+    this.speech.loadImage();
     return new ActionLoader(this.engine, "greeting", [greeting, { autoclose: true }], this);
   },
 };

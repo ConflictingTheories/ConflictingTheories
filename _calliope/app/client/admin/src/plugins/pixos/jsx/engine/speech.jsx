@@ -14,7 +14,8 @@
 import ActionQueue from "./queue.jsx";
 import { textScrollBox } from "./hud.jsx";
 export default class Speech {
-  constructor(canvas, engine) {
+  constructor(canvas, engine, id) {
+    this.id = id;
     this.engine = engine;
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
@@ -53,7 +54,6 @@ export default class Speech {
     gl.uniform1i(this.engine.shaderProgram.samplerUniform, 0);
   }
 
-
   // clear HUD overlay
   clearHud() {
     const { ctx } = this;
@@ -70,11 +70,6 @@ export default class Speech {
     ctx.fillStyle = "white";
     ctx.fillText(text, x ?? ctx.canvas.width / 2, y ?? ctx.canvas.height / 2);
     ctx.restore();
-  }
-
-  // Greeting Text
-  setGreeting(text) {
-    this.globalStore.greeting = text;
   }
 
   // Scrolling Textbox
