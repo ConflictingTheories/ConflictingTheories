@@ -15,17 +15,20 @@ import { create, rotate, translate, perspective, set } from "./utils/math/matrix
 import { Vector, negate } from "./utils/math/vector.jsx";
 import Texture from "./texture.jsx";
 import { textScrollBox } from "./hud.jsx";
+import Speech from "./speech.jsx";
 export default class GLEngine {
-  constructor(canvas, hud, width, height) {
+  constructor(canvas, hud, mipmap, width, height) {
     this.uViewMat = create();
     this.uProjMat = create();
     this.canvas = canvas;
     this.hud = hud;
+    this.mipmap = mipmap;
     this.width = width;
     this.height = height;
     this.modelViewMatrixStack = [];
     this.globalStore = {};
     this.textures = [];
+    this.speeches = [];
     this.cameraAngle = 45;
     this.cameraPosition = new Vector(0, 0, 0);
     this.cameraOffset = new Vector(0, 0, 0);
@@ -282,11 +285,38 @@ export default class GLEngine {
     return this.textures[src];
   }
 
+  // load texture
+  loadSpeech(src, canvas) {
+    if (this.speeches[src]) return this.speeches[src];
+    this.speeches[src] = new Speech(canvas, this);
+    return this.speeches[src];
+  }
+
   // push new matrix to model stack
   mvPushMatrix() {
     let copy = create();
     set(this.uViewMat, copy);
     this.modelViewMatrixStack.push(copy);
+  }
+
+  // Initalize Canvas from HUD and load as WebGL texture (TODO - make separate canvases)
+  initCanvasTexture() {
+    let { gl } = this;
+    let canvasTexture = gl.createTexture();
+    this.handleLoadedTexture(canvasTexture, this.mipmap);
+    return canvasTexture;
+  }
+
+  // Load canvas as texture
+  handleLoadedTexture(texture, textureCanvas) {
+    let { gl } = this;
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, textureCanvas); // This is the important line!
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+    gl.generateMipmap(gl.TEXTURE_2D);
+    gl.bindTexture(gl.TEXTURE_2D, null);
   }
 
   // pop model stack and apply view

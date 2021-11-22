@@ -23,7 +23,7 @@ export default {
   },
   // Update & Scroll
   tick: function (time) {
-    console.log('action', this);
+    // console.log('action', this);
     if (!this.loaded) return;
     // Check for Dialogue Completion (TODO - manual triggers + scroll / sections)
     if (this.options && this.options.autoclose) {
