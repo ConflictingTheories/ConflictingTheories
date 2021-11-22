@@ -54,7 +54,7 @@ export default {
   bindCamera: true,
   // Update
   tick: function (time) {
-    console.log('sprite', this);
+    // console.log('sprite', this);
 
     if (!this.actionList.length) { // ONLY ONE MOVE AT A TIME
       let ret = this.checkInput();

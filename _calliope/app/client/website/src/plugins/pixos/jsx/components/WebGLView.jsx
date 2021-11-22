@@ -21,6 +21,7 @@ import { minecraftia } from "../engine/hud.jsx";
 const WebGLView = ({ width, height, SceneProvider, class: string }) => {
   const ref = useRef();
   const hudRef = useRef();
+  const mmRef = useRef();
   let keyboard = new Keyboard();
   let onMouseEvent = SceneProvider.onMouseEvent;
   let onKeyEvent = SceneProvider.onKeyEvent;
@@ -28,8 +29,9 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
   useEffect(async () => {
     const canvas = ref.current;
     const hud = hudRef.current;
+    const mipmap = mmRef.current;
     // Webgl Engine
-    const engine = new glEngine(canvas, hud, width, height);
+    const engine = new glEngine(canvas, hud, mipmap, width, height);
     // load fonts
     await minecraftia.load();
     document.fonts.add(minecraftia);
@@ -44,11 +46,10 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
   }, [SceneProvider]);
 
   return (
-    <div         style={{ position:'relative' }}
-    >
-    {/* // WEBGL */}
-    <canvas
-        style={{ position:'absolute', zIndex: 1, top: 0, left: 0}}
+    <div style={{ position: "relative" }}>
+      {/* // WEBGL */}
+      <canvas
+        style={{ position: "absolute", zIndex: 1, top: 0, left: 0 }}
         ref={ref}
         width={width}
         height={height}
@@ -56,7 +57,7 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
       />
       {/* HUD */}
       <canvas
-        style={{ zIndex: 2, top: 0, left: 0, background:'none' }}
+        style={{ zIndex: 2, top: 0, left: 0, background: "none" }}
         tabIndex={0}
         ref={hudRef}
         width={width}
@@ -75,6 +76,8 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
           onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.MOVE, e.nativeEvent.button == 3, e)
         }
       />
+      {/* MIPMAP */}
+      <canvas style={{ display: "none" }} ref={mmRef} width={128} height={128} />
     </div>
   );
 };
