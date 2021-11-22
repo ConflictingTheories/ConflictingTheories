@@ -87,7 +87,7 @@ export default class Sprite {
     this.init(); // Hook for sprite implementations
     this.loaded = true;
     this.onLoadActions.run();
-
+    this.speech.writeText(this.id);
     console.log("Initialized sprite '" + this.id + "' in zone '" + this.zone.id + "'");
   }
 
