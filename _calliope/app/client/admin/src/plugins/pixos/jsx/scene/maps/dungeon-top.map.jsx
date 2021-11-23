@@ -213,7 +213,7 @@ export default {
   ],
   // Sprites and Objects to be Loaded in the Scene & their Starting Points (includes effect tiles)
   sprites: [
-    { id: "air", type: "monsters/darkness", pos: new Vector(...[10, 2, 0]), facing: 8 },
+    { id: "darkness", type: "monsters/darkness", pos: new Vector(...[10, 2, 0]), facing: 8 },
     { id: "air", type: "monsters/air-knight", pos: new Vector(...[8, 2, 0]), facing: 8 },
     { id: "fire", type: "monsters/fire-knight", pos: new Vector(...[2, 8, 0]), facing: 1 },
     { id: "earth", type: "monsters/earth-knight", pos: new Vector(...[14, 8, 0]), facing: 4 },
