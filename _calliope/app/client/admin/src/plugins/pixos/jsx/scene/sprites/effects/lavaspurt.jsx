@@ -30,6 +30,7 @@ export default {
       [80, 144],
     ],
   },
+  enableSpeech: false,
   drawOffset: new Vector(0, 1, 0.001),
   hotspotOffset: new Vector(0.5, 0.5, 0),
   lastTime: 0,

@@ -45,6 +45,7 @@ export default {
       [48, 18],
     ],
   },
+  enableSpeech: true,
   // Offsets
   drawOffset: new Vector(0, 1, 0.2),
   hotspotOffset: new Vector(0.5, 0.5, 0),

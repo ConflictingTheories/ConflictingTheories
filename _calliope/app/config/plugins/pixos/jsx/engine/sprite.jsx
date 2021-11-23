@@ -54,9 +54,11 @@ export default class Sprite {
     this.texture.runWhenLoaded(this.onTilesetOrTextureLoaded.bind(this));
     this.vertexTexBuf = this.engine.createBuffer(this.getTexCoords(), this.engine.gl.DYNAMIC_DRAW, 2);
     // // Speech bubble
-    this.speech = this.engine.loadSpeech(this.id, this.engine.mipmap);
-    this.speech.runWhenLoaded(this.onTilesetOrTextureLoaded.bind(this));
-    this.speechTexBuf = this.engine.createBuffer(this.getSpeechBubbleTexture(), this.engine.gl.DYNAMIC_DRAW, 2);
+    if(this.enableSpeech){
+      this.speech = this.engine.loadSpeech(this.id, this.engine.mipmap);
+      this.speech.runWhenLoaded(this.onTilesetOrTextureLoaded.bind(this));
+      this.speechTexBuf = this.engine.createBuffer(this.getSpeechBubbleTexture(), this.engine.gl.DYNAMIC_DRAW, 2);
+    }
     //
     this.zone.tileset.runWhenDefinitionLoaded(this.onTilesetDefinitionLoaded.bind(this));
   }
@@ -76,7 +78,9 @@ export default class Sprite {
       [v[2], v[0], v[1]],
     ].flat(3);
     this.vertexPosBuf = this.engine.createBuffer(poly, this.engine.gl.STATIC_DRAW, 3);
-    this.speechVerBuf = this.engine.createBuffer(this.getSpeechBubbleVertices(), this.engine.gl.STATIC_DRAW, 3);
+    if(this.enableSpeech){
+      this.speechVerBuf = this.engine.createBuffer(this.getSpeechBubbleVertices(), this.engine.gl.STATIC_DRAW, 3);
+    }
     this.zone.tileset.runWhenLoaded(this.onTilesetOrTextureLoaded.bind(this));
   }
 
@@ -85,9 +89,11 @@ export default class Sprite {
     if (this.loaded || !this.zone.tileset.loaded || !this.texture.loaded) return;
 
     this.init(); // Hook for sprite implementations
-    this.speech.clearHud();
-    this.speech.writeText(this.id);
-    this.speech.loadImage();
+    if( this.enableSpeech){
+      this.speech.clearHud();
+      this.speech.writeText(this.id);
+      this.speech.loadImage();
+    }
     this.loaded = true;
     this.onLoadActions.run();
     console.log("Initialized sprite '" + this.id + "' in zone '" + this.zone.id + "'");
@@ -151,21 +157,23 @@ export default class Sprite {
     this.engine.gl.depthFunc(this.engine.gl.LESS);
     this.engine.mvPopMatrix();
     // Draw Speech
-    this.engine.mvPushMatrix();
-    // Undo rotation so that character plane is normal to LOS
-    translate(this.engine.uViewMat, this.engine.uViewMat, this.drawOffset.toArray());
-    translate(this.engine.uViewMat, this.engine.uViewMat, this.pos.toArray());
-    rotate(this.engine.uViewMat, this.engine.uViewMat, this.engine.degToRad(this.engine.cameraAngle), [1, 0, 0]);
-    // Bind texture for speech bubble
-    this.engine.bindBuffer(this.vertexPosBuf, this.engine.shaderProgram.vertexPositionAttribute);
-    this.engine.bindBuffer(this.speechTexBuf, this.engine.shaderProgram.textureCoordAttribute);
-    this.speech.attach();
-    // // Draw Speech
-    this.engine.shaderProgram.setMatrixUniforms();
-    this.engine.gl.depthFunc(this.engine.gl.ALWAYS);
-    this.engine.gl.drawArrays(this.engine.gl.TRIANGLES, 0, this.vertexPosBuf.numItems);
-    this.engine.gl.depthFunc(this.engine.gl.LESS);
-    this.engine.mvPopMatrix();
+    if(this.enableSpeech){
+      this.engine.mvPushMatrix();
+      // Undo rotation so that character plane is normal to LOS
+      translate(this.engine.uViewMat, this.engine.uViewMat, this.drawOffset.toArray());
+      translate(this.engine.uViewMat, this.engine.uViewMat, this.pos.toArray());
+      rotate(this.engine.uViewMat, this.engine.uViewMat, this.engine.degToRad(this.engine.cameraAngle), [1, 0, 0]);
+      // Bind texture for speech bubble
+      this.engine.bindBuffer(this.vertexPosBuf, this.engine.shaderProgram.vertexPositionAttribute);
+      this.engine.bindBuffer(this.speechTexBuf, this.engine.shaderProgram.textureCoordAttribute);
+      this.speech.attach();
+      // // Draw Speech
+      this.engine.shaderProgram.setMatrixUniforms();
+      this.engine.gl.depthFunc(this.engine.gl.ALWAYS);
+      this.engine.gl.drawArrays(this.engine.gl.TRIANGLES, 0, this.vertexPosBuf.numItems);
+      this.engine.gl.depthFunc(this.engine.gl.LESS);
+      this.engine.mvPopMatrix();
+    }
   }
 
   // Set Frame
