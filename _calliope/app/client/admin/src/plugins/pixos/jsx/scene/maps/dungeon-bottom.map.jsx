@@ -194,7 +194,7 @@ export default {
   ],
   // Sprites and Objects to be Loaded in the Scene & their Starting Points
   sprites: [
-    { id: "water", type: "monsters/water_elemental", pos: new Vector(...[8, 13, 0]), facing: 2 },
+    { id: "water", type: "monsters/water-knight", pos: new Vector(...[8, 13, 0]), facing: 2 },
     { id: "spurt7", type: "effects/lavaspurt", pos: new Vector(...[7, 10, -1.5]), facing: 2 },
     { id: "spurt9", type: "effects/lavaspurt", pos: new Vector(...[10, 10, -1.5]), facing: 2 },
   ],
