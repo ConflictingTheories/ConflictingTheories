@@ -15,7 +15,7 @@ import { Vector } from "../../../engine/utils/math/vector.jsx";
 import Resources from "../../../engine/utils/resources.jsx";
 
 export default {
-  src: Resources.artResourceUrl("elementals.gif"),
+  src: Resources.artResourceUrl("elementals-2.gif"),
   sheetSize: [64, 128],
   tileSize: [16, 18],
   // Frame Locations
