@@ -15,7 +15,7 @@ import { Vector } from "../../../engine/utils/math/vector.jsx";
 import Resources from "../../../engine/utils/resources.jsx";
 export default {
   // Character art from http://opengameart.org/content/chara-seth-scorpio
-  src: Resources.artResourceUrl("darkness.gif"),
+  src: Resources.artResourceUrl("water-knight.gif"),
   sheetSize: [128, 256],
   tileSize: [24, 32],
   // Frames & Faces
