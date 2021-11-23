@@ -47,6 +47,7 @@ export default {
       [24, 96],
     ],
   },
+  enableSpeech: true,
   // Offsets
   drawOffset: new Vector(-0.25, 1, 0.125),
   hotspotOffset: new Vector(0.5, 0.5, 0),
@@ -76,7 +77,7 @@ export default {
     let moveTime = 600; // move time in ms
     let facing = Direction.None;
     // Read Key presses
-    switch (this.engine.keyboard.lastPressedKey("wsadhm")) {
+    switch (this.engine.keyboard.lastPressedKey("wsadhmp")) {
       // Movement
       case "w":
         facing = Direction.Up;
@@ -107,6 +108,9 @@ export default {
       // Chat Message
       case "m":
         return new ActionLoader(this.engine, "chat", [">:", true, { autoclose: false }], this);
+      case "p":
+        let to = new Vector(this.pos.x, this.pos.y + 1, this.pos.z);
+        return new ActionLoader(this.engine, "patrol", [this.pos.toArray(), to.toArray(), 600], this);
       default:
         return null;
     }
