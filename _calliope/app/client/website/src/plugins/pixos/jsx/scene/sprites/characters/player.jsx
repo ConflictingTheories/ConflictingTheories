@@ -110,7 +110,7 @@ export default {
         return new ActionLoader(this.engine, "chat", [">:", true, { autoclose: false }], this);
       case "p":
         let to = new Vector(8, 13, this.pos.z);
-        return new ActionLoader(this.engine, "patrol", [this.pos.toArray(), to.toArray(), 600], this);
+        return new ActionLoader(this.engine, "patrol", [this.pos.toArray(), to.toArray(), 600, this.zone], this);
       default:
         return null;
     }
