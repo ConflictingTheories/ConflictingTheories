@@ -16,9 +16,9 @@ import { ActionLoader } from "../utils/loaders.jsx";
 import { Direction } from "../../engine/utils/enums.jsx";
 
 export default {
-  init: function (from, to, length) {
+  init: function (from, to, length, zone) {
     console.log("loading - patrol");
-
+    this.zone = zone;
     this.from = new Vector(...from);
     this.to = new Vector(...to);
     this.lastKey = new Date().getTime();
@@ -40,7 +40,12 @@ export default {
     if (time > endTime + 2 * this.length) {
       let move = this.moveList[this.moveIndex];
       if (this.moveList.length > 2) {
-        let last = this.moveIndex == 0 ? this.moveList[this.moveIndex + 1] : this.moveList[this.moveIndex - 1];
+        let last =
+          this.moveIndex == 0
+            ? this.moveList[this.moveIndex + 1]
+            : this.moveIndex + 1 >= this.moveList.length
+            ? this.moveList[this.moveList.length - 1]
+            : this.moveList[this.moveIndex - 1];
         let facing = Direction.fromOffset([Math.round(move[0] - last[0]), Math.round(move[1] - last[1])]);
         // Check for zone change
         if (!this.sprite.zone.isInZone(move[0], move[1])) {
@@ -52,12 +57,12 @@ export default {
               this.sprite.engine,
               "changezone",
               [this.sprite.zone.id, this.sprite.pos.toArray(), zone.id, this.to.toArray(), this.length],
-              this
+              this.sprite
             );
           }
         } else {
           // Load Next move
-          this.currentAction = new ActionLoader(this.sprite.engine, "move", this.moveList[this.moveIndex], this.sprite);
+          this.currentAction = new ActionLoader(this.sprite.engine, "move", [last, move, this.length], this.sprite);
         }
         // set facing
         if (this.currentAction) {
