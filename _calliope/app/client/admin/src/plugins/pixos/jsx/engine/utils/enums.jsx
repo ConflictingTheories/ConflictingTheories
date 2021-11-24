@@ -63,6 +63,20 @@ export const Direction = {
     return Direction.None;
   },
 
+  rotate(dir, ccw = false) {
+    switch (dir) {
+      case Direction.Right:
+        return ccw ? Direction.Top : Direction.Down;
+      case Direction.Up:
+        return ccw ? Direction.Left : Direction.Right;
+      case Direction.Left:
+        return ccw ? Direction.Down : Direction.Top;
+      case Direction.Down:
+        return ccw ? Direction.Right : Direction.Left;
+    }
+    return Direction.None;
+  },
+
   spriteSequence(dir) {
     switch (dir) {
       case Direction.Right:
