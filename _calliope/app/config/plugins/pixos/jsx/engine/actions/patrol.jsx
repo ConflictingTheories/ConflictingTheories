@@ -21,8 +21,8 @@ export default {
 
     this.from = new Vector(...from);
     this.to = new Vector(...to);
-    this.completed = false;
     this.lastKey = new Date().getTime();
+    this.completed = false;
 
     // TODO -- Implement A-star Pathfinding -
     // --> build move list based on passed in points

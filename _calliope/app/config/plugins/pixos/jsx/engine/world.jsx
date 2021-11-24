@@ -71,4 +71,49 @@ export default class World {
     }
     return null;
   }
+
+  /**
+   * Finds a path if one exists between two points on the world
+   * @param Vector from
+   * @param Vector to
+   */
+  pathfind(from, to) {
+    let moveList = [from];
+    let currentPos = 0;
+    let startZone = this.zoneContaining(from.x, from.y);
+    // Trivial solution
+    if (from.x == to.x && from.y == to.y) return moveList;
+    // Calculate Path
+    if (startZone.isInZone(to.x, to.y)) {
+      // Simpler
+      // -- No zone changes
+      // ----------
+      // Determine Bounds to work within
+      let bounds = startZone.bounds;
+      // Determine walkability options
+      // Select Path with Best liklihood
+      // Add to moveList
+      // Increment Pos
+      // Check if at Target
+      // If there Return move list
+      // If not Repeat
+      // If unable to move forward, pop off stack and move back
+      // If unable to move and at the start - return false
+    } else {
+      // Complex - Zone Changes
+      // -- needs optimization and definite improvement
+      // -----------
+      // Determine Bounds from all zones (** rounded to nearest zone boundary between points in bounding box)
+      // ----
+      // Determine walkability options
+      // Select Path with Best liklihood
+      // Add to moveList
+      // Increment Pos
+      // Check if at Target
+      // If there Return move list
+      // If not Repeat
+      // If unable to move forward, pop off stack and move back
+      // If unable to move and at the start - return false
+    }
+  }
 }
