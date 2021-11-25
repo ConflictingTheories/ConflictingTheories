@@ -14,6 +14,7 @@
 import { Vector, set, lerp } from "../../engine/utils/math/vector.jsx";
 import { ActionLoader } from "../utils/loaders.jsx";
 import { Direction } from "../../engine/utils/enums.jsx";
+import { AudioLoader } from "../utils/loaders.jsx";
 
 export default {
   init: function (from, to, length, zone) {
@@ -24,13 +25,17 @@ export default {
     this.lastKey = new Date().getTime();
     this.completed = false;
     this.direction = 1;
+    this.audio = new AudioLoader('/pixos/audio/seed.mp3');
     // Determine Path to Walk
-    [this.hasMoves, this.moveList] = this.sprite.zone.world.pathFind(from, to, this.sprite.facing);
+    [this.hasMoves, this.moveList] = this.sprite.zone.world.pathFind(from, to);
     if (!this.hasMoves) {
       this.completed = true; // no path - do not patrol
     }
     this.moveIndex = 1; // holds index position
     this.length = length; // length of time per move
+    if(this.zone.audio)
+      this.zone.audio.pauseAudio();
+    this.audio.playAudio();
   },
   tick: function (time) {
     if (!this.loaded) return;
@@ -75,6 +80,9 @@ export default {
       if (this.moveIndex + this.direction >= this.moveList.length) {
         this.direction *= -1;
         this.completed = true;
+        if(this.zone.audio)
+          this.zone.audio.playAudio();
+        this.audio.pauseAudio();
       }
       this.moveIndex += this.direction;
       this.startTime = time;

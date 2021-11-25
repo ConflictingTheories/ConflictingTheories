@@ -13,7 +13,7 @@
 import { Direction } from "./utils/enums.jsx";
 import Resources from "./utils/resources.jsx";
 import ActionQueue from "./queue.jsx";
-import { SpriteLoader, TilesetLoader } from "./utils/loaders.jsx";
+import { SpriteLoader, TilesetLoader, AudioLoader } from "./utils/loaders.jsx";
 
 export default class Zone {
   constructor(zoneId, world) {
@@ -30,6 +30,7 @@ export default class Zone {
     this.onTilesetDefinitionLoaded = this.onTilesetDefinitionLoaded.bind(this);
     this.onTilesetOrSpriteLoaded = this.onTilesetOrSpriteLoaded.bind(this);
     this.loadSprite = this.loadSprite.bind(this);
+    this.checkInput = this.checkInput.bind(this);
   }
 
   // Load Map Resource from URL
@@ -62,15 +63,17 @@ export default class Zone {
     try {
       // Extract and Read in Information
       let data = require("../scene/maps/" + this.id + ".map.jsx")["default"];
-      this.bounds = data.bounds;
-      this.size = [data.bounds[2] - data.bounds[0], data.bounds[3] - data.bounds[1]];
-      this.cells = data.cells;
+      Object.assign(this, data);
+      if (this.audioSrc) {
+        this.audio = new AudioLoader(this.audioSrc);
+      }
       // Load tileset and create level geometry & trigger updates
-      this.tileset = await this.tsLoader.load(data.tileset);
+      this.size = [this.bounds[2] - this.bounds[0], this.bounds[3] - this.bounds[1]];
+      this.tileset = await this.tsLoader.load(this.tileset);
       this.tileset.runWhenDefinitionLoaded(this.onTilesetDefinitionLoaded.bind(this));
       this.tileset.runWhenLoaded(this.onTilesetOrSpriteLoaded.bind(this));
       // Load sprites from tileset
-      await Promise.all(data.sprites.map(this.loadSprite));
+      await Promise.all(this.sprites.map(this.loadSprite));
       // Notify the zone sprites when the new sprite has loaded
       this.spriteList.forEach((sprite) => sprite.runWhenLoaded(this.onTilesetOrSpriteLoaded.bind(this)));
     } catch (e) {
@@ -117,7 +120,7 @@ export default class Zone {
   // run after each tileset / sprite is loaded
   onTilesetOrSpriteLoaded() {
     if (this.loaded || !this.tileset.loaded || !this.spriteList.every((sprite) => sprite.loaded)) return;
-    console.log("Initialized zone '" + this.id + "'");
+    console.log("Initialized zone '" + this + "'");
     this.loaded = true;
     this.onLoadActions.run();
   }
@@ -223,7 +226,17 @@ export default class Zone {
   // Update
   tick(time) {
     if (!this.loaded) return;
+    this.checkInput(time);
     this.spriteList.forEach(async (sprite) => sprite.tickOuter(time));
+  }
+
+  checkInput(time) {
+    switch (this.engine.keyboard.lastPressedKey("o")) {
+      case "o":
+        if(this.audio)
+          this.audio.playAudio();
+        break;
+    } // play audio
   }
 
   // Check for zone inclusion

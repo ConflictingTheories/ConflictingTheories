@@ -18,6 +18,7 @@ import { Vector } from "../../engine/utils/math/vector.jsx";
 export default {
   bounds: [0, 10, 17, 19],
   tileset: "sewer",
+  audioSrc: "/pixos/audio/blue-fields.mp3",
   // (0,10) -> (17,19) (X, Y) (9 Rows x 17 Column)
   cells: [
     ...[
