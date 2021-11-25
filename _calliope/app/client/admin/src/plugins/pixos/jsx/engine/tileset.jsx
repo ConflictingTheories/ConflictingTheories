@@ -10,7 +10,6 @@
 **               All Rights Reserved.              **
 ** ----------------------------------------------- **
 \*                                                 */
-
 import ActionQueue from "./queue.jsx";
 export default class Tileset {
   constructor(engine) {
@@ -50,8 +49,7 @@ export default class Tileset {
     this.texture = this.engine.loadTexture(this.src);
     this.texture.runWhenLoaded(this.onTextureLoaded);
     // set background colour
-    if (this.bgColor)
-      this.engine.gl.clearColor(this.bgColor[0] / 255, this.bgColor[1] / 255, this.bgColor[2] / 255, 1.0);
+    if (this.bgColor) this.engine.gl.clearColor(this.bgColor[0] / 255, this.bgColor[1] / 255, this.bgColor[2] / 255, 1.0);
   }
 
   // run when loaded
@@ -72,7 +70,9 @@ export default class Tileset {
   getTileTexCoords(id, texId) {
     let tileOffset = this.tiles[texId];
     let size = [this.tileSize / this.sheetSize[0], this.tileSize / this.sheetSize[1]];
-    return this.tileGeometry[id].tiles.map((poly) => poly.map((vertex) => [(vertex[0] + tileOffset[0]) * size[0], (vertex[1] + tileOffset[1]) * size[1]])).flat(3);
+    return this.tileGeometry[id].tiles
+      .map((poly) => poly.map((vertex) => [(vertex[0] + tileOffset[0]) * size[0], (vertex[1] + tileOffset[1]) * size[1]]))
+      .flat(3);
   }
 
   // determine walkability

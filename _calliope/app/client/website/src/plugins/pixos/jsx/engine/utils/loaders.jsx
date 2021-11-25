@@ -142,3 +142,37 @@ export class ActionLoader {
     return instance;
   }
 }
+
+export class AudioLoader {
+  constructor(src) {
+    this.src = src;
+    this.audio = new Audio(src);
+    this.audio.load();
+  }
+  playAudio() {
+    const audioPromise = this.audio.play();
+    if (audioPromise !== undefined) {
+      audioPromise
+        .then((_) => {
+          // autoplay started
+        })
+        .catch((err) => {
+          // catch dom exception
+          console.info(err);
+        });
+    }
+  }
+  pauseAudio() {
+    const audioPromise = this.audio.pause();
+    if (audioPromise !== undefined) {
+      audioPromise
+        .then((_) => {
+          // autoplay started
+        })
+        .catch((err) => {
+          // catch dom exception
+          console.info(err);
+        });
+    }
+  }
+}
