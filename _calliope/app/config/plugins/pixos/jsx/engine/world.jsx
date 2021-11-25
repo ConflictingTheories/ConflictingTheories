@@ -78,110 +78,92 @@ export default class World {
    * @param Vector from
    * @param Vector to
    */
-  pathfind(from, to, initialFace = Direction.Right) {
-    let moveList = [[from[0], from[1], 600]];
-    let prevLocations = [[from[0], from[1], 600]];
-    let currentPos = 0;
-    let startZone = this.zoneContaining(from[0], from[1]);
-    let facing = initialFace;
-    // Trivial solution
-    if (from[0] == to[0] && from[1] == to[1]) return moveList;
-    // Calculate Path
-    if (startZone.isInZone(to[0], to[1])) {
-      // Same Zone
-      single: while (true) {
-        // Determine walkability options
-        // if we are there - exit
-        let placement = moveList[currentPos];
-        if (placement[0] == to[0] && placement[1] == to[1]) break;
-        // Determine walkability options
-        // check adjacent tiles (ignoring previously visited, with a preference for Clockwise)
-        let offset = Direction.toOffset(facing);
-        let newSpot = [placement[0] + offset[0], placement[1] + offset[1]];
-        let zone = startZone;
-        // If we have hit a dead end - we will need to backtrack a bit
-        if (prevLocations.includes(newSpot)) {
-          if (moveList.length > 1) {
-            // check a new direction that has been checked
-            for (let i = 0; i < 4; i++) {
-              facing = Direction.rotate(facing);
-              offset = Direction.toOffset(facing);
-              newSpot = [placement[0] + offset[0], placement[1] + offset[1]];
-              if (prevLocations.includes(newSpot)) {
-                continue;
-              }
-              // found one
-              if (zone.isWalkable(...newSpot, facing)) {
-                moveList.push([...newSpot, 600]); // add move
-                currentPos++;
-                continue single;
-              }
-            }
-            // nothing found move back
-            moveList.pop();
-            currentPos--;
-            continue;
-          } else {
-            return false; // no luck - could not find or walk anywhere.
-          }
-        }
-        // otherwise keep moving
-        if (zone.isWalkable(...newSpot, facing)) {
-          moveList.push([...newSpot, 600]); // add move
-          currentPos++;
-        } else {
-          facing = Direction.rotate(facing);
-        }
-        prevLocations.push(moveList[currentPos]); // track locations visited
-      }
-    } else {
-      // Different Zone
-      multi: while (true) {
-        // if we are there - exit
-        let placement = moveList[currentPos];
-        if (placement[0] == to[0] && placement[1] == to[1]) break;
-        // Determine walkability options
-        // check adjacent tiles (ignoring previously visited, with a preference for Clockwise)
-        let offset = Direction.toOffset(facing);
-        let newSpot = [placement[0] + offset[0], placement[1] + offset[1]];
-        let zone = this.zoneContaining(...newSpot);
-        // If we have hit a dead end - we will need to backtrack a bit
-        if (prevLocations.includes(newSpot)) {
-          if (moveList.length > 1) {
-            // check a new direction that has been checked
-            for (let i = 0; i < 4; i++) {
-              facing = Direction.rotate(facing);
-              offset = Direction.toOffset(facing);
-              newSpot = [placement[0] + offset[0], placement[1] + offset[1]];
-              zone = this.zoneContaining(...newSpot);
-              if (prevLocations.includes(newSpot)) {
-                continue;
-              }
-              // found one
-              if (zone.isWalkable(...newSpot, facing)) {
-                moveList.push([...newSpot, 600]); // add move
-                currentPos++;
-                continue multi;
-              }
-            }
-            // nothing found move back
-            moveList.pop();
-            currentPos--;
-            continue;
-          } else {
-            return false; // no luck - could not find or walk anywhere.
-          }
-        }
-        // otherwise keep moving
-        if (zone.isWalkable(...newSpot, facing)) {
-          moveList.push([...newSpot, 600]); // add move
-          currentPos++;
-        } else {
-          facing = Direction.rotate(facing);
-        }
-        prevLocations.push(moveList[currentPos]); // track locations visited
-      }
-      return moveList;
+  pathFind(from, to) {
+    let steps = [],
+      visited = [],
+      found = false,
+      world = this,
+      x = from[0],
+      y = from[1];
+    // loop through tiles
+    function loop(neighbour, path) {
+      console.log(neighbour);
+      if (found) return false; // ignore anything further
+      if (neighbour[0] == to[0] && neighbour[1] == to[1]) {
+        found = true;
+        console.log("goal!");
+        return [true, [...path, to]];
+      } // return if found
+      if (visited.indexOf(JSON.stringify(neighbour)) >= 0) return false; // already visited
+      let zone = world.zoneContaining(...neighbour);
+      if (!zone || !zone.isWalkable(...neighbour)) return false; // can we walk
+      visited.push(JSON.stringify(neighbour)); // if so we can visit it
+      return world
+        .getNeighbours(...neighbour)
+        .map((neigh) => {
+          return loop(neigh, [...path, [neighbour[0], neighbour[1], 600]]);
+        })
+        .filter((x) => x)
+        .flat();
     }
+    // Fetch Steps
+    steps = world
+      .getNeighbours(x, y)
+      .map((neighbour) => {
+        return loop(neighbour, [[from[0], from[1], 600]]);
+      })
+      .filter((x) => {
+        console.log(x);
+        return x[0];
+      });
+    // Flatten Path from Segments
+    return steps.flat();
+  }
+
+  /**
+   *  Gets adjacencies
+   * @param int x
+   * @param int y
+   */
+  getNeighbours(x, y) {
+    let top = [x, y + 1, Direction.Up],
+      bottom = [x, y - 1, Direction.Down],
+      left = [x - 1, y, Direction.Left],
+      right = [x + 1, y, Direction.Right];
+    return [top, left, right, bottom];
   }
 }
+
+// Pathfinding Algorithm
+// ---------------------
+// Start Point
+// Goal
+
+// Path []
+// Current Point
+
+// --- Func
+//
+// Get Neighbours - Foreach Neighbour
+//  - Check Neighbour
+//    - Check Goal
+//        - Found it - Return Path
+//        - Else
+//          - Get Neighbours
+
+// ----
+
+// GetNeighbours (x, y){
+//    results = []
+//    top = (x,y+1)
+//    bottom = (x,y-1)
+//    left = (x-1,y)
+//    right = (x+1,y)
+//
+//    for each above
+//      if (isWalkable()) add to results
+//
+//    return results
+// }
+
+// ----
