@@ -146,7 +146,7 @@ export default class World {
         let newSpot = [placement[0] + offset[0], placement[1] + offset[1]];
         let zone = this.zoneContaining(...newSpot);
         // If we have hit a dead end - we will need to backtrack a bit
-        if (prevLocations.includes(newSpot)) {
+        if (prevLocations.includes([...newSpot, 600])) {
           if (moveList.length > 1) {
             // check a new direction that has been checked
             for (let i = 0; i < 4; i++) {
@@ -161,6 +161,7 @@ export default class World {
               if (zone.isWalkable(...newSpot, facing)) {
                 moveList.push([...newSpot, 600]); // add move
                 currentPos++;
+                i = 0;
                 continue multi;
               }
             }
@@ -184,4 +185,90 @@ export default class World {
       return moveList;
     }
   }
+
+  //
+  pathFind(from, to) {
+    let steps = [],
+      visited = [],
+      found = false,
+      world = this,
+      x = from[0],
+      y = from[1];
+    // loop through tiles
+    function loop(neighbour, path) {
+      console.log(neighbour);
+      if (found) return false; // ignore anything further
+      if (neighbour[0] == to[0] && neighbour[1] == to[1]) {
+        found = true;
+        console.log("goal!");
+        return [true, [...path, to]];
+      } // return if found
+      if (visited.indexOf(JSON.stringify(neighbour)) >= 0) return false; // already visited
+      let zone = world.zoneContaining(...neighbour);
+      if (!zone || !zone.isWalkable(...neighbour)) return false; // can we walk
+      visited.push(JSON.stringify(neighbour)); // if so we can visit it
+      return world
+        .getNeighbours(...neighbour)
+        .map((neigh) => {
+          return loop(neigh, [...path, [neighbour[0], neighbour[1], 600]]);
+        })
+        .filter((x) => x)
+        .flat();
+    }
+    // Fetch Steps
+    steps = world
+      .getNeighbours(x, y)
+      .map((neighbour) => {
+        return loop(neighbour, [[from[0], from[1], 600]]);
+      })
+      .filter((x) => {
+        console.log(x);
+        return x[0];
+      });
+    // Flatten Path from Segments
+    return steps.flat();
+  }
+
+  //
+  getNeighbours(x, y) {
+    let top = [x, y + 1, Direction.Up],
+      bottom = [x, y - 1, Direction.Down],
+      left = [x - 1, y, Direction.Left],
+      right = [x + 1, y, Direction.Right];
+    return [top, left, right, bottom];
+  }
 }
+
+// Pathfinding Algorithm
+// ---------------------
+// Start Point
+// Goal
+
+// Path []
+// Current Point
+
+// --- Func
+//
+// Get Neighbours - Foreach Neighbour
+//  - Check Neighbour
+//    - Check Goal
+//        - Found it - Return Path
+//        - Else
+//          - Get Neighbours
+
+// ----
+
+// GetNeighbours (x, y){
+//    results = []
+//    top = (x,y+1)
+//    bottom = (x,y-1)
+//    left = (x-1,y)
+//    right = (x+1,y)
+//
+//    for each above
+//      if (isWalkable()) add to results
+//
+//    return results
+// }
+
+// ----

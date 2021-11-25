@@ -17,7 +17,7 @@ import { Direction } from "../../engine/utils/enums.jsx";
 
 export default {
   init: function (from, to, length, zone) {
-    console.log("loading - patrol");
+    console.log("loading - patrol", arguments);
     this.zone = zone;
     this.from = new Vector(...from);
     this.to = new Vector(...to);
@@ -25,8 +25,8 @@ export default {
     this.completed = false;
     this.direction = 1;
     // Determine Path to Walk
-    this.moveList = this.sprite.zone.world.pathfind(from, to, this.sprite.facing);
-    if (!this.moveList) {
+    [this.hasMoves, this.moveList] = this.sprite.zone.world.pathFind(from, to, this.sprite.facing);
+    if (!this.hasMoves) {
       this.completed = true; // no path - do not patrol
     }
     this.moveIndex = 1; // holds index position
@@ -40,6 +40,7 @@ export default {
     if (time > endTime + 2 * this.length) {
       let move = this.moveList[this.moveIndex];
       if (this.moveList.length > 2) {
+        // last position (for facing)
         let last =
           this.moveIndex == 0
             ? this.moveList[this.moveIndex + 1]
@@ -56,7 +57,7 @@ export default {
             this.currentAction = new ActionLoader(
               this.sprite.engine,
               "changezone",
-              [this.sprite.zone.id, this.sprite.pos.toArray(), zone.id, this.to.toArray(), this.length],
+              [this.sprite.zone.id, this.sprite.pos.toArray(), zone.id, move, this.length],
               this.sprite
             );
           }
@@ -70,9 +71,10 @@ export default {
           this.sprite.addAction(this.currentAction);
         }
       }
-      // patrol back and forth
-      if (this.moveIndex + this.direction >= this.moveList.length || this.moveIndex == 0) {
+      // stop when done
+      if (this.moveIndex + this.direction >= this.moveList.length) {
         this.direction *= -1;
+        this.completed = true;
       }
       this.moveIndex += this.direction;
       this.startTime = time;
