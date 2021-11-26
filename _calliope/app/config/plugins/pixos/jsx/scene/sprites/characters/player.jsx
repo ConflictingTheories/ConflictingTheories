@@ -137,7 +137,6 @@ export default {
     }
     // Check Walking
     if (
-      !this.zone.isWalkable(this.pos.x, this.pos.y, facing) ||
       !this.zone.isWalkable(to.x, to.y, Direction.reverse(facing))
     ) {
       return this.faceDir(facing);
