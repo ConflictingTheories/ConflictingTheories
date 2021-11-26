@@ -89,33 +89,33 @@ export default class World {
       x = from[0],
       y = from[1];
     // loop through tiles
-    function loop(neighbour, path) {
+    function buildPath(neighbour, path) {
+      let jsonNeighbour = JSON.stringify([neighbour[0], neighbour[1]]);
       if (found) return false; // ignore anything further
       if (neighbour[0] == to[0] && neighbour[1] == to[1]) {
         // found it
         found = true;
         // if final location is blocked, stop in front
-        if (!world.canWalk(neighbour, jsonNeighbour)) {
-          [found, [...path]];
+        if (!world.canWalk(neighbour, jsonNeighbour, visited)) {
+          return [found, [...path]];
         }
         // otherwise return whole path
         return [found, [...path, to]];
       }
       // Check walkability
-      let jsonNeighbour = JSON.stringify([neighbour[0], neighbour[1]]);
-      if (!world.canWalk) return false;
+      if (!world.canWalk(neighbour, jsonNeighbour, visited)) return false;
       // Visit Node & continue Search
       visited.push(jsonNeighbour);
       return world
         .getNeighbours(...neighbour)
-        .map((neigh) => loop(neigh, [...path, [neighbour[0], neighbour[1], 600]]))
+        .map((neigh) => buildPath(neigh, [...path, [neighbour[0], neighbour[1], 600]]))
         .filter((x) => x)
         .flat();
     }
     // Fetch Steps
     steps = world
       .getNeighbours(x, y)
-      .map((neighbour) => loop(neighbour, [[from[0], from[1], 600]]))
+      .map((neighbour) => buildPath(neighbour, [[from[0], from[1], 600]]))
       .filter((x) => x[0]);
     // Flatten Path from Segments
     return steps.flat();
@@ -135,7 +135,7 @@ export default class World {
   }
 
   // Should we skip?
-  canWalk(neighbour, jsonNeighbour) {
+  canWalk(neighbour, jsonNeighbour, visited) {
     let zone = this.zoneContaining(...neighbour);
     if (
       visited.indexOf(jsonNeighbour) >= 0 ||

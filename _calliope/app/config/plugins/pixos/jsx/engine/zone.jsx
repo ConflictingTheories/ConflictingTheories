@@ -131,7 +131,6 @@ export default class Zone {
     let newSprite = await this.spriteLoader.load(data.type, (sprite) => sprite.onLoad(data));
     this.spriteDict[data.id] = newSprite;
     this.spriteList.push(newSprite);
-    this.walkability[newSprite.pos.x *]
   }
 
   // Add an existing sprite to the zone
