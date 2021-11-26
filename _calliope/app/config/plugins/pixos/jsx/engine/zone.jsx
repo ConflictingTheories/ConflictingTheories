@@ -131,6 +131,7 @@ export default class Zone {
     let newSprite = await this.spriteLoader.load(data.type, (sprite) => sprite.onLoad(data));
     this.spriteDict[data.id] = newSprite;
     this.spriteList.push(newSprite);
+    this.walkability[newSprite.pos.x *]
   }
 
   // Add an existing sprite to the zone
@@ -247,6 +248,10 @@ export default class Zone {
   // Cell Walkable
   isWalkable(x, y, direction) {
     if (!this.isInZone(x, y)) return null;
+    // if sprite is
+    for(let sprite in this.spriteDict){
+      if(!this.spriteDict[sprite].walkable && this.spriteDict[sprite].pos.x === x && this.spriteDict[sprite].pos.y === y) return false;
+    }
     return (this.walkability[(y - this.bounds[1]) * this.size[0] + x - this.bounds[0]] & direction) != 0;
   }
 }

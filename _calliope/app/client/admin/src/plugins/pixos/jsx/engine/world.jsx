@@ -22,6 +22,8 @@ export default class World {
     this.zoneList = [];
     this.afterTickActions = new ActionQueue();
     this.sortZones = this.sortZones.bind(this);
+    this.canWalk = this.canWalk.bind(this);
+    this.pathFind = this.pathFind.bind(this);
   }
 
   // push action into next frame
@@ -79,6 +81,7 @@ export default class World {
    * @param Vector to
    */
   pathFind(from, to) {
+    // memory
     let steps = [],
       visited = [],
       found = false,
@@ -87,36 +90,33 @@ export default class World {
       y = from[1];
     // loop through tiles
     function loop(neighbour, path) {
-      console.log(neighbour);
       if (found) return false; // ignore anything further
       if (neighbour[0] == to[0] && neighbour[1] == to[1]) {
+        // found it
         found = true;
-        console.log("goal!");
-        return [true, [...path, to]];
-      } // return if found
-      let jsonNeighbour = JSON.stringify([neighbour[0],neighbour[1]])
-      if (visited.indexOf(jsonNeighbour) >= 0) return false; // already visited
-      let zone = world.zoneContaining(...neighbour);
-      if (!zone || !zone.isWalkable(...neighbour) || !zone.isWalkable(neighbour[0],neighbour[1], Direction.reverse(neighbour[2]))) return false; // can we walk
-      visited.push(jsonNeighbour); // if so we can visit it
+        // if final location is blocked, stop in front
+        if (!world.canWalk(neighbour, jsonNeighbour)) {
+          [found, [...path]];
+        }
+        // otherwise return whole path
+        return [found, [...path, to]];
+      }
+      // Check walkability
+      let jsonNeighbour = JSON.stringify([neighbour[0], neighbour[1]]);
+      if (!world.canWalk) return false;
+      // Visit Node & continue Search
+      visited.push(jsonNeighbour);
       return world
         .getNeighbours(...neighbour)
-        .map((neigh) => {
-          return loop(neigh, [...path, [neighbour[0], neighbour[1], 600]]);
-        })
+        .map((neigh) => loop(neigh, [...path, [neighbour[0], neighbour[1], 600]]))
         .filter((x) => x)
         .flat();
     }
     // Fetch Steps
     steps = world
       .getNeighbours(x, y)
-      .map((neighbour) => {
-        return loop(neighbour, [[from[0], from[1], 600]]);
-      })
-      .filter((x) => {
-        console.log(x);
-        return x[0];
-      });
+      .map((neighbour) => loop(neighbour, [[from[0], from[1], 600]]))
+      .filter((x) => x[0]);
     // Flatten Path from Segments
     return steps.flat();
   }
@@ -132,6 +132,20 @@ export default class World {
       left = [x - 1, y, Direction.Left],
       right = [x + 1, y, Direction.Right];
     return [top, left, right, bottom];
+  }
+
+  // Should we skip?
+  canWalk(neighbour, jsonNeighbour) {
+    let zone = this.zoneContaining(...neighbour);
+    if (
+      visited.indexOf(jsonNeighbour) >= 0 ||
+      !zone ||
+      !zone.isWalkable(...neighbour) ||
+      !zone.isWalkable(neighbour[0], neighbour[1], Direction.reverse(neighbour[2]))
+    ) {
+      return false;
+    }
+    return true;
   }
 }
 
