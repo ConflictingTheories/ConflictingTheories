@@ -94,10 +94,11 @@ export default class World {
         console.log("goal!");
         return [true, [...path, to]];
       } // return if found
-      if (visited.indexOf(JSON.stringify(neighbour)) >= 0) return false; // already visited
+      let jsonNeighbour = JSON.stringify([neighbour[0],neighbour[1]])
+      if (visited.indexOf(jsonNeighbour) >= 0) return false; // already visited
       let zone = world.zoneContaining(...neighbour);
-      if (!zone || !zone.isWalkable(...neighbour || !zone.isWalkable(neighbour[0],neighbour[1], Direction.reverse(neighbour[2])))) return false; // can we walk
-      visited.push(JSON.stringify(neighbour)); // if so we can visit it
+      if (!zone || !zone.isWalkable(...neighbour) || !zone.isWalkable(neighbour[0],neighbour[1], Direction.reverse(neighbour[2]))) return false; // can we walk
+      visited.push(jsonNeighbour); // if so we can visit it
       return world
         .getNeighbours(...neighbour)
         .map((neigh) => {
