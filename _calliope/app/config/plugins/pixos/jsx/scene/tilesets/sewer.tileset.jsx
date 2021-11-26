@@ -56,6 +56,7 @@ export default {
     102: [0, 6],
   },
   // Geometries for the tileset
+  // type --> walkability -- 1/0 --> [down,left,up,right]
   tileGeometry: {
     0: {
       vertices: [
@@ -82,7 +83,7 @@ export default {
           [0, 0],
         ],
       ],
-      type: 15,
+      type: parseInt("1111",2),
     },
     1: {
       vertices: [
@@ -109,7 +110,7 @@ export default {
           [0, 0],
         ],
       ],
-      type: 0,
+      type: parseInt("0000",2),
     },
     50: {
       vertices: [
@@ -308,7 +309,7 @@ export default {
           [0, 0, 0],
         ],
       ],
-      type: 5,
+      type: parseInt("0101",2),
     },
     51: {
       vertices: [
@@ -507,7 +508,7 @@ export default {
           [0, 0, 1],
         ],
       ],
-      type: 10,
+      type: parseInt("1010",2),
     },
     52: {
       vertices: [
@@ -706,7 +707,7 @@ export default {
           [0, 0, 1],
         ],
       ],
-      type: 5,
+      type: parseInt("0101",2),
     },
     53: {
       vertices: [
@@ -905,7 +906,7 @@ export default {
           [0, 0, 0],
         ],
       ],
-      type: 10,
+      type: parseInt("1010",2),
     },
     100: {
       vertices: [
@@ -932,7 +933,7 @@ export default {
           [0, 0],
         ],
       ],
-      type: 11,
+      type: parseInt("1011",2),
     },
     102: {
       vertices: [
@@ -959,7 +960,7 @@ export default {
           [0, 0],
         ],
       ],
-      type: 7,
+      type: parseInt("0111",2),
     },
     104: {
       vertices: [
@@ -986,7 +987,7 @@ export default {
           [0, 0],
         ],
       ],
-      type: 14,
+      type: parseInt("1110",2),
     },
     106: {
       vertices: [
@@ -1013,7 +1014,7 @@ export default {
           [0, 0],
         ],
       ],
-      type: 13,
+      type: parseInt("1101",2),
     },
   },
 };

@@ -96,7 +96,7 @@ export default class World {
       } // return if found
       if (visited.indexOf(JSON.stringify(neighbour)) >= 0) return false; // already visited
       let zone = world.zoneContaining(...neighbour);
-      if (!zone || !zone.isWalkable(...neighbour)) return false; // can we walk
+      if (!zone || !zone.isWalkable(...neighbour || !zone.isWalkable(neighbour[0],neighbour[1], Direction.reverse(neighbour[2])))) return false; // can we walk
       visited.push(JSON.stringify(neighbour)); // if so we can visit it
       return world
         .getNeighbours(...neighbour)
