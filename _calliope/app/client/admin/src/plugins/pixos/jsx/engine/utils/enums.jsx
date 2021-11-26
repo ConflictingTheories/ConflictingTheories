@@ -20,12 +20,12 @@ export const Mouse = {
 
 // Directions enumeration & methods
 export const Direction = {
-  None: 0,
-  Right: 1,
-  Up: 2,
-  Left: 4,
-  Down: 8,
-  All: 15,
+  None: 0,  //0000
+  Right: 1, //0001
+  Up: 2,    //0010
+  Left: 4,  //0100
+  Down: 8,  //1000
+  All: 15,  //1111
 
   fromOffset(dp) {
     if (dp[0] > 0) return Direction.Right;

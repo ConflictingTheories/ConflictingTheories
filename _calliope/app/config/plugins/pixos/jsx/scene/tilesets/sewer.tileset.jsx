@@ -58,6 +58,7 @@ export default {
   // Geometries for the tileset
   // type --> walkability -- 1/0 --> [down,left,up,right]
   tileGeometry: {
+    // All
     0: {
       vertices: [
         [
@@ -85,6 +86,7 @@ export default {
       ],
       type: parseInt("1111",2),
     },
+    // None
     1: {
       vertices: [
         [
@@ -112,6 +114,7 @@ export default {
       ],
       type: parseInt("0000",2),
     },
+    
     50: {
       vertices: [
         [
