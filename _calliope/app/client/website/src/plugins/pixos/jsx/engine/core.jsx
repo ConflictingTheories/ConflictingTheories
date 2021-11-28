@@ -249,7 +249,6 @@ export default class GLEngine {
     this.clearScreen();
     this.clearHud();
     this.scene.render(this, new Date().getTime());
-    // this.writeText(this.globalStore.greeting ?? ""); // greeting text
   }
 
   // individual buffer

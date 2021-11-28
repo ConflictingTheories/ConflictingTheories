@@ -35,6 +35,7 @@ export default {
     }
     // Handle Input
     this.checkInput();
+    this.sprite.speech.scrollText(this.text, this.scrolling, this.options);
     this.textbox = this.engine.scrollText(this.text, this.scrolling, this.options);
     // Callback on Completion
     if (this.completed && this.options.onClose) {

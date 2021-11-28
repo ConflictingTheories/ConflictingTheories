@@ -55,7 +55,7 @@ export default {
         case "Enter":
           this.engine.setGreeting(this.text);
           this.sprite.speech.clearHud();
-          this.sprite.speech.writeText(this.text)
+          this.sprite.speech.scrollText(this.text, true)
           this.sprite.speech.loadImage();
           this.completed = true;
           break;
