@@ -13,7 +13,7 @@
 import { Vector, set } from "./utils/math/vector.jsx";
 import { Direction } from "./utils/enums.jsx";
 import ActionQueue from "./queue.jsx";
-
+import { ActionLoader } from "./utils/loaders.jsx";
 import { rotate, translate } from "./utils/math/matrix4.jsx";
 
 export default class Sprite {
@@ -241,5 +241,19 @@ export default class Sprite {
     // If completion handler passed through - call it when done
     if (finish) finish(true);
     return ret;
+  }
+
+  // Set Facing
+  faceDir(facing) {
+    if (this.facing == facing || facing === Direction.None) return null;
+    return new ActionLoader(this.engine, "face", [facing], this);
+  }
+
+  // set message (for chat bubbles)
+  setGreeting(greeting) {
+    this.speech.clearHud();
+    this.speech.writeText(greeting);
+    this.speech.loadImage();
+    return new ActionLoader(this.engine, "greeting", [greeting, { autoclose: true }], this);
   }
 }

@@ -14,35 +14,40 @@
 import { Vector } from "../../../engine/utils/math/vector.jsx";
 import { translate, rotate } from "../../../engine/utils/math/matrix4.jsx";
 import Resources from "../../../engine/utils/resources.jsx";
-export default {
-  // Character art from http://opengameart.org/content/twelve-16x18-rpg-character-sprites-including-npcs-and-elementals
-  src: Resources.artResourceUrl("sewer.gif"),
-  sheetSize: [256, 256],
-  tileSize: [16, 16],
-  // Frames
-  frames: {
-    up: [
-      [0, 144],
-      [16, 144],
-      [32, 144],
-      [48, 144],
-      [64, 144],
-      [80, 144],
-    ],
-  },
-  enableSpeech: false,
-  drawOffset: new Vector(0, 1, 0.001),
-  hotspotOffset: new Vector(0.5, 0.5, 0),
-  lastTime: 0,
-  accumTime: 0,
-  blowTime: 0,
-  frameTime: 150,
+import Sprite from "../../../engine/sprite.jsx";
+
+export default class Spurt extends Sprite {
+  constructor(engine) {
+    // Initialize Sprite
+    super(engine);
+    this.src = Resources.artResourceUrl("sewer.gif");
+    this.sheetSize = [256, 256];
+    this.tileSize = [16, 16];
+    // Frames
+    this.frames = {
+      up: [
+        [0, 144],
+        [16, 144],
+        [32, 144],
+        [48, 144],
+        [64, 144],
+        [80, 144],
+      ],
+    };
+    this.enableSpeech = false;
+    this.drawOffset = new Vector(0, 1, 0.001);
+    this.hotspotOffset = new Vector(0.5, 0.5, 0);
+    this.lastTime = 0;
+    this.accumTime = 0;
+    this.blowTime = 0;
+    this.frameTime = 150;
+  }
   // Initialize
-  init: function () {
+  init() {
     this.blowTime = 1000 + Math.random() * 5000;
-  },
+  }
   // Update each frame
-  tick: function (time) {
+  tick(time) {
     if (this.lastTime == 0) {
       this.lastTime = time;
       return;
@@ -59,9 +64,9 @@ export default {
       this.accumTime = 0;
       this.lastTime = time;
     }
-  },
+  }
   // Draw Frame
-  draw: function (engine) {
+  draw(engine) {
     if (!this.loaded) return;
     engine.mvPushMatrix();
     translate(engine.uViewMat, engine.uViewMat, this.pos.toArray());
@@ -75,5 +80,5 @@ export default {
     engine.shaderProgram.setMatrixUniforms();
     engine.gl.drawArrays(engine.gl.TRIANGLES, 0, this.vertexPosBuf.numItems);
     engine.mvPopMatrix();
-  },
-};
+  }
+}

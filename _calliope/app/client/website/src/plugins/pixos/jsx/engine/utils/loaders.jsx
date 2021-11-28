@@ -70,8 +70,9 @@ export class SpriteLoader {
       this.instances[type] = [];
     }
     // New Instance
-    let instance = new Sprite(this.engine);
-    Object.assign(instance, require("../../scene/sprites/" + type + ".jsx")["default"]);
+    let Type = require("../../scene/sprites/" + type + ".jsx")["default"];
+    console.log(Type, type)
+    let instance = new Type(this.engine);
     instance.templateLoaded = true;
     // Update Existing
     this.instances[type].forEach(function (instance) {

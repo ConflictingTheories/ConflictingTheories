@@ -13,62 +13,50 @@
 
 import { Vector } from "../../../engine/utils/math/vector.jsx";
 import Resources from "../../../engine/utils/resources.jsx";
-import { ActionLoader } from "../../../engine/utils/loaders.jsx";
-export default {
-  // Character art from http://opengameart.org/content/twelve-16x18-rpg-character-sprites-including-npcs-and-elementals
-  src: Resources.artResourceUrl("elementals.gif"),
-  sheetSize: [64, 128],
-  tileSize: [16, 18],
-  // Frame Positions
-  frames: {
-    up: [
-      [0, 54],
-      [16, 54],
-      [32, 54],
-      [48, 54],
-    ],
-    right: [
-      [0, 72],
-      [16, 72],
-      [32, 72],
-      [16, 72],
-    ],
-    down: [
-      [0, 90],
-      [16, 90],
-      [32, 90],
-      [16, 90],
-    ],
-    left: [
-      [48, 54],
-      [48, 72],
-      [48, 90],
-      [48, 72],
-    ],
-  },
-  enableSpeech: true,
-  // Offsets
-  drawOffset: new Vector(0, 1, 0.2),
-  hotspotOffset: new Vector(0.5, 0.5, 0),
-  // Interactions
-  state: "intro",
-  interact: function (finish) {
-    let ret = null;
-    // React based on internal state
-    switch (this.state) {
-      case "intro":
-        ret = new ActionLoader(
-          this.engine,
-          "dialogue",
-          ["MWahaaga!", false, { autoclose: true, onClose: () => finish(true) }],
-          this
-        );
-        break;
-      default:
-        break;
-    }
-    // If completion handler passed through - call it when done
-    if (finish) finish(false);
-    return ret;
-  },
-};
+import Sprite from "../../../engine/sprite.jsx";
+export default class WaterElemental extends Sprite {
+  constructor(engine) {
+    // Initialize Sprite
+    super(engine);
+    // Character art from http://opengameart.org/content/chara-seth-scorpio
+    this.src = Resources.artResourceUrl("elementals.gif");
+    this.sheetSize = [64, 128];
+    this.tileSize = [16, 18];
+    // Offsets
+    this.drawOffset = new Vector(0, 1, 0.2);
+    this.hotspotOffset = new Vector(0.5, 0.5, 0);
+    // Frames & Faces
+    this.frames = {
+      up: [
+        [0, 54],
+        [16, 54],
+        [32, 54],
+        [48, 54],
+      ],
+      right: [
+        [0, 72],
+        [16, 72],
+        [32, 72],
+        [16, 72],
+      ],
+      down: [
+        [0, 90],
+        [16, 90],
+        [32, 90],
+        [16, 90],
+      ],
+      left: [
+        [48, 54],
+        [48, 72],
+        [48, 90],
+        [48, 72],
+      ],
+    };
+    // Should the camera follow the player?
+    this.bindCamera = false;
+    // enable speech
+    this.enableSpeech = true;
+    // Interaction Management
+    this.state = "intro";
+  }
+}
