@@ -20,6 +20,7 @@ export default {
     this.scrolling = scrolling;
     this.options = options;
     this.completed = false;
+    this.loaded = true;
   },
   // Update & Scroll
   tick: function (time) {
@@ -35,6 +36,10 @@ export default {
     // Handle Input
     this.checkInput();
     this.textbox = this.engine.scrollText(this.text, this.scrolling, this.options);
+    // Callback on Completion
+    if (this.completed && this.options.onClose) {
+      this.options.onClose();
+    }
     return this.completed;
   },
   // Handle Keyboard

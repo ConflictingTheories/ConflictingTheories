@@ -58,4 +58,10 @@ class Pixos extends Component {
     );
   }
 }
-export default collect(Pixos);
+
+// export default collect(Pixos);
+export default () => {
+  return (
+      <Pixos />
+  )
+}

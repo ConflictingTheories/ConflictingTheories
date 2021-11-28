@@ -4233,10 +4233,10 @@ calliope-mermaid@^0.1.7:
   dependencies:
     react-mermaid2 "^0.1.4"
 
-calliope-pixos@0.1.7:
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/calliope-pixos/-/calliope-pixos-0.1.7.tgz#e48e0ee54b87ef4afb5eb9ded82a4ae1cbcee3c6"
-  integrity sha512-FNCVjqaXc1NMlFl3GgoKj1XtT4VbHxOI77ey1rMGZEd+bCqXek6FOma5ql+LcR0zrl8SRv3YM0ZKSlVcauef1Q==
+calliope-pixos@0.1.39:
+  version "0.1.39"
+  resolved "https://registry.yarnpkg.com/calliope-pixos/-/calliope-pixos-0.1.39.tgz#078850690f3776d986e094f7c18b3bbfe62d4aa1"
+  integrity sha512-1XGah12s2WTI2wgzg54WfbyfqRs1ycQqLMEue1Dpz14K3B5qM+NEc0jxplWMmMB4UQmMHBUjzHsjB+H7W0SH7A==
   dependencies:
     babel-loader "^8.2.3"
     css-loader "^6.5.1"
