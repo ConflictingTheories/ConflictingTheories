@@ -88,6 +88,7 @@ export default {
       default:
         break;
     }
+    if (ret) this.addAction(ret);
     // If completion handler passed through - call it when done
     if (finish) finish(false);
     return ret;
