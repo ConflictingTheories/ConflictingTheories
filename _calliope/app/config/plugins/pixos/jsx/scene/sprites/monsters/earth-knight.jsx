@@ -51,4 +51,22 @@ export default {
   hotspotOffset: new Vector(0.5, 0.5, 0),
   // Should the camera follow the player?
   bindCamera: false,
+  interact: function (finish) {
+    let ret = null;
+    // React based on internal state
+    switch (this.state) {
+      case "intro":
+        ret = new ActionLoader(
+          this.engine,
+          "dialogue",
+          ["Rockin Dude!", false, { autoclose: true, onClose: () => finish(true) }],
+          this
+        );
+        break;
+    }
+    if (ret) this.addAction(ret);
+    // If completion handler passed through - call it when done
+    if (finish) finish(false);
+    return ret;
+  },
 };

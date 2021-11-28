@@ -50,6 +50,7 @@ export default {
   // Offsets
   drawOffset: new Vector(0, 1, 0.2),
   hotspotOffset: new Vector(0.5, 0.5, 0),
+  // Interactions
   state: "intro",
   interact: function (finish) {
     let ret = null;
