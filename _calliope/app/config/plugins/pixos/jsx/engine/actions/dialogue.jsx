@@ -35,10 +35,16 @@ export default {
     }
     // Handle Input
     this.checkInput();
-    this.sprite.speech.scrollText(this.text, this.scrolling, this.options);
-    this.textbox = this.engine.scrollText(this.text, this.scrolling, this.options);
+    
+    // Display SPEECH BUBBLE
+    this.sprite.speak(this.text);
+
+    // Use MAIN DIALOGUE WINDOW
+    // this.textbox = this.engine.scrollText(this.text, this.scrolling, this.options);
+    
     // Callback on Completion
     if (this.completed && this.options.onClose) {
+      this.sprite.speak(null);
       this.options.onClose();
     }
     return this.completed;
@@ -49,6 +55,7 @@ export default {
       // close dialogue on q key press
       case "q":
         console.log("closing dialogue");
+        this.sprite.speak(null);
         this.completed = true; // toggle
       default:
         return null;

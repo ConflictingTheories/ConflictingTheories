@@ -163,9 +163,6 @@ export default class Sprite {
     // Draw Speech
     if (this.enableSpeech) {
       this.engine.mvPushMatrix();
-      if (this.enableSpeech) {
-        this.speechVerBuf = this.engine.createBuffer(this.getSpeechBubbleVertices(), this.engine.gl.STATIC_DRAW, 3);
-      }
       // Undo rotation so that character plane is normal to LOS
       translate(this.engine.uViewMat, this.engine.uViewMat, this.drawOffset.toArray());
       translate(this.engine.uViewMat, this.engine.uViewMat, this.pos.toArray());
@@ -235,6 +232,15 @@ export default class Sprite {
   // Hook for sprite implementations
   init() {
     console.log("- sprite hook", this.id, this.pos);
+  }
+
+  // speak
+  speak(text) {
+    if (!text) this.speech.clearHud();
+    else {
+      this.speech.scrollText(text);
+      this.speech.loadImage();
+    }
   }
 
   // handles interaction -- default (should be overridden in definition)
