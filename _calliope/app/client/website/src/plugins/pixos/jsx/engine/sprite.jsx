@@ -133,12 +133,12 @@ export default class Sprite {
   // speech bubble position
   getSpeechBubbleVertices() {
     return [
-      new Vector(...[this.pos.x - 1, this.pos.y, this.pos.z + 4]).toArray(),
-      new Vector(...[this.pos.x - 3, this.pos.y, this.pos.z + 4]).toArray(),
-      new Vector(...[this.pos.x - 3, this.pos.y, this.pos.z + 2]).toArray(),
-      new Vector(...[this.pos.x - 1, this.pos.y, this.pos.z + 4]).toArray(),
-      new Vector(...[this.pos.x - 3, this.pos.y, this.pos.z + 2]).toArray(),
-      new Vector(...[this.pos.x - 1, this.pos.yw, this.pos.z + 2]).toArray(),
+      new Vector(...[2, 0, this.pos.z + 4]).toArray(),
+      new Vector(...[0, 0, this.pos.z + 4]).toArray(),
+      new Vector(...[0, 0, this.pos.z + 2]).toArray(),
+      new Vector(...[2, 0, this.pos.z + 4]).toArray(),
+      new Vector(...[0, 0, this.pos.z + 2]).toArray(),
+      new Vector(...[2, 0, this.pos.z + 2]).toArray(),
     ].flat(3);
   }
 
