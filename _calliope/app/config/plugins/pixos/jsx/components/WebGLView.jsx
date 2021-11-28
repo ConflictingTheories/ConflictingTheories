@@ -47,7 +47,7 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
 
   return (
     <div style={{ position: "relative" }}>
-      {/* // WEBGL */}
+      {/* // WEBGL - For 3D Rendering */}
       <canvas
         style={{ position: "absolute", zIndex: 1, top: 0, left: 0 }}
         ref={ref}
@@ -55,7 +55,7 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
         height={height}
         className={string}
       />
-      {/* HUD */}
+      {/* HUD - For Dialogue / Menus / Overlays */}
       <canvas
         style={{ zIndex: 2, top: 0, left: 0, background: "none" }}
         tabIndex={0}
@@ -76,8 +76,8 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
           onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.MOVE, e.nativeEvent.button == 3, e)
         }
       />
-      {/* MIPMAP */}
-      <canvas style={{ display: "none" }} ref={mmRef} width={128} height={128} />
+      {/* MIPMAP - For Sprite Text / Speech / Titles */}
+      <canvas style={{ display: "none" }} ref={mmRef} width={256} height={256} />
     </div>
   );
 };

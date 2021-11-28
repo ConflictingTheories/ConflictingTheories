@@ -31,8 +31,8 @@ export default class Sprite {
     this.getTexCoords = this.getTexCoords.bind(this);
   }
 
-  update(data){
-    Object.assign(this,data);
+  update(data) {
+    Object.assign(this, data);
   }
 
   runWhenLoaded(action) {
@@ -133,12 +133,12 @@ export default class Sprite {
   // speech bubble position
   getSpeechBubbleVertices() {
     return [
-      this.pos.add(new Vector(...[-1, 3, 10])).toArray(),
-      this.pos.add(new Vector(...[1, 3, 10])).toArray(),
-      this.pos.add(new Vector(...[1, 3, 12])).toArray(),
-      this.pos.add(new Vector(...[-1, 3, 10])).toArray(),
-      this.pos.add(new Vector(...[-1, 3, 12])).toArray(),
-      this.pos.add(new Vector(...[1, 3, 12])).toArray(),
+      new Vector(...[this.pos.x - 7, this.pos.y - 10, this.pos.z + 4]).toArray(),
+      new Vector(...[this.pos.x - 9, this.pos.y - 10, this.pos.z + 4]).toArray(),
+      new Vector(...[this.pos.x - 9, this.pos.y - 10, this.pos.z + 2]).toArray(),
+      new Vector(...[this.pos.x - 7, this.pos.y - 10, this.pos.z + 4]).toArray(),
+      new Vector(...[this.pos.x - 9, this.pos.y - 10, this.pos.z + 2]).toArray(),
+      new Vector(...[this.pos.x - 7, this.pos.y - 10, this.pos.z + 2]).toArray(),
     ].flat(3);
   }
 
@@ -168,7 +168,7 @@ export default class Sprite {
       translate(this.engine.uViewMat, this.engine.uViewMat, this.pos.toArray());
       rotate(this.engine.uViewMat, this.engine.uViewMat, this.engine.degToRad(this.engine.cameraAngle), [1, 0, 0]);
       // Bind texture for speech bubble
-      this.engine.bindBuffer(this.vertexPosBuf, this.engine.shaderProgram.vertexPositionAttribute);
+      this.engine.bindBuffer(this.speechVerBuf, this.engine.shaderProgram.vertexPositionAttribute);
       this.engine.bindBuffer(this.speechTexBuf, this.engine.shaderProgram.textureCoordAttribute);
       this.speech.attach();
       // // Draw Speech

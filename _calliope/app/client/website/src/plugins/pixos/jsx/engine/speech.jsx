@@ -41,7 +41,7 @@ export default class Speech {
     gl.generateMipmap(gl.TEXTURE_2D);
     gl.bindTexture(gl.TEXTURE_2D, null);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-    console.log('loading canvas ', this.canvas);
+    console.log("loading canvas ", this.canvas);
     this.loaded = true;
     this.onLoadActions.run();
   }
@@ -64,7 +64,7 @@ export default class Speech {
   writeText(text, x, y) {
     const { ctx } = this;
     ctx.save();
-    ctx.font = "20px minecraftia";
+    ctx.font = "32px minecraftia";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "white";
@@ -75,12 +75,11 @@ export default class Speech {
   // Scrolling Textbox
   scrollText(text, scrolling = false, options = {}) {
     let txt = new textScrollBox(this.ctx);
-    txt.init(text, 10, (2 * this.canvas.height) / 3, this.canvas.width - 20, this.canvas.height / 3 - 20, options);
+    txt.init(text, 10, 10, this.canvas.width - 20, (2 * this.canvas.height) / 3 - 20, options);
     if (scrolling) {
       txt.scroll((Math.sin(new Date().getTime() / 3000) + 1) * txt.maxScroll * 0.5); // default oscillate
     }
     txt.render();
     return txt;
   }
-
 }
