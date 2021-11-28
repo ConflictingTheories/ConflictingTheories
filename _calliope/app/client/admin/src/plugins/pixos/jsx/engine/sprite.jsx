@@ -133,12 +133,12 @@ export default class Sprite {
   // speech bubble position
   getSpeechBubbleVertices() {
     return [
-      new Vector(...[this.pos.x - 7, this.pos.y - 10, this.pos.z + 4]).toArray(),
-      new Vector(...[this.pos.x - 9, this.pos.y - 10, this.pos.z + 4]).toArray(),
-      new Vector(...[this.pos.x - 9, this.pos.y - 10, this.pos.z + 2]).toArray(),
-      new Vector(...[this.pos.x - 7, this.pos.y - 10, this.pos.z + 4]).toArray(),
-      new Vector(...[this.pos.x - 9, this.pos.y - 10, this.pos.z + 2]).toArray(),
-      new Vector(...[this.pos.x - 7, this.pos.y - 10, this.pos.z + 2]).toArray(),
+      new Vector(...[this.pos.x - 1, this.pos.y, this.pos.z + 4]).toArray(),
+      new Vector(...[this.pos.x - 3, this.pos.y, this.pos.z + 4]).toArray(),
+      new Vector(...[this.pos.x - 3, this.pos.y, this.pos.z + 2]).toArray(),
+      new Vector(...[this.pos.x - 1, this.pos.y, this.pos.z + 4]).toArray(),
+      new Vector(...[this.pos.x - 3, this.pos.y, this.pos.z + 2]).toArray(),
+      new Vector(...[this.pos.x - 1, this.pos.yw, this.pos.z + 2]).toArray(),
     ].flat(3);
   }
 
@@ -163,6 +163,9 @@ export default class Sprite {
     // Draw Speech
     if (this.enableSpeech) {
       this.engine.mvPushMatrix();
+      if (this.enableSpeech) {
+        this.speechVerBuf = this.engine.createBuffer(this.getSpeechBubbleVertices(), this.engine.gl.STATIC_DRAW, 3);
+      }
       // Undo rotation so that character plane is normal to LOS
       translate(this.engine.uViewMat, this.engine.uViewMat, this.drawOffset.toArray());
       translate(this.engine.uViewMat, this.engine.uViewMat, this.pos.toArray());
