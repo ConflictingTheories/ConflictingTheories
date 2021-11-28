@@ -13,6 +13,7 @@
 
 import { Vector } from "../../../engine/utils/math/vector.jsx";
 import Resources from "../../../engine/utils/resources.jsx";
+import { ActionLoader } from "../../../engine/utils/loaders.jsx";
 export default {
   // Character art from http://opengameart.org/content/chara-seth-scorpio
   src: Resources.artResourceUrl("darkness.gif"),
