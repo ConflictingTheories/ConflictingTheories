@@ -15,11 +15,13 @@ import { Vector, set } from "../../../engine/utils/math/vector.jsx";
 import { Direction } from "../../../engine/utils/enums.jsx";
 import { ActionLoader } from "../../../engine/utils/loaders.jsx";
 import Resources from "../../../engine/utils/resources.jsx";
+// Object Definition
 export default {
   // Character art from http://opengameart.org/content/chara-seth-scorpio
   src: Resources.artResourceUrl("player.gif"),
   sheetSize: [128, 256],
   tileSize: [24, 32],
+  state: "intro",
   // Frames & Faces
   frames: {
     up: [
@@ -53,10 +55,42 @@ export default {
   hotspotOffset: new Vector(0.5, 0.5, 0),
   // Should the camera follow the player?
   bindCamera: false,
+  // Interaction Management
+  interact: function (finish) {
+    let ret = null;
+    // React based on internal state
+    switch (this.state) {
+      case "intro":
+        this.state = "loop";
+        ret = new ActionLoader(this.engine, "dialogue", ["Welcome!", false, { autoclose: true }], this);
+        break;
+      case "loop":
+        this.state = "loop2";
+        ret = new ActionLoader(
+          this.engine,
+          "dialogue",
+          ["I heard about a strange legend once.", false, { autoclose: true }],
+          this
+        );
+        break;
+      case "loop2":
+        this.state = "loop";
+        ret = new ActionLoader(
+          this.engine,
+          "dialogue",
+          ["Sorry, I don't remember the story at the moment", false, { autoclose: true }],
+          this
+        );
+        break;
+      default:
+        break;
+    }
+    // If completion handler passed through - call it when done
+    if (finish) finish();
+    return ret;
+  },
   // Update
   tick: function (time) {
-    // console.log('sprite', this);
-
     if (!this.actionList.length) {
       // ONLY ONE MOVE AT A TIME
       let ret = this.checkInput();
@@ -97,14 +131,12 @@ export default {
       case "c":
         this.bindCamera = false;
         break;
+      // Interact with tile
+      case "k":
+        return new ActionLoader(this.engine, "interact", [this.pos.toArray(), this.facing, this.zone.world], this);
       // Help Dialogue
       case "h":
-        return new ActionLoader(
-          this.engine,
-          "dialogue",
-          ["Welcome! You pressed help!", false, { autoclose: true }],
-          this
-        );
+        return new ActionLoader(this.engine, "dialogue", ["Welcome! You pressed help!", false, { autoclose: true }], this);
       // Chat Message
       case "m":
         return new ActionLoader(this.engine, "chat", [">:", true, { autoclose: false }], this);
@@ -128,17 +160,10 @@ export default {
       if (!z || !z.loaded || !z.isWalkable(to.x, to.y, Direction.reverse(facing))) {
         return this.faceDir(facing);
       }
-      return new ActionLoader(
-        this.engine,
-        "changezone",
-        [this.zone.id, this.pos.toArray(), z.id, to.toArray(), moveTime],
-        this
-      );
+      return new ActionLoader(this.engine, "changezone", [this.zone.id, this.pos.toArray(), z.id, to.toArray(), moveTime], this);
     }
     // Check Walking
-    if (
-      !this.zone.isWalkable(to.x, to.y, Direction.reverse(facing))
-    ) {
+    if (!this.zone.isWalkable(to.x, to.y, Direction.reverse(facing))) {
       return this.faceDir(facing);
     }
     return new ActionLoader(this.engine, "move", [this.pos.toArray(), to.toArray(), moveTime], this);

@@ -54,7 +54,7 @@ export default class Sprite {
     this.texture.runWhenLoaded(this.onTilesetOrTextureLoaded.bind(this));
     this.vertexTexBuf = this.engine.createBuffer(this.getTexCoords(), this.engine.gl.DYNAMIC_DRAW, 2);
     // // Speech bubble
-    if(this.enableSpeech){
+    if (this.enableSpeech) {
       this.speech = this.engine.loadSpeech(this.id, this.engine.mipmap);
       this.speech.runWhenLoaded(this.onTilesetOrTextureLoaded.bind(this));
       this.speechTexBuf = this.engine.createBuffer(this.getSpeechBubbleTexture(), this.engine.gl.DYNAMIC_DRAW, 2);
@@ -78,7 +78,7 @@ export default class Sprite {
       [v[2], v[0], v[1]],
     ].flat(3);
     this.vertexPosBuf = this.engine.createBuffer(poly, this.engine.gl.STATIC_DRAW, 3);
-    if(this.enableSpeech){
+    if (this.enableSpeech) {
       this.speechVerBuf = this.engine.createBuffer(this.getSpeechBubbleVertices(), this.engine.gl.STATIC_DRAW, 3);
     }
     this.zone.tileset.runWhenLoaded(this.onTilesetOrTextureLoaded.bind(this));
@@ -89,7 +89,7 @@ export default class Sprite {
     if (this.loaded || !this.zone.tileset.loaded || !this.texture.loaded) return;
 
     this.init(); // Hook for sprite implementations
-    if( this.enableSpeech){
+    if (this.enableSpeech) {
       this.speech.clearHud();
       this.speech.writeText(this.id);
       this.speech.loadImage();
@@ -157,7 +157,7 @@ export default class Sprite {
     this.engine.gl.depthFunc(this.engine.gl.LESS);
     this.engine.mvPopMatrix();
     // Draw Speech
-    if(this.enableSpeech){
+    if (this.enableSpeech) {
       this.engine.mvPushMatrix();
       // Undo rotation so that character plane is normal to LOS
       translate(this.engine.uViewMat, this.engine.uViewMat, this.drawOffset.toArray());
@@ -228,5 +228,18 @@ export default class Sprite {
   // Hook for sprite implementations
   init() {
     console.log("- sprite hook", this.id, this.pos);
+  }
+
+  // handles interaction -- default (should be overridden in definition)
+  interact(finish) {
+    let ret = null;
+    // React based on internal state
+    switch (this.state) {
+      default:
+        break;
+    }
+    // If completion handler passed through - call it when done
+    if (finish) finish(true);
+    return ret;
   }
 }

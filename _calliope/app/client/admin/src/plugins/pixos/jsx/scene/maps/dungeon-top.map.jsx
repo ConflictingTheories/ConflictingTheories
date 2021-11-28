@@ -14,6 +14,7 @@
 // Use Tileset
 import Tiles from "../tilesets/sewer.tiles.jsx";
 import { Vector } from "../../engine/utils/math/vector.jsx";
+import { Direction } from "../../engine/utils/enums.jsx";
 // Map Information
 export default {
   bounds: [0, 0, 17, 10],
@@ -213,18 +214,21 @@ export default {
   ],
   // Sprites and Objects to be Loaded in the Scene & their Starting Points (includes effect tiles)
   sprites: [
-    { id: "darkness", type: "monsters/darkness", pos: new Vector(...[10, 2, 0]), facing: 8 },
-    { id: "air", type: "monsters/air-knight", pos: new Vector(...[8, 2, 0]), facing: 8 },
-    { id: "fire", type: "monsters/fire-knight", pos: new Vector(...[2, 8, 0]), facing: 1 },
-    { id: "earth", type: "monsters/earth-knight", pos: new Vector(...[14, 8, 0]), facing: 4 },
-    { id: "spurt1", type: "effects/lavaspurt", pos: new Vector(...[10, 7, -1.5]), facing: 2 },
-    { id: "spurt2", type: "effects/lavaspurt", pos: new Vector(...[9, 6, -1.5]), facing: 2 },
-    { id: "spurt3", type: "effects/lavaspurt", pos: new Vector(...[10, 5, -1.5]), facing: 2 },
-    { id: "spurt4", type: "effects/lavaspurt", pos: new Vector(...[7, 6, -1.5]), facing: 2 },
-    { id: "spurt5", type: "effects/lavaspurt", pos: new Vector(...[6, 7, -1.5]), facing: 2 },
-    { id: "spurt6", type: "effects/lavaspurt", pos: new Vector(...[6, 9, -1.5]), facing: 2 },
-    { id: "spurt8", type: "effects/lavaspurt", pos: new Vector(...[9, 9, -1.5]), facing: 2 },
-    { id: "player", type: "characters/player", pos: new Vector(...[8, 8, -1]), facing: 8 },
+    // NPCs
+    { id: "darkness", type: "monsters/darkness", pos: new Vector(...[10, 2, 0]), facing: Direction.Down },
+    { id: "air", type: "monsters/air-knight", pos: new Vector(...[8, 2, 0]), facing: Direction.Down },
+    { id: "fire", type: "monsters/fire-knight", pos: new Vector(...[2, 8, 0]), facing: Direction.Right },
+    { id: "earth", type: "monsters/earth-knight", pos: new Vector(...[14, 8, 0]), facing: Direction.Left },
+    // Effect tiles
+    { id: "spurt1", type: "effects/lavaspurt", pos: new Vector(...[10, 7, -1.5]), facing: Direction.Up },
+    { id: "spurt2", type: "effects/lavaspurt", pos: new Vector(...[9, 6, -1.5]), facing: Direction.Up },
+    { id: "spurt3", type: "effects/lavaspurt", pos: new Vector(...[10, 5, -1.5]), facing: Direction.Up },
+    { id: "spurt4", type: "effects/lavaspurt", pos: new Vector(...[7, 6, -1.5]), facing: Direction.Up },
+    { id: "spurt5", type: "effects/lavaspurt", pos: new Vector(...[6, 7, -1.5]), facing: Direction.Up },
+    { id: "spurt6", type: "effects/lavaspurt", pos: new Vector(...[6, 9, -1.5]), facing: Direction.Up },
+    { id: "spurt8", type: "effects/lavaspurt", pos: new Vector(...[9, 9, -1.5]), facing: Direction.Up },
+    // Presently - player is treated like a normal sprite
+    { id: "player", type: "characters/player", pos: new Vector(...[8, 8, -1]), facing: Direction.Down },
   ],
   // TODO - Add Scripts / Triggers for the Scene
   //

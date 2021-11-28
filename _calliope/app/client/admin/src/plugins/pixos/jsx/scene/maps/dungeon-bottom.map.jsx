@@ -14,6 +14,7 @@
 // Tileset
 import Tiles from "../tilesets/sewer.tiles.jsx";
 import { Vector } from "../../engine/utils/math/vector.jsx";
+import {Direction} from "../../engine/utils/enums.jsx";
 // Map
 export default {
   bounds: [0, 10, 17, 19],
@@ -195,8 +196,8 @@ export default {
   ],
   // Sprites and Objects to be Loaded in the Scene & their Starting Points
   sprites: [
-    { id: "water", type: "monsters/water-knight", pos: new Vector(...[8, 13, 0]), facing: 2 },
-    { id: "spurt7", type: "effects/lavaspurt", pos: new Vector(...[7, 10, -1.5]), facing: 2 },
-    { id: "spurt9", type: "effects/lavaspurt", pos: new Vector(...[10, 10, -1.5]), facing: 2 },
+    { id: "water", type: "monsters/water-knight", pos: new Vector(...[8, 13, 0]), facing: Direction.Up },
+    { id: "spurt7", type: "effects/lavaspurt", pos: new Vector(...[7, 10, -1.5]), facing: Direction.Up },
+    { id: "spurt9", type: "effects/lavaspurt", pos: new Vector(...[10, 10, -1.5]), facing: Direction.Up },
   ],
 };
