@@ -15,6 +15,8 @@ import { Vector, set } from "../../../engine/utils/math/vector.jsx";
 import { Direction } from "../../../engine/utils/enums.jsx";
 import { ActionLoader } from "../../../engine/utils/loaders.jsx";
 import Resources from "../../../engine/utils/resources.jsx";
+import Sprite from "../../../engine/sprite.jsx";
+
 export default class Player extends Sprite {
   constructor(engine) {
     // Initialize Sprite

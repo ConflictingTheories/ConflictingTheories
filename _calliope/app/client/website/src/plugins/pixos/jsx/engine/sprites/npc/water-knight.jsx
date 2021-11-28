@@ -24,7 +24,8 @@ export default class WaterKnight extends Sprite {
     this.src = Resources.artResourceUrl("water-knight.gif");
     this.sheetSize = [128, 256];
     this.tileSize = [24, 32];
-    this.drawOffset = new Vector(0, 1, 0.2);
+    // Offsets
+    this.drawOffset = new Vector(-0.25, 1, 0.125);
     this.hotspotOffset = new Vector(0.5, 0.5, 0);
     // Frames & Faces
     this.frames = {

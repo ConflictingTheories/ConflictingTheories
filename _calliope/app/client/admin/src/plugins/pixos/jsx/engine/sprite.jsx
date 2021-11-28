@@ -31,6 +31,10 @@ export default class Sprite {
     this.getTexCoords = this.getTexCoords.bind(this);
   }
 
+  update(data){
+    Object.assign(this,data);
+  }
+
   runWhenLoaded(action) {
     if (this.loaded) action();
     else this.onLoadActions.add(action);
