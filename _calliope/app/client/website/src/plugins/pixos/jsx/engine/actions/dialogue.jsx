@@ -55,6 +55,7 @@ export default {
       // close dialogue on q key press
       case "q":
         console.log("closing dialogue");
+        this.sprite.speak(null);
         this.completed = true; // toggle
       default:
         return null;
