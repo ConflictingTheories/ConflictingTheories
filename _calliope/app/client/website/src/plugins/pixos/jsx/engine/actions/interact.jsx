@@ -36,7 +36,7 @@ export default {
   },
   // Trigger interactions in sprites
   interact: function () {
-    this.spriteList.forEach((sprite) => sprite.interact ? this.zone.spriteDict[sprite.id].interact(this.finish) : null);
+    this.spriteList.forEach((sprite) => { sprite.addAction(sprite.faceDir(Direction.reverse(this.facing))); return sprite.interact ? this.zone.spriteDict[sprite.id].interact(this.finish) : null});
   },
   // Callback to clear interaction
   finish: function (result) {
