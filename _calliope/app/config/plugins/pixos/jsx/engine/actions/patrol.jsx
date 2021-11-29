@@ -11,13 +11,13 @@
 ** ----------------------------------------------- **
 \*                                                 */
 
-import { Vector, set, lerp } from "../../engine/utils/math/vector.jsx";
+import { Vector } from "../../engine/utils/math/vector.jsx";
 import { ActionLoader } from "../utils/loaders.jsx";
 import { Direction } from "../../engine/utils/enums.jsx";
 import { AudioLoader } from "../utils/loaders.jsx";
 
 export default {
-  init: function (from, to, length, zone) {
+  init: function (from, to, moveLength, zone) {
     console.log("loading - patrol", arguments);
     this.zone = zone;
     this.from = new Vector(...from);
@@ -32,7 +32,7 @@ export default {
       this.completed = true; // no path - do not patrol
     }
     this.moveIndex = 1; // holds index position
-    this.length = length; // length of time per move
+    this.moveLength = moveLength; // length of time per move
     if(this.zone.audio)
       this.zone.audio.pauseAudio();
     this.audio.playAudio();
@@ -41,8 +41,8 @@ export default {
     if (!this.loaded) return;
     this.checkInput(time);
     // load up moves - todo (improve this and make it less manual)
-    let endTime = this.startTime + this.length;
-    if (time > endTime + 2 * this.length) {
+    let endTime = this.startTime + this.moveLength;
+    if (time > endTime ) {
       let move = this.moveList[this.moveIndex];
       if (this.moveList.length > 2) {
         // last position (for facing)
@@ -62,13 +62,13 @@ export default {
             this.currentAction = new ActionLoader(
               this.sprite.engine,
               "changezone",
-              [this.sprite.zone.id, this.sprite.pos.toArray(), zone.id, move, this.length],
+              [this.sprite.zone.id, this.sprite.pos.toArray(), zone.id, move, this.moveLength],
               this.sprite
             );
           }
         } else {
           // Load Next move
-          this.currentAction = new ActionLoader(this.sprite.engine, "move", [last, move, this.length], this.sprite);
+          this.currentAction = new ActionLoader(this.sprite.engine, "move", [last, move, this.moveLength], this.sprite);
         }
         // set facing
         if (this.currentAction) {
@@ -91,11 +91,12 @@ export default {
   },
   // Handle Keyboard
   checkInput: function (time) {
-    if (time > this.lastKey + this.length) {
+    if (time > this.lastKey + this.moveLength) {
       switch (this.sprite.engine.keyboard.lastPressed("q")) {
         // close dialogue on q key press
         case "q":
           console.log("stopping patrol");
+          this.audio.pauseAudio();
           this.completed = true; // toggle
         default:
           this.lastKey = new Date().getTime();

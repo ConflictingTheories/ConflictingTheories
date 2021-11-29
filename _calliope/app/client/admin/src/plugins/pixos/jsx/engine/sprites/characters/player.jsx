@@ -115,8 +115,9 @@ export default class Player extends Sprite {
   checkInput() {
     let moveTime = 600; // move time in ms
     let facing = Direction.None;
+
     // Read Key presses
-    switch (this.engine.keyboard.lastPressedKey("wsadhmp")) {
+    switch (this.engine.keyboard.lastPressedKey("wsadhmpq")) {
       // Movement
       case "w":
         facing = Direction.Up;
@@ -130,11 +131,17 @@ export default class Player extends Sprite {
       case "d":
         facing = Direction.Right;
         break;
+      // Bind Camera
       case "b":
         this.bindCamera = true;
         break;
+      // Fixed Camera
       case "c":
         this.bindCamera = false;
+        break;
+      // Clear Speech
+      case "q":
+        this.speech.clearHud();
         break;
       // Interact with tile
       case "k":
@@ -142,14 +149,26 @@ export default class Player extends Sprite {
       // Help Dialogue
       case "h":
         return new ActionLoader(this.engine, "dialogue", ["Welcome! You pressed help!", false, { autoclose: true }], this);
-      // Chat Message
-      case "m":
-        return new ActionLoader(this.engine, "chat", [">:", true, { autoclose: false }], this);
+      // Patrol
       case "p":
-        let to = new Vector(8, 13, this.pos.z);
-        return new ActionLoader(this.engine, "patrol", [this.pos.toArray(), to.toArray(), 600, this.zone], this);
+        return new ActionLoader(this.engine, "patrol", [this.pos.toArray(), new Vector(8, 13, this.pos.z).toArray(), 600, this.zone], this);
+      // Run
+      case "r":
+        return new ActionLoader(this.engine, "patrol", [this.pos.toArray(), new Vector(8, 13, this.pos.z).toArray(), 200, this.zone], this);
       default:
         return null;
+    }
+    // Action Keys
+    switch (this.engine.keyboard.lastPressedCode()) {
+      case "Escape":
+        this.speech.clearHud();
+        break;
+      // Chat Message
+      case "Space":
+        return new ActionLoader(this.engine, "chat", [">:", true, { autoclose: false }], this);
+      // Interact
+      case "Enter":
+        return new ActionLoader(this.engine, "interact", [this.pos.toArray(), this.facing, this.zone.world], this);
     }
     // Check Direction
     if (this.facing !== facing) {

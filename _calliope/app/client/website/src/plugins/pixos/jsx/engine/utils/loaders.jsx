@@ -145,9 +145,16 @@ export class ActionLoader {
 }
 
 export class AudioLoader {
-  constructor(src) {
+  constructor(src, loop = false) {
     this.src = src;
     this.audio = new Audio(src);
+    // loop if set
+    if(loop){
+      this.audio.addEventListener('ended', function () {
+        this.currentTime = 0;
+        this.play();
+      }, false);
+    }
     this.audio.load();
   }
   playAudio() {

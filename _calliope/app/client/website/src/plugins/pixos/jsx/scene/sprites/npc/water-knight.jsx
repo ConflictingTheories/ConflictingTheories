@@ -28,7 +28,7 @@ export default class MyWaterKnight extends WaterKnight {
         ret = new ActionLoader(
           this.engine,
           "dialogue",
-          ["I am the Water Knight!", false, { autoclose: true, onClose: () => finish(true) }],
+          [["I am the Water Knight!", "Here is my home.", "yo"], false, { autoclose: false, onClose: () => finish(true) }],
           this
         );
         break;
