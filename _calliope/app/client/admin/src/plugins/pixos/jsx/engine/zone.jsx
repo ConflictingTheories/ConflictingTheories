@@ -65,7 +65,7 @@ export default class Zone {
       let data = require("../scene/maps/" + this.id + ".map.jsx")["default"];
       Object.assign(this, data);
       if (this.audioSrc) {
-        this.audio = new AudioLoader(this.audioSrc);
+        this.audio = new AudioLoader(this.audioSrc, true); // loop background music
       }
       // Load tileset and create level geometry & trigger updates
       this.size = [this.bounds[2] - this.bounds[0], this.bounds[3] - this.bounds[1]];

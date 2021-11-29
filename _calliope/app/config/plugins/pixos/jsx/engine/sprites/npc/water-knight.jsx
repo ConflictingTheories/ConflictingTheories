@@ -71,7 +71,7 @@ export default class WaterKnight extends Sprite {
         ret = new ActionLoader(
           this.engine,
           "dialogue",
-          ["I am the Water Knight!", false, { autoclose: true, onClose: () => finish(true) }],
+          [["I am the Water Knight!", "Here is my home."], false, { autoclose: true, onClose: () => finish(true) }],
           this
         );
         break;

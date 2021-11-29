@@ -238,8 +238,9 @@ export default class Sprite {
   speak(text) {
     if (!text) this.speech.clearHud();
     else {
-      this.speech.scrollText(text);
-      this.speech.loadImage();
+      this.textbox = this.engine.scrollText(this.id +":> " + text, true, {});
+      // this.speech.scrollText(text);
+      // this.speech.loadImage();
     }
   }
 

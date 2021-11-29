@@ -56,7 +56,7 @@ export default class Keyboard {
 
   // Return the last pressed key in keys
   lastPressedCode(ignore = "") {
-    let last = Keyboard._instance.activeCodes[Keyboard._instance.activeCodes.length-1];
+    let last = Keyboard._instance.activeCodes.pop();
     let lower = ignore.toLowerCase();
     for (let i = 0; i < lower.length; i++) {
         let index = Keyboard._instance.activeKeys.indexOf(last);

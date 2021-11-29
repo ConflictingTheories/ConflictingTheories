@@ -58,6 +58,7 @@ export default class Speech {
   clearHud() {
     const { ctx } = this;
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    this.loadImage();
   }
 
   // Write Text to HUD
