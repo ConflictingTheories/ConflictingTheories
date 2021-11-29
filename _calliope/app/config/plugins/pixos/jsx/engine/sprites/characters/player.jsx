@@ -151,10 +151,20 @@ export default class Player extends Sprite {
         return new ActionLoader(this.engine, "dialogue", ["Welcome! You pressed help!", false, { autoclose: true }], this);
       // Patrol
       case "p":
-        return new ActionLoader(this.engine, "patrol", [this.pos.toArray(), new Vector(8, 13, this.pos.z).toArray(), 600, this.zone], this);
+        return new ActionLoader(
+          this.engine,
+          "patrol",
+          [this.pos.toArray(), new Vector(8, 13, this.pos.z).toArray(), 600, this.zone],
+          this
+        );
       // Run
       case "r":
-        return new ActionLoader(this.engine, "patrol", [this.pos.toArray(), new Vector(8, 13, this.pos.z).toArray(), 200, this.zone], this);
+        return new ActionLoader(
+          this.engine,
+          "patrol",
+          [this.pos.toArray(), new Vector(8, 13, this.pos.z).toArray(), 200, this.zone],
+          this
+        );
       default:
         return null;
     }
@@ -169,6 +179,12 @@ export default class Player extends Sprite {
       // Interact
       case "Enter":
         return new ActionLoader(this.engine, "interact", [this.pos.toArray(), this.facing, this.zone.world], this);
+    }
+    // Running?
+    if (this.engine.keyboard.shift) {
+      moveTime = 200;
+    } else {
+      moveTime = 600;
     }
     // Check Direction
     if (this.facing !== facing) {
