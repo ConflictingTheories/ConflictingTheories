@@ -14,7 +14,7 @@
 // Tileset
 import Tiles from "../tilesets/sewer.tiles.jsx";
 import { Vector } from "../../engine/utils/math/vector.jsx";
-import {Direction} from "../../engine/utils/enums.jsx";
+import { Direction } from "../../engine/utils/enums.jsx";
 // Map
 export default {
   bounds: [0, 10, 17, 19],
@@ -200,4 +200,16 @@ export default {
     { id: "spurt7", type: "effects/lavaspurt", pos: new Vector(...[7, 10, -1.5]), facing: Direction.Up },
     { id: "spurt9", type: "effects/lavaspurt", pos: new Vector(...[10, 10, -1.5]), facing: Direction.Up },
   ],
+  // Scripts / Triggers
+  scripts: [
+    {
+      id: "load-scene",
+      trigger: () => {
+        console.log("Triggered");
+      },
+    },
+  ],
+  // TODO - Add in Scenes / Dialogue
+  //
+  scenes: [],
 };

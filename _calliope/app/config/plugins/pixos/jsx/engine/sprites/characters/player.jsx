@@ -110,6 +110,10 @@ export default class Player extends Sprite {
       case "c":
         this.bindCamera = false;
         break;
+      // play scene
+      case "y":
+        this.zone.playScene('strange-legend');
+        break;
       // Interact with tile
       case "k":
       case "Enter":

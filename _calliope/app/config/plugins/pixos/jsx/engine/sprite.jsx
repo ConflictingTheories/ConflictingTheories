@@ -195,7 +195,7 @@ export default class Sprite {
 
   // Add Action to Queue
   addAction(action) {
-    console.log("adding action");
+    console.log("adding action to sprite", action.id);
     if (this.actionDict[action.id]) this.removeAction(action.id);
     this.actionDict[action.id] = action;
     this.actionList.push(action);
