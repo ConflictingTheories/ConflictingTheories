@@ -133,12 +133,12 @@ export default class Sprite {
   // speech bubble position
   getSpeechBubbleVertices() {
     return [
-      new Vector(...[2, 0, this.pos.z + 4]).toArray(),
-      new Vector(...[0, 0, this.pos.z + 4]).toArray(),
-      new Vector(...[0, 0, this.pos.z + 2]).toArray(),
-      new Vector(...[2, 0, this.pos.z + 4]).toArray(),
-      new Vector(...[0, 0, this.pos.z + 2]).toArray(),
-      new Vector(...[2, 0, this.pos.z + 2]).toArray(),
+      new Vector(...[2, 0, 4]).toArray(),
+      new Vector(...[0, 0, 4]).toArray(),
+      new Vector(...[0, 0, 2]).toArray(),
+      new Vector(...[2, 0, 4]).toArray(),
+      new Vector(...[0, 0, 2]).toArray(),
+      new Vector(...[2, 0, 2]).toArray(),
     ].flat(3);
   }
 
@@ -235,12 +235,14 @@ export default class Sprite {
   }
 
   // speak
-  speak(text) {
+  speak(text, showBubble = false) {
     if (!text) this.speech.clearHud();
     else {
-      this.textbox = this.engine.scrollText(this.id +":> " + text, true, {});
-      // this.speech.scrollText(text);
-      // this.speech.loadImage();
+      this.textbox = this.engine.scrollText(this.id + ":> " + text, true, {});
+      if (showBubble && this.speech) {
+        this.speech.scrollText(text);
+        this.speech.loadImage();
+      }
     }
   }
 
