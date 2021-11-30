@@ -1,4 +1,4 @@
-export const minecraftia = new FontFace("minecraftia", "url(/minecraftia.ttf)");
+export const minecraftia = new FontFace("minecraftia", "url(/pixos/font/minecraftia.ttf)");
 
 // Scrolling Text Box UI (For Dialogue)
 export class textScrollBox {
