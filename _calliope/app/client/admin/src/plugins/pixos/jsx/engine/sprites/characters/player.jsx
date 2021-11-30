@@ -119,7 +119,7 @@ export default class Player extends Sprite {
         return new ActionLoader(this.engine, "dialogue", ["Welcome! You pressed help!", false, { autoclose: true }], this);
       // Chat Message
       case "m":
-      case "Space":
+      case " ":
         return new ActionLoader(this.engine, "chat", [">:", true, { autoclose: false }], this);
       // Clear Speech
       case "q":
