@@ -53,12 +53,13 @@ export default class Player extends Sprite {
       ],
     };
     this.enableSpeech = true;
-    this.isWalkabl = false;
+    this.isWalkable = false;
     // Offsets
     this.drawOffset = new Vector(-0.25, 1, 0.125);
     this.hotspotOffset = new Vector(0.5, 0.5, 0);
     // Should the camera follow the player?
     this.bindCamera = false;
+    this.handleWalk = this.handleWalk.bind(this);
   }
 
   interact(finish) {
@@ -113,11 +114,45 @@ export default class Player extends Sprite {
   }
   // Reads for Input to Respond to
   checkInput() {
+    // Action Keys
+    let key = this.engine.keyboard.lastPressedCode();
+    // Misc Actions
+    switch (key) {
+      // Bind Camera
+      case "b":
+        this.bindCamera = true;
+        break;
+      // Fixed Camera
+      case "c":
+        this.bindCamera = false;
+        break;
+      // Interact with tile
+      case "k":
+      case "Enter":
+        return new ActionLoader(this.engine, "interact", [this.pos.toArray(), this.facing, this.zone.world], this);
+      // Help Dialogue
+      case "h":
+        return new ActionLoader(this.engine, "dialogue", ["Welcome! You pressed help!", false, { autoclose: true }], this);
+      // Chat Message
+      case "m":
+      case "Space":
+        return new ActionLoader(this.engine, "chat", [">:", true, { autoclose: false }], this);
+      // Clear Speech
+      case "q":
+      case "Escape":
+        this.speech.clearHud();
+        break;
+    }
+    // Walk
+    return this.handleWalk(this.engine.keyboard.lastPressedKey());
+  }
+
+  // walk between tiles
+  handleWalk(key) {
     let moveTime = 600; // move time in ms
     let facing = Direction.None;
-
     // Read Key presses
-    switch (this.engine.keyboard.lastPressedKey("wsadhmpq")) {
+    switch (key) {
       // Movement
       case "w":
         facing = Direction.Up;
@@ -131,24 +166,6 @@ export default class Player extends Sprite {
       case "d":
         facing = Direction.Right;
         break;
-      // Bind Camera
-      case "b":
-        this.bindCamera = true;
-        break;
-      // Fixed Camera
-      case "c":
-        this.bindCamera = false;
-        break;
-      // Clear Speech
-      case "q":
-        this.speech.clearHud();
-        break;
-      // Interact with tile
-      case "k":
-        return new ActionLoader(this.engine, "interact", [this.pos.toArray(), this.facing, this.zone.world], this);
-      // Help Dialogue
-      case "h":
-        return new ActionLoader(this.engine, "dialogue", ["Welcome! You pressed help!", false, { autoclose: true }], this);
       // Patrol
       case "p":
         return new ActionLoader(
@@ -167,18 +184,6 @@ export default class Player extends Sprite {
         );
       default:
         return null;
-    }
-    // Action Keys
-    switch (this.engine.keyboard.lastPressedCode()) {
-      case "Escape":
-        this.speech.clearHud();
-        break;
-      // Chat Message
-      case "Space":
-        return new ActionLoader(this.engine, "chat", [">:", true, { autoclose: false }], this);
-      // Interact
-      case "Enter":
-        return new ActionLoader(this.engine, "interact", [this.pos.toArray(), this.facing, this.zone.world], this);
     }
     // Running?
     if (this.engine.keyboard.shift) {

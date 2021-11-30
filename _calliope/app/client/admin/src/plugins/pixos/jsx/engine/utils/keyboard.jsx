@@ -69,6 +69,6 @@ export default class Keyboard {
 
   // Return the last pressed key in keys
   lastPressedKey() {
-    return Keyboard._instance.activeKeys[Keyboard._instance.activeCodes.length-1];
+    return Keyboard._instance.activeKeys[Keyboard._instance.activeKeys.length-1];
   }
 }
