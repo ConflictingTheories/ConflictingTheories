@@ -16,7 +16,7 @@ import PropTypes from "prop-types";
 import glEngine from "../engine/core.jsx";
 import { Mouse } from "../engine/utils/enums.jsx";
 import Keyboard from "../engine/utils/keyboard.jsx";
-import { minecraftia } from "../engine/hud.jsx";
+import { minecraftia  } from "../engine/hud.jsx";
 //
 const WebGLView = ({ width, height, SceneProvider, class: string }) => {
   const ref = useRef();
@@ -26,6 +26,12 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
   let onMouseEvent = SceneProvider.onMouseEvent;
   let onKeyEvent = SceneProvider.onKeyEvent;
 
+  // load fonts
+  async function loadFonts() {
+    await minecraftia.load();
+    document.fonts.add(minecraftia);
+  }
+
   useEffect(async () => {
     const canvas = ref.current;
     const hud = hudRef.current;
@@ -33,8 +39,7 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
     // Webgl Engine
     const engine = new glEngine(canvas, hud, mipmap, width, height);
     // load fonts
-    await minecraftia.load();
-    document.fonts.add(minecraftia);
+    await loadFonts();
     // Initialize Scene
     await engine.init(SceneProvider, keyboard);
     // render loop
@@ -66,15 +71,9 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
         onKeyDownCapture={(e) => onKeyEvent(e.nativeEvent)}
         onKeyUpCapture={(e) => onKeyEvent(e.nativeEvent)}
         onContextMenu={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.UP, true, e)}
-        onMouseUp={(e) =>
-          onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.UP, e.nativeEvent.button == 3, e)
-        }
-        onMouseDown={(e) =>
-          onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.DOWN, e.nativeEvent.button == 3, e)
-        }
-        onMouseMove={(e) =>
-          onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.MOVE, e.nativeEvent.button == 3, e)
-        }
+        onMouseUp={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.UP, e.nativeEvent.button == 3, e)}
+        onMouseDown={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.DOWN, e.nativeEvent.button == 3, e)}
+        onMouseMove={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.MOVE, e.nativeEvent.button == 3, e)}
       />
       {/* MIPMAP - For Sprite Text / Speech / Titles */}
       <canvas style={{ display: "none" }} ref={mmRef} width={256} height={256} />

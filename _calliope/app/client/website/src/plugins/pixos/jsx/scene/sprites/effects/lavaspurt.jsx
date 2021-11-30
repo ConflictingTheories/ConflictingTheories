@@ -11,7 +11,7 @@
 ** ----------------------------------------------- **
 \*                                                 */
 
-import Spurt from "../../../engine/sprites/effects/lavaspurt.jsx";
+import Spurt from "../../../engine/sprites/effects/spurt.jsx";
 export default class LavaSpurt extends Spurt {
   constructor(engine) {
     // Initialize Sprite

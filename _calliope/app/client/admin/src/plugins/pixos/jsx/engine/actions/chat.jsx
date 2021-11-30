@@ -42,30 +42,36 @@ export default {
   // Handle Keyboard
   checkInput: function (time) {
     if (time > this.lastKey + 100) {
+      let skipChar = false;
       switch (this.engine.keyboard.lastPressedCode()) {
         case "Escape":
           this.completed = true;
+          skipChar = true;
           break;
         case "Backspace":
           let arr = this.text.split("");
           arr.pop();
           this.text = arr.join("");
           this.lastKey = time;
+          skipChar = true;
           break;
         case "Enter":
           this.engine.setGreeting(this.text);
           this.sprite.speech.clearHud();
-          this.speechbox = this.sprite.speech.scrollText(this.text)
+          this.speechbox = this.sprite.speech.scrollText(this.text);
           this.sprite.speech.loadImage();
           this.completed = true;
+          skipChar = true;
           break;
       }
       // debounce keypresses
       // write to chat box
-      let char = this.engine.keyboard.lastPressed("abcdefghijklmnopqrstuvwxyz., ");
-      if (char) {
-        this.lastKey = time;
-        this.text += "" + char;
+      if (!skipChar) {
+        let char = this.engine.keyboard.lastPressedKey();
+        if (char) {
+          this.lastKey = time;
+          this.text += "" + char;
+        }
       }
     }
   },

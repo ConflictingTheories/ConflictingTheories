@@ -159,7 +159,7 @@ export default class GLEngine {
   writeText(text, x, y) {
     const { ctx } = this;
     ctx.save();
-    ctx.font = "20px minecraftia";
+    ctx.font = "20px invasion2000";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "white";
