@@ -13,7 +13,7 @@
 import { Direction } from "./utils/enums.jsx";
 import Resources from "./utils/resources.jsx";
 import ActionQueue from "./queue.jsx";
-import { SpriteLoader, TilesetLoader, AudioLoader } from "./utils/loaders.jsx";
+import { SpriteLoader, TilesetLoader, AudioLoader, ActionLoader } from "./utils/loaders.jsx";
 
 export default class Zone {
   constructor(zoneId, world) {
@@ -121,6 +121,13 @@ export default class Zone {
   onTilesetOrSpriteLoaded() {
     if (this.loaded || !this.tileset.loaded || !this.spriteList.every((sprite) => sprite.loaded)) return;
     console.log("Initialized zone '" + this + "'");
+    // Load Scene Triggers
+    let zone = this;
+    this.scripts.forEach((x) => {
+      if (x.id === "load-scene") {
+        this.runWhenLoaded(x.trigger.bind(zone));
+      }
+    });
     this.loaded = true;
     this.onLoadActions.run();
   }
@@ -146,6 +153,45 @@ export default class Zone {
     delete this.spriteDict[id];
   }
 
+  // Remove an sprite from the zone
+  getSpriteById(id) {
+    return this.spriteDict[id];
+  }
+
+  // Play a scene
+  playScene(id) {
+    let self = this;
+    self.scenes.forEach((x) => {
+      if (!x.currentStep) {
+        x.currentStep = 0; // Starting
+      }
+      if (x.currentStep > self.scenes.length) {
+        return; // scene finished
+      }
+      if (x.id === id) { // found scene
+        let action = x.actions[x.currentStep]; // current action
+        if (!action.scope) action.scope = self;
+        if (action.sprite) {
+          let sprite = action.scope.getSpriteById(action.sprite);
+          // apply action
+          if (action.action) {
+            console.log("playing scene action in zone");
+            let args = action.args;
+            let options = args.pop();
+            sprite.addAction(
+              new ActionLoader(self.engine, action.action, [...args, { ...options, onClose: () => (x.currentStep += 1) }], sprite)
+            );
+          }
+        }
+        // trigger script
+        if (action.trigger) {
+          console.log("trigger");
+          let sprite = action.scope.getSpriteById("player");
+          sprite.addAction(new ActionLoader(self.engine, "script", [action.trigger, action.scope, () => (x.currentStep += 1)], sprite));
+        }
+      }
+    });
+  }
   // Calculate the height of a point in the zone
   getHeight(x, y) {
     if (!this.isInZone(x, y)) {
@@ -233,8 +279,7 @@ export default class Zone {
   checkInput(time) {
     switch (this.engine.keyboard.lastPressedKey("o")) {
       case "o":
-        if(this.audio)
-          this.audio.playAudio();
+        if (this.audio) this.audio.playAudio();
         break;
     } // play audio
   }
@@ -248,8 +293,9 @@ export default class Zone {
   isWalkable(x, y, direction) {
     if (!this.isInZone(x, y)) return null;
     // if sprite is
-    for(let sprite in this.spriteDict){
-      if(!this.spriteDict[sprite].walkable && this.spriteDict[sprite].pos.x === x && this.spriteDict[sprite].pos.y === y) return false;
+    for (let sprite in this.spriteDict) {
+      if (!this.spriteDict[sprite].walkable && this.spriteDict[sprite].pos.x === x && this.spriteDict[sprite].pos.y === y)
+        return false;
     }
     return (this.walkability[(y - this.bounds[1]) * this.size[0] + x - this.bounds[0]] & direction) != 0;
   }

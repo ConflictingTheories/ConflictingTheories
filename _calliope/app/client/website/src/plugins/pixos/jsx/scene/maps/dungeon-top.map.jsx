@@ -15,6 +15,7 @@
 import Tiles from "../tilesets/sewer.tiles.jsx";
 import { Vector } from "../../engine/utils/math/vector.jsx";
 import { Direction } from "../../engine/utils/enums.jsx";
+import { ActionLoader } from "../../engine/utils/loaders.jsx";
 // Map Information
 export default {
   bounds: [0, 0, 17, 10],
@@ -232,6 +233,44 @@ export default {
   ],
   // TODO - Add Scripts / Triggers for the Scene
   //
+  scripts: [
+    {
+      id: "load-scene", // run automatically when loaded
+      trigger: function () {
+        let darkness = this.getSpriteById("darkness");
+        darkness.addAction(new ActionLoader(this.engine, "patrol", [darkness.pos.toArray(), [8, 6, 0], 200, this], darkness));
+      },
+    },
+    {
+      id: "clear-path", // manually called custom script
+      trigger: function () {
+        let darkness = this.getSpriteById("darkness");
+        darkness.addAction(new ActionLoader(this.engine, "patrol", [darkness.pos.toArray(), [10, 2, 0], 200, this], darkness));
+      },
+    },
+    {
+      id: "custom", // manually called custom script
+      trigger: function () {
+        let darkness = this.getSpriteById("darkness");
+        darkness.addAction(new ActionLoader(this.engine, "dialogue", ["Hello!", false, { autoclose: true }], darkness));
+      },
+    },
+  ],
   // TODO - Add in Scenes / Dialogue
   //
+  scenes: [
+    {
+      id: "strange-legend",
+      actions: [
+        {
+          sprite: "air",
+          action: "dialogue",
+          args: ["Sorry, I don't remember the story at the moment", false, { autoclose: true }],
+          scope: this,
+        },
+        { trigger: "clear-path", scope: this },
+        { trigger: "custom", scope: this },
+      ],
+    },
+  ],
 };
