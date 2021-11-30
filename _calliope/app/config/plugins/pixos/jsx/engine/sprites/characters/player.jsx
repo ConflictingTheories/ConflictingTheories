@@ -11,11 +11,11 @@
 ** ----------------------------------------------- **
 \*                                                 */
 
-import { Vector, set } from "../../../engine/utils/math/vector.jsx";
-import { Direction } from "../../../engine/utils/enums.jsx";
-import { ActionLoader } from "../../../engine/utils/loaders.jsx";
-import Resources from "../../../engine/utils/resources.jsx";
-import Sprite from "../../../engine/sprite.jsx";
+import { Vector, set } from "../../utils/math/vector.jsx";
+import { Direction } from "../../utils/enums.jsx";
+import { ActionLoader } from "../../utils/loaders.jsx";
+import Resources from "../../utils/resources.jsx";
+import Sprite from "../../sprite.jsx";
 
 export default class Player extends Sprite {
   constructor(engine) {
@@ -61,32 +61,22 @@ export default class Player extends Sprite {
     this.bindCamera = false;
     this.handleWalk = this.handleWalk.bind(this);
   }
-
+  //
   interact(finish) {
     let ret = null;
     // React based on internal state
     switch (this.state) {
       case "intro":
         this.state = "loop";
-        ret = new ActionLoader(this.engine, "dialogue", ["Welcome!", false, { autoclose: true }], this);
+        this.speak("...");
         break;
       case "loop":
         this.state = "loop2";
-        ret = new ActionLoader(
-          this.engine,
-          "dialogue",
-          ["I heard about a strange legend once.", false, { autoclose: true }],
-          this
-        );
+        this.speak("....?");
         break;
       case "loop2":
         this.state = "loop";
-        ret = new ActionLoader(
-          this.engine,
-          "dialogue",
-          ["Sorry, I don't remember the story at the moment", false, { autoclose: true }],
-          this
-        );
+        this.speak("...!");
         break;
       default:
         break;
@@ -97,16 +87,10 @@ export default class Player extends Sprite {
   }
   // Update
   tick(time) {
+    // ONLY ONE MOVE AT A TIME
     if (!this.actionList.length) {
-      // ONLY ONE MOVE AT A TIME
       let ret = this.checkInput();
       if (ret) {
-        // Send action to the server
-        // network.sendAction(ret);
-
-        // Start running action locally to avoid latency
-        // Local action will be replaced with a server-sanitised
-        // version on the next update
         this.addAction(ret);
       }
     }
@@ -146,7 +130,6 @@ export default class Player extends Sprite {
     // Walk
     return this.handleWalk(this.engine.keyboard.lastPressedKey());
   }
-
   // walk between tiles
   handleWalk(key) {
     let moveTime = 600; // move time in ms

@@ -11,10 +11,10 @@
 ** ----------------------------------------------- **
 \*                                                 */
 
-import { Vector } from "../../../engine/utils/math/vector.jsx";
-import { translate, rotate } from "../../../engine/utils/math/matrix4.jsx";
-import Resources from "../../../engine/utils/resources.jsx";
-import Sprite from "../../../engine/sprite.jsx";
+import { Vector } from "../../utils/math/vector.jsx";
+import { translate, rotate } from "../../utils/math/matrix4.jsx";
+import Resources from "../../utils/resources.jsx";
+import Sprite from "../../sprite.jsx";
 
 export default class Spurt extends Sprite {
   constructor(engine) {

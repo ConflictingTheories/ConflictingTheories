@@ -36,6 +36,7 @@ export default {
   },
   // Trigger interactions in sprites
   interact: function () {
+    if (this.spriteList.length === 0) this.completed = true;
     this.spriteList.forEach((sprite) => {
       let faceChange = sprite.faceDir(Direction.reverse(this.facing));
       if (faceChange) {
