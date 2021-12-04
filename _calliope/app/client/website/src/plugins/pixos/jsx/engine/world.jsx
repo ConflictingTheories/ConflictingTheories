@@ -134,7 +134,14 @@ export default class World {
     return [top, left, right, bottom];
   }
 
-  // Should we skip?
+  // Can we walk there
+  /**
+   * 
+   * @param {array} neighbour
+   * @param {array} jsonNeighbour 
+   * @param {array} visited 
+   * @returns 
+   */
   canWalk(neighbour, jsonNeighbour, visited) {
     let zone = this.zoneContaining(...neighbour);
     if (
@@ -148,37 +155,3 @@ export default class World {
     return true;
   }
 }
-
-// Pathfinding Algorithm
-// ---------------------
-// Start Point
-// Goal
-
-// Path []
-// Current Point
-
-// --- Func
-//
-// Get Neighbours - Foreach Neighbour
-//  - Check Neighbour
-//    - Check Goal
-//        - Found it - Return Path
-//        - Else
-//          - Get Neighbours
-
-// ----
-
-// GetNeighbours (x, y){
-//    results = []
-//    top = (x,y+1)
-//    bottom = (x,y-1)
-//    left = (x-1,y)
-//    right = (x+1,y)
-//
-//    for each above
-//      if (isWalkable()) add to results
-//
-//    return results
-// }
-
-// ----
