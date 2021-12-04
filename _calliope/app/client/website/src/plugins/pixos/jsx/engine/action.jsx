@@ -11,9 +11,10 @@
 ** ----------------------------------------------- **
 \*                                                 */
 export default class Action {
-  constructor(type, sprite) {
+  constructor(type, sprite, callback) {
     this.type = type;
     this.sprite = sprite;
+    this.callback = callback;
     this.time = new Date().getTime();
     this.id = sprite.id + "-" + type + "-" + this.time;
   }
@@ -40,5 +41,9 @@ export default class Action {
       type: this.type,
       args: this.creationArgs,
     };
+  }
+  // callback on completion
+  onComplete() {
+    return this.callback ? this.callback() : null;
   }
 }

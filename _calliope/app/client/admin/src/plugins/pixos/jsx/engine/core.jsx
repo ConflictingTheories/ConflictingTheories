@@ -38,7 +38,7 @@ export default class GLEngine {
   }
 
   // Initialize a Scene object
-  async init(scene, keyboard) {
+  async init(scene, keyboard, touchHandler) {
     const ctx = this.hud.getContext("2d");
     const gl = this.canvas.getContext("webgl");
     if (!gl) {
@@ -52,6 +52,7 @@ export default class GLEngine {
     this.time = new Date().getTime();
     this.scene = scene;
     this.keyboard = keyboard;
+    this.touch = touchHandler;
     // Configure HUD
     ctx.canvas.width = this.canvas.width;
     ctx.canvas.height = this.canvas.height;

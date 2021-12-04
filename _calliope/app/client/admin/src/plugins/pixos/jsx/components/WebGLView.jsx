@@ -17,14 +17,17 @@ import glEngine from "../engine/core.jsx";
 import { Mouse } from "../engine/utils/enums.jsx";
 import Keyboard from "../engine/utils/keyboard.jsx";
 import { minecraftia  } from "../engine/hud.jsx";
+import MobileTouch from "../engine/utils/mobile.jsx";
 //
 const WebGLView = ({ width, height, SceneProvider, class: string }) => {
   const ref = useRef();
   const hudRef = useRef();
   const mmRef = useRef();
   let keyboard = new Keyboard();
+  let touchHandler = new MobileTouch();
   let onMouseEvent = SceneProvider.onMouseEvent;
   let onKeyEvent = SceneProvider.onKeyEvent;
+  let onTouchEvent = SceneProvider.onTouchEvent;
 
   // load fonts
   async function loadFonts() {
@@ -41,7 +44,7 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
     // load fonts
     await loadFonts();
     // Initialize Scene
-    await engine.init(SceneProvider, keyboard);
+    await engine.init(SceneProvider, keyboard, touchHandler);
     // render loop
     engine.render();
     // cleanup
@@ -68,6 +71,10 @@ const WebGLView = ({ width, height, SceneProvider, class: string }) => {
         width={width}
         height={height}
         className={string}
+        onTouchMoveCapture={(e)=> onTouchEvent(e.nativeEvent)}
+        onTouchCancelCapture={(e)=> onTouchEvent(e.nativeEvent)}
+        onTouchStartCapture={(e)=> onTouchEvent(e.nativeEvent)}
+        onTouchEndCapture={(e)=> onTouchEvent(e.nativeEvent)}
         onKeyDownCapture={(e) => onKeyEvent(e.nativeEvent)}
         onKeyUpCapture={(e) => onKeyEvent(e.nativeEvent)}
         onContextMenu={(e) => onMouseEvent(e.nativeEvent.clientX, e.nativeEvent.clientY, Mouse.UP, true, e)}

@@ -71,7 +71,7 @@ export class SpriteLoader {
     }
     // New Instance
     let Type = require("../../scene/sprites/" + type + ".jsx")["default"];
-    console.log(Type, type)
+    console.log(Type, type);
     let instance = new Type(this.engine);
     instance.templateLoaded = true;
     // Update Existing
@@ -93,20 +93,17 @@ export class SpriteLoader {
 
 // Helps Loads New Action Instance
 export class ActionLoader {
-  constructor(engine, type, args, sprite, id, time) {
+  constructor(engine, type, args, sprite, callback) {
     this.engine = engine;
     this.type = type;
     this.args = args;
     this.sprite = sprite;
+    this.callback = callback;
     this.instances = {};
     this.definitions = [];
 
-    if (!time) {
-      time = new Date().getTime();
-    }
-    if (!id) {
-      id = sprite.id + "-" + type + "-" + time;
-    }
+    let time = new Date().getTime();
+    let id = sprite.id + "-" + type + "-" + time;
     return this.load(
       type,
       function (action) {
@@ -125,7 +122,7 @@ export class ActionLoader {
       this.instances[type] = [];
     }
     // New Instance (assigns properties loaded by type)
-    let instance = new Action(this.type, this.sprite);
+    let instance = new Action(this.type, this.sprite, this.callback);
     Object.assign(instance, require("../actions/" + type + ".jsx")["default"]);
     instance.templateLoaded = true;
     // Notify existing
@@ -149,11 +146,15 @@ export class AudioLoader {
     this.src = src;
     this.audio = new Audio(src);
     // loop if set
-    if(loop){
-      this.audio.addEventListener('ended', function () {
-        this.currentTime = 0;
-        this.play();
-      }, false);
+    if (loop) {
+      this.audio.addEventListener(
+        "ended",
+        function () {
+          this.currentTime = 0;
+          this.play();
+        },
+        false
+      );
     }
     this.audio.load();
   }
