@@ -235,16 +235,16 @@ export default {
   scenes: [
     {
       id: "strange-legend",
-      actions: [
+      actions: [ // manual actions
         // Scripted Dialogue Action Controls directly on sprites
         {
           sprite: "air",
           action: "dialogue",
-          args: [ // fix
+          args: [
             [
-              "But one had a plan...",
-              "The sewer was backing up, and well...everyone was losing their $%#t",
               "Long ago, in a dungeon far far away",
+              "The sewer was backing up, and well...everyone was losing their $%#t",
+              "But one had a plan...",
             ],
             false,
             { autoclose: true },
