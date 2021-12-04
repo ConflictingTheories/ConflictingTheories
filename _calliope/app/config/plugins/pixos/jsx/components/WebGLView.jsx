@@ -19,7 +19,7 @@ import Keyboard from "../engine/utils/keyboard.jsx";
 import { minecraftia  } from "../engine/hud.jsx";
 import MobileTouch from "../engine/utils/mobile.jsx";
 //
-const WebGLView = ({ width, height, SceneProvider, class: string }) => {
+const useWebGLView = ({ width, height, SceneProvider, class: string }) => {
   const ref = useRef();
   const hudRef = useRef();
   const mmRef = useRef();
