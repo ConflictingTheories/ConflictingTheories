@@ -17,7 +17,7 @@ export default {
     console.log("loading - dialogue");
     this.engine = this.sprite.engine;
     this.text = text; // holds queue of dialogue
-    this.displayText = typeof text === "string" ? text : this.text.pop(); // current statement
+    this.displayText = typeof text === "string" ? text : this.text.shift(); // current statement
     this.scrolling = scrolling;
     this.options = options;
     this.completed = false;

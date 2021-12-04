@@ -158,6 +158,15 @@ export default class Zone {
     return this.spriteDict[id];
   }
 
+  // Trigger Script
+  triggerScript(id) {
+    this.scripts.forEach((x) => {
+      if (x.id === id) {
+        this.runWhenLoaded(x.trigger.bind(this));
+      }
+    });
+  }
+
   // Play a scene
   playScene(id) {
     let self = this;
@@ -168,7 +177,8 @@ export default class Zone {
       if (x.currentStep > self.scenes.length) {
         return; // scene finished
       }
-      if (x.id === id) { // found scene
+      if (x.id === id) {
+        // found scene
         let action = x.actions[x.currentStep]; // current action
         if (!action.scope) action.scope = self;
         if (action.sprite) {
@@ -187,11 +197,14 @@ export default class Zone {
         if (action.trigger) {
           console.log("trigger");
           let sprite = action.scope.getSpriteById("player");
-          sprite.addAction(new ActionLoader(self.engine, "script", [action.trigger, action.scope, () => (x.currentStep += 1)], sprite));
+          sprite.addAction(
+            new ActionLoader(self.engine, "script", [action.trigger, action.scope, () => (x.currentStep += 1)], sprite)
+          );
         }
       }
     });
   }
+
   // Calculate the height of a point in the zone
   getHeight(x, y) {
     if (!this.isInZone(x, y)) {
@@ -298,5 +311,23 @@ export default class Zone {
         return false;
     }
     return (this.walkability[(y - this.bounds[1]) * this.size[0] + x - this.bounds[0]] & direction) != 0;
+  }
+
+  // Move the sprite
+  async moveSprite(id, location, running = false) {
+    return new Promise((resolve, reject) => {
+      let sprite = this.getSpriteById(id);
+      sprite.addAction(
+        new ActionLoader(this.engine, "patrol", [sprite.pos.toArray(), location, running ? 200 : 600, this], sprite, resolve)
+      );
+    });
+  }
+
+  // Sprite Dialogue
+  async spriteDialogue(id, dialogue, options = { autoclose: true }) {
+    return new Promise((resolve, reject) => {
+      let sprite = this.getSpriteById(id);
+      sprite.addAction(new ActionLoader(this.engine, "dialogue", [dialogue, false, options], sprite, resolve));
+    });
   }
 }

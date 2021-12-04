@@ -221,7 +221,10 @@ export default class Sprite {
     let toRemove = [];
     this.actionList.forEach((action) => {
       if (!action.loaded || action.startTime > time) return;
-      if (action.tick(time)) toRemove.push(action);
+      if (action.tick(time)) {
+        toRemove.push(action); // remove from backlog
+        action.onComplete(); // call completion handler
+      }
     });
     // clear completed activities
     toRemove.forEach((action) => this.removeAction(action.id));

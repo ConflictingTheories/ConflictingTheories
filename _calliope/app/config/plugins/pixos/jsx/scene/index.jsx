@@ -62,6 +62,20 @@ export default class Scene {
     } else Scene._instance.engine.keyboard.onKeyUp(e);
   };
 
+  // Mobile Touch handler for Scene
+  onTouchEvent = (e) => {
+    switch (e.type) {
+      case "touchstart":
+      case "touchend":
+      case "touchmove":
+      case "touchcancel":
+        Scene._instance.engine.touch.onTouch(e);
+        break;
+      default:
+        break;
+    }
+  };
+
   // Mouse Handler for Scene
   onMouseEvent = (x, y, type, rmb, e) => {
     // console.log(`pos -- ${x}, ${y}`, rmb, e);

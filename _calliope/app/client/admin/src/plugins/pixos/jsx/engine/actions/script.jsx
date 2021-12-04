@@ -27,17 +27,13 @@ export default {
   // Trigger interactions in sprites
   triggerScript: function () {
     if (!this.triggerId) this.completed = true;
-    this.zone.scripts.forEach((x) => {
-      if (x.id === this.triggerId) {
-        x.trigger.call(this.zone);
-      }
-    });
+    Promise.all(this.zone.scripts.filter((x) => x.id === this.triggerId).map(async (x) => await x.trigger.call(this.zone)));
     this.completed = true;
   },
   // check input and completion
   tick: function (time) {
     if (!this.loaded) return;
-    if(this.completed) this.onComplete();
+    if (this.completed) this.onComplete();
     return this.completed; // loop
   },
 };

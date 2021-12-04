@@ -112,7 +112,7 @@ export default class Player extends Sprite {
         break;
       // play scene
       case "y":
-        this.zone.playScene('strange-legend');
+        this.zone.playScene('strange-legend'); // trigger a scene to start
         break;
       // Interact with tile
       case "k":
