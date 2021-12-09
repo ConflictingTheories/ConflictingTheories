@@ -16,8 +16,6 @@ import ipfsStream from "calliope-ipfs-stream";
 import MermaidDiagram from "calliope-mermaid";
 import BlockWorld from "calliope-blockworld";
 import Pixos from "calliope-pixos";
-// import Pixos from "./pixos/jsx/index.jsx";
-
 
 // TODO - Add Theme Injection Somehow (Or Wrapper)
 
@@ -54,7 +52,6 @@ export default function plugins(props) {
     // Pixos
     case "pixos":
       let Plugin = Pixos['calliope-pixos'].default;
-      console.log(Plugin);
       return <Plugin />;
     default:
       return <>{JSON.stringify(props)}</>;
