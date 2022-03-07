@@ -3822,14 +3822,15 @@
   dependencies:
     "caller-callsite" "^2.0.0"
 
-"calliope-pixos@^0.4.10":
-  "integrity" "sha512-B/oWD0Gm4gxBpMhQ7cMdB6QUrFpUJJJ4qWxAaMRj8CsM9hPHOtRnacPbEv/DDwaQ1hfIRgL86fhAFbTeL+ijNw=="
-  "resolved" "https://registry.npmjs.org/calliope-pixos/-/calliope-pixos-0.4.10.tgz"
-  "version" "0.4.10"
+"calliope-pixos@^0.4.11":
+  "integrity" "sha512-B4tbVMHLTRbNATE/H04A8R3jDoPHNJTEziWjzqvxGFcgaXvmuJXHIfeinIOuTaYk1EGDFzPOGnbXh3vH5VW8TA=="
+  "resolved" "https://registry.npmjs.org/calliope-pixos/-/calliope-pixos-0.4.11.tgz"
+  "version" "0.4.11"
   dependencies:
     "babel-loader" "^8.2.3"
     "css-loader" "^6.7.0"
     "dexie" "^3.2.0"
+    "file-saver" "^2.0.5"
     "jszip" "^3.7.1"
     "prop-types" "^15.7.2"
     "style-loader" "^3.3.1"
@@ -5808,6 +5809,11 @@
   dependencies:
     "loader-utils" "^2.0.0"
     "schema-utils" "^3.0.0"
+
+"file-saver@^2.0.5":
+  "integrity" "sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA=="
+  "resolved" "https://registry.npmjs.org/file-saver/-/file-saver-2.0.5.tgz"
+  "version" "2.0.5"
 
 "file-uri-to-path@1.0.0":
   "integrity" "sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw=="
