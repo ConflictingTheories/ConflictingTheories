@@ -3822,10 +3822,10 @@
   dependencies:
     "caller-callsite" "^2.0.0"
 
-"calliope-pixos@^0.4.20":
-  "integrity" "sha512-9R8cRPx4XcO0voyItBD2F3clNYLOLe7hvEo7EgdITDdhgv3TKQkxXNDMwR5Ur9Tu6qI++sbLKD3LgaFYDnWbcQ=="
-  "resolved" "https://registry.npmjs.org/calliope-pixos/-/calliope-pixos-0.4.20.tgz"
-  "version" "0.4.20"
+"calliope-pixos@^0.4.23":
+  "integrity" "sha512-s8eMTFG5CjCScHrliTB1b6uJHimp0PDOimasQcOwUDBs0fXd8NoMXiKTloLTW5Aa7xATJMK8Qoga106/qO1pfQ=="
+  "resolved" "https://registry.npmjs.org/calliope-pixos/-/calliope-pixos-0.4.23.tgz"
+  "version" "0.4.23"
   dependencies:
     "babel-loader" "^8.2.3"
     "css-loader" "^6.7.1"
