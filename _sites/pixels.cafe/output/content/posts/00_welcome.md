@@ -27,14 +27,6 @@
 .sm {
     font-size: 0.75em;
 }
-p{
-  font-family: "Courier";
-  font-size: 20px;
-  margin: 10px 0 0 10px;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 30em;
-}
 p:nth-child(2){
   animation: type 8s steps(60, end);
 }

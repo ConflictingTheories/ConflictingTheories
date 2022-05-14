@@ -1,8 +1,4 @@
 <style>
-.typed {
-  background-size: cover;
-  font-family: 'Trebuchet MS', sans-serif; 
-}
 .type-container{
   display: inline-block;
 }
@@ -13,9 +9,6 @@
   animation: typing 1.2s steps(20, end) forwards, blink 1.3s infinite;
   font-size: 1.6rem;
   width: 0;
-}
-.typed-out:after{
-  overflow: initial;
 }
 .a{
     color:lightgreen
@@ -34,11 +27,22 @@
 .sm {
     font-size: 0.75em;
 }
-
+p:nth-child(2){
+  animation: type 8s steps(60, end);
+}
+p a{
+  text-decoration: none;
+}
+span{
+  animation: blink 1s infinite;
+}
 @keyframes typing {
   from { width: 0 }
   to { width: 100% }
 }
+@keyframes type{ 
+  from { width: 0; } 
+} 
 @keyframes blink {
   from { border-color: transparent }
   to { border-color: orange; }
