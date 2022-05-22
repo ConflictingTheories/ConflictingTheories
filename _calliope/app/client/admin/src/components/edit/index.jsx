@@ -44,6 +44,8 @@ class EditMarkdown extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      error: null,
+      errorInfo: null,
       content: props.content || "please start your edits :)",
     };
     this.saveChanges = this.saveChanges.bind(this);
@@ -64,91 +66,95 @@ class EditMarkdown extends Component {
     store.isSaved = true;
   }
 
+  componentDidCatch(error, errorInfo) {
+    console.error(error);
+    this.setState({ error: error, errorInfo: errorInfo });
+    return false;
+  }
+
   render() {
     const { content } = this.state;
     let res = null;
-    return (
-      <Container>
-        <Row>
-          <Col sm={12} md={12} lg={12}>
-            <Panel
-              bordered
-              bodyFill
-              style={{
-                height: "87vh",
-                overflow: "overlay",
-                background: "#121216",
-                width: "100%",
-              }}
-            >
-              <Container style={{ minHeight: "100%" }}>
-                <MDEditor
-                  style={{ height: "100%", minHeight: "87vh" }}
-                  height={"100%"}
-                  preview={"edit"}
-                  value={content}
-                  autoFocus={false}
-                  visiableDragbar={false}
-                  onChange={(value) => {
-                    store.selectedContent = value;
-                    store.isSaved = false;
-                    this.setState({ content: value });
-                  }}
-                  // Toolbar Settings
-                  commands={[
-                    commands.bold,
-                    commands.hr,
-                    commands.italic,
-                    commands.divider,
-                    commands.fullscreen,
-                  ]}
-                  // Markdown Options
-                  previewOptions={{
-                    astPlugins: [parseHtml],
-                    escapeHtml: false,
-                    parserOptions: { gfm: true },
-                    plugins: [
-                      [
-                        shortcodes,
-                        {
-                          startBlock: "[[",
-                          endBlock: "]]",
-                          inlineMode: true,
-                        },
+    try {
+      return (
+        <Container>
+          <Row>
+            <Col sm={12} md={12} lg={12}>
+              <Panel
+                bordered
+                bodyFill
+                style={{
+                  height: "87vh",
+                  overflow: "overlay",
+                  background: "#121216",
+                  width: "100%",
+                }}
+              >
+                <Container style={{ minHeight: "100%" }}>
+                  <MDEditor
+                    style={{ height: "100%", minHeight: "87vh" }}
+                    height={"100%"}
+                    preview={"edit"}
+                    value={content}
+                    autoFocus={false}
+                    visiableDragbar={false}
+                    onChange={(value) => {
+                      store.selectedContent = value;
+                      store.isSaved = false;
+                      this.setState({ content: value });
+                    }}
+                    // Toolbar Settings
+                    commands={[commands.bold, commands.hr, commands.italic, commands.divider, commands.fullscreen]}
+                    // Markdown Options
+                    previewOptions={{
+                      astPlugins: [parseHtml],
+                      escapeHtml: false,
+                      parserOptions: { gfm: true },
+                      plugins: [
+                        [
+                          shortcodes,
+                          {
+                            startBlock: "[[",
+                            endBlock: "]]",
+                            inlineMode: true,
+                          },
+                        ],
+                        emoji,
+                        a11yEmoji,
+                        math,
+                        slug,
+                        headings,
+                        html,
                       ],
-                      emoji,
-                      a11yEmoji,
-                      math,
-                      slug,
-                      headings,
-                      html,
-                    ],
-                    renderers: renderers,
-                    // allowDangerousHtml: true,
-                  }}
-                />
-              </Container>
-            </Panel>
-          </Col>
-          <Col sm={12} md={12} lg={12}>
-            <Panel
-              bordered
-              style={{
-                height: "87vh",
-                overflow: "overlay",
-                background: "#121216",
-                width: "100%",
-              }}
-            >
-              <Post hideEmbed={true} content={content} />
-            </Panel>
-          </Col>
-        </Row>
-        <Row>
-          <button onClick={() => this.saveChanges()}>Save Changes</button>
-        </Row>
-      </Container>
-    );
+                      renderers: renderers,
+                      // allowDangerousHtml: true,
+                    }}
+                  />
+                </Container>
+              </Panel>
+            </Col>
+            <Col sm={12} md={12} lg={12}>
+              <Panel
+                bordered
+                style={{
+                  height: "87vh",
+                  overflow: "overlay",
+                  background: "#121216",
+                  width: "100%",
+                }}
+              >
+                <Post hideEmbed={true} content={content} />
+              </Panel>
+            </Col>
+          </Row>
+          <Row>
+            <button onClick={() => this.saveChanges()}>Save Changes</button>
+          </Row>
+        </Container>
+      );
+    } catch (e) {
+      console.error(e);
+    }
   }
 }
 

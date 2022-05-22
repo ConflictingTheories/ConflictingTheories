@@ -37,6 +37,8 @@ class MarkdownPreview extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      error: null,
+      errorInfo: null,
       src: props?.src || "",
       content: null,
     };
@@ -54,6 +56,11 @@ class MarkdownPreview extends Component {
   }
 
   componentWillUnmount() {}
+
+  componentDidCatch(error, errorInfo) {
+    console.error(error);
+    this.setState({ error: error, errorInfo: errorInfo })
+  }
 
   render() {
     const { content } = this.state;
