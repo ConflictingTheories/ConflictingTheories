@@ -1,54 +1,3 @@
-<style>
-.type-container{
-  display: inline-block;
-}
-.typed-out{
-  overflow: hidden;
-  border-right: .15em solid orange;
-  white-space: nowrap;
-  animation: typing 1.2s steps(20, end) forwards, blink 1.3s infinite;
-  font-size: 1.6rem;
-  width: 0;
-}
-.a{
-    color:lightgreen
-}
-.q {
-    color:orange
-}
-.lrg {
-    font-size: 1.8em;
-    padding-right: 0.2em
-}
-.md {
-    font-size: 1.4em;
-    padding-right: 0.3em
-}
-.sm {
-    font-size: 0.75em;
-}
-p:nth-child(2){
-  animation: type 8s steps(60, end);
-}
-p a{
-  text-decoration: none;
-}
-span{
-  animation: blink 1s infinite;
-}
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
-}
-@keyframes type{ 
-  from { width: 0; } 
-} 
-@keyframes blink {
-  from { border-color: transparent }
-  to { border-color: orange; }
-}
-</style>
-
 <div class="typed">
 <div class="type-container">
   <p class="typed-out lrg"># Welcome to the Pixels Cafe 👾 ☕</p>
@@ -65,29 +14,33 @@ I hope you enjoy this site and please take a <i style="color:orange">byte</i> & 
   </div>
 </div>
 
-1. [Nintendo](/pages/nintendo.md)
+1. [Nintendo](/embed/pages/nintendo)
 
-2. [PlayStation]()
+2. [PlayStation](/embed/pages/playstation)
 
-3. [Mobile & Handheld]()
+3. [Mobile & Handheld](/embed/pages/handheld)
 
-4. [Arcade]()
+4. [Arcade](/embed/pages/arcade)
 
-5. [Retro]()
+5. [Retro](/embed/pages/20220522T165816_retro)
 
-6. [Flash]()
+6. [Flash](/embed/pages/flash)
 
-7. [Hacks & Cracks]()
+7. [Hacks & Cracks](/embed/pages/20220522T165713_hacks)
 
-8. [Fan Art]()
+8. [Fan Art](/embed/pages/20220522T170043_fan_art)
 
-9. [Critiques]()
+9. [Critiques](/embed/pages/20220522T170052_critiques)
 
-10. [Top 10 Lists]()
+10. [Top 10 Lists](/embed/pages/20220522T170114_top_10)
 
-11. [References]()
+11. [References](/embed/pages/20220522T170128_references)
 
-12. [Miscellaneous]()
+12. [Miscellaneous](/embed/pages/20220522T165955_misc)
+
+13. [Final Fantasy](/embed/pages/20220522T165828_final_fantasy)
+
+<br/>
 
 <div class="typed">
 <div class="type-container">
@@ -97,7 +50,7 @@ I hope you enjoy this site and please take a <i style="color:orange">byte</i> & 
 
 <div class="q">Q) Do you have any suggestions for a newcomer?</div>
 
-<div class="a">A) I would suggest checking out the various game console sections such as <a href="/pages/nintendo.md">nintendo</a> or <a href="/pages/playstation.md">playstation</a>.</div>
+<div class="a">A) I would suggest checking out the various game console sections such as <a href="/embed/pages/nintendo">nintendo</a> or <a href="/embed/pages/playstation">playstation</a>.</div>
 
 <div class="q">Q) What kind of fan art do you have?</div>
 
@@ -106,3 +59,12 @@ I hope you enjoy this site and please take a <i style="color:orange">byte</i> & 
 <div class="q">Q) What is your favourite genre of gaming?</div>
 
 <div class="a">A) I normally enjoy JRPGs, action platformers, FPS, and Racing, but from time to time I have been known to enjoy all types (though not all games)</div>
+
+
+<br/><br/>
+
+<div class="typed">
+<div class="type-container">
+  <p class="typed-out sm">knock knock... <a href="/embed/pages/20220522T165602_White_Rabbit">🐇 </a></p>
+  </div>
+</div>

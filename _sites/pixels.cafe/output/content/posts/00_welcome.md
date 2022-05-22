@@ -1,54 +1,3 @@
-<style>
-.type-container{
-  display: inline-block;
-}
-.typed-out{
-  overflow: hidden;
-  border-right: .15em solid orange;
-  white-space: nowrap;
-  animation: typing 1.2s steps(20, end) forwards, blink 1.3s infinite;
-  font-size: 1.6rem;
-  width: 0;
-}
-.a{
-    color:lightgreen
-}
-.q {
-    color:orange
-}
-.lrg {
-    font-size: 1.8em;
-    padding-right: 0.2em
-}
-.md {
-    font-size: 1.4em;
-    padding-right: 0.3em
-}
-.sm {
-    font-size: 0.75em;
-}
-p:nth-child(2){
-  animation: type 8s steps(60, end);
-}
-p a{
-  text-decoration: none;
-}
-span{
-  animation: blink 1s infinite;
-}
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
-}
-@keyframes type{ 
-  from { width: 0; } 
-} 
-@keyframes blink {
-  from { border-color: transparent }
-  to { border-color: orange; }
-}
-</style>
-
 <div class="typed">
 <div class="type-container">
   <p class="typed-out lrg"># Welcome to the Pixels Cafe 👾 ☕</p>
@@ -91,6 +40,8 @@ I hope you enjoy this site and please take a <i style="color:orange">byte</i> & 
 
 13. [Final Fantasy](/embed/pages/20220522T165828_final_fantasy)
 
+<br/>
+
 <div class="typed">
 <div class="type-container">
   <p class="typed-out md"># FAQ 🐙 </p>
@@ -109,10 +60,11 @@ I hope you enjoy this site and please take a <i style="color:orange">byte</i> & 
 
 <div class="a">A) I normally enjoy JRPGs, action platformers, FPS, and Racing, but from time to time I have been known to enjoy all types (though not all games)</div>
 
-<br/>
+
+<br/><br/>
 
 <div class="typed">
 <div class="type-container">
-  <p class="typed-out sm"><a href="/embed/pages/20220522T165602_White_Rabbit">knock knock... 🐇 </a></p>
+  <p class="typed-out sm">knock knock... <a href="/embed/pages/20220522T165602_White_Rabbit">🐇 </a></p>
   </div>
 </div>
