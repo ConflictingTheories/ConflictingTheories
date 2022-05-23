@@ -1,0 +1,70 @@
+<div class="typed">
+<div class="type-container">
+  <p class="typed-out lrg"># Welcome to the Pixels Cafe 👾 ☕</p>
+  </div>
+</div>
+
+This is a fan site for all things pixelated. Mostly games I really enjoyed growing up, or games which I have discovered more recently and wish to appreciate. This is mostly a site focused on video games, but from time to time some additional content will be added. Most of this additional content will be involving computer history, pop culture from 80's, 90's, or 00's and the related content.
+
+I hope you enjoy this site and please take a <i style="color:orange">byte</i> & and stay for a <i style="color:orange">bit</i>.
+
+<div class="typed">
+<div class="type-container">
+  <p class="typed-out md"># Table of Contents 🌵 </p>
+  </div>
+</div>
+
+1. [Nintendo](/embed/pages/nintendo)
+
+2. [PlayStation](/embed/pages/playstation)
+
+3. [Mobile & Handheld](/embed/pages/handheld)
+
+4. [Arcade](/embed/pages/arcade)
+
+5. [Retro](/embed/pages/20220522T165816_retro)
+
+6. [Flash](/embed/pages/flash)
+
+7. [Hacks & Cracks](/embed/pages/20220522T165713_hacks)
+
+8. [Fan Art](/embed/pages/20220522T170043_fan_art)
+
+9. [Critiques](/embed/pages/20220522T170052_critiques)
+
+10. [Top 10 Lists](/embed/pages/20220522T170114_top_10)
+
+11. [References](/embed/pages/20220522T170128_references)
+
+12. [Miscellaneous](/embed/pages/20220522T165955_misc)
+
+13. [Final Fantasy](/embed/pages/20220522T165828_final_fantasy)
+
+<br/>
+
+<div class="typed">
+<div class="type-container">
+  <p class="typed-out md"># FAQ 🐙 </p>
+  </div>
+</div>
+
+<div class="q">Q) Do you have any suggestions for a newcomer?</div>
+
+<div class="a">A) I would suggest checking out the various game console sections such as <a href="/embed/pages/nintendo">nintendo</a> or <a href="/embed/pages/playstation">playstation</a>.</div>
+
+<div class="q">Q) What kind of fan art do you have?</div>
+
+<div class="a">A) It will likely be a collection of writings, fan stories, some music renditions perhaps, and the occasional bit of arts and crafts.</div>
+
+<div class="q">Q) What is your favourite genre of gaming?</div>
+
+<div class="a">A) I normally enjoy JRPGs, action platformers, FPS, and Racing, but from time to time I have been known to enjoy all types (though not all games)</div>
+
+
+<br/><br/>
+
+<div class="typed">
+<div class="type-container">
+  <p class="typed-out sm">knock knock... <a href="/embed/pages/20220522T165602_White_Rabbit">🐇 </a></p>
+  </div>
+</div>
