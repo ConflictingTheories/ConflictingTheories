@@ -216,3 +216,80 @@ button {
   text-align: center;
   width: 100%;
 }
+
+.card-back {
+  overflow: hidden;
+  position: relative;
+  border-radius: 0.5em;
+  box-shadow: 2px 2px 17px #0001;
+  background: linear-gradient(var(--ang, 180deg), #0091, #000);
+}
+.card-back,
+.card-back:before,
+.card-back:after {
+  --strip-stop: 100%;
+  --strip-f: 0.25;
+  --strip-stop-0: calc(var(--strip-f) * var(--strip-stop));
+  --strip-stop-1: calc(var(--strip-stop) - var(--strip-stop-0));
+  --strip-end: red;
+  --strip-mid: transparent;
+  --strip-list: var(--strip-end) 0, var(--strip-end) var(--strip-stop-0), var(--strip-mid) 0, var(--strip-mid) var(--strip-stop-1),
+    var(--strip-end) 0, var(--strip-end) var(--strip-stop);
+  --joint-list: var(--joint-end, red) var(--joint-stop, 25%), var(--joint-mid, transparent) 0;
+  --joint-0: linear-gradient(135deg, var(--joint-list));
+  --joint-1: linear-gradient(-135deg, var(--joint-list));
+  --joint-2: linear-gradient(-45deg, var(--joint-list));
+  --joint-3: linear-gradient(45deg, var(--joint-list));
+}
+.card-back:before,
+.card-back:after {
+  --i: 0;
+  --noti: calc(1 - var(--i));
+  --sgni: calc(2 * var(--i) - 1);
+  --c: hsl(0, 0%, 0%, var(--i));
+  --notc: hsl(0, 0%, 0%, var(--noti));
+  --fill: linear-gradient(var(--c), var(--c));
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  --c0: RGB(
+    calc(var(--i) * 63 + var(--noti) * 255),
+    calc(var(--i) * 126 + var(--noti) * 149),
+    calc(var(--i) * 166 + var(--noti) * 40)
+  );
+  --c1: RGB(
+    calc(var(--i) * 255 + var(--noti) * 63),
+    calc(var(--i) * 149 + var(--noti) * 126),
+    calc(var(--i) * 40 + var(--noti) * 166)
+  );
+  -webkit-mask: var(--mask);
+  mask: var(--mask);
+  -webkit-mask-position: var(--mask-o, 50% 50%);
+  mask-position: var(--mask-o, 50% 50%);
+  -webkit-mask-size: var(--mask-d);
+  mask-size: var(--mask-d);
+  content: "";
+}
+.card-back:after {
+  --i: 1;
+}
+
+.card-back:nth-child(4) {
+  --d: 8em;
+  --ang: 45deg;
+}
+.card-back:nth-child(4):before,
+.card-back:nth-child(4):after {
+  background: var(--c0);
+  --strip-end: var(--c);
+  --strip-mid: var(--notc);
+  --strip-stop: var(--d);
+  --mask: linear-gradient(90deg, red, transparent), radial-gradient(circle at 25% 25%, red 9%, transparent 35%),
+    repeating-linear-gradient(90deg, var(--strip-list)), repeating-linear-gradient(-45deg, var(--strip-list));
+  --mask-o: calc(50% - 0.25 * var(--d)) 50%, 50% 50%, 50% 50%, 50% 50%;
+  --mask-d: calc(0.5 * var(--d)), 8px 8px, 100%, 100%;
+  -webkit-mask-composite: source-in, source-in, source-in, source-over;
+  mask-composite: intersect;
+}
