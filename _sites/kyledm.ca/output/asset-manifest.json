@@ -6,10 +6,10 @@
     "runtime-main.js": "/static/js/runtime-main.428aefd5.js",
     "runtime-main.js.map": "/static/js/runtime-main.428aefd5.js.map",
     "static/css/2.183a10d7.chunk.css": "/static/css/2.183a10d7.chunk.css",
-    "static/js/2.664f935d.chunk.js": "/static/js/2.664f935d.chunk.js",
-    "static/js/2.664f935d.chunk.js.map": "/static/js/2.664f935d.chunk.js.map",
+    "static/js/2.23f480d9.chunk.js": "/static/js/2.23f480d9.chunk.js",
+    "static/js/2.23f480d9.chunk.js.map": "/static/js/2.23f480d9.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.71d189df29c634973c0379d214142113.js": "/precache-manifest.71d189df29c634973c0379d214142113.js",
+    "precache-manifest.e594af4188127fd504780a755799d4c0.js": "/precache-manifest.e594af4188127fd504780a755799d4c0.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.183a10d7.chunk.css.map": "/static/css/2.183a10d7.chunk.css.map",
     "static/css/main.068fab68.chunk.css.map": "/static/css/main.068fab68.chunk.css.map",
@@ -20,7 +20,7 @@
   "entrypoints": [
     "static/js/runtime-main.428aefd5.js",
     "static/css/2.183a10d7.chunk.css",
-    "static/js/2.664f935d.chunk.js",
+    "static/js/2.23f480d9.chunk.js",
     "static/css/main.068fab68.chunk.css",
     "static/js/main.0ea49053.chunk.js"
   ]
