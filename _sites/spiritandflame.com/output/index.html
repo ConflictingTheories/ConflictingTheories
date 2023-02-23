@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Spirit & Flame</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Rock+Salt" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Cabin+Sketch" rel="stylesheet" type="text/css" />
+    <link href="css/index.css" rel="stylesheet" type="text/css" />
+    <script src="js/index.js"></script>
+    <script>
+      var toggle = false;
+      function playMusic() {
+        toggle = !toggle;
+        if (toggle) document.querySelectorAll('.music').forEach((x) => x.play());
+        else document.querySelectorAll('.music').forEach((x) => x.pause());
+      }
+      function today() {
+        document.getElementById('date').innerText = new Date().toDateString();
+      }
+      window.onload = function () {
+        today();
+        initialize(hero);
+      };
+    </script>
+
+    <style>
+      @keyframes move-background {
+        from {
+          -webkit-transform: translate3d(0px, 0px, 0px);
+        }
+        to {
+          -webkit-transform: translate3d(1000px, 0px, 0px);
+        }
+      }
+      @-webkit-keyframes move-background {
+        from {
+          -webkit-transform: translate3d(0px, 0px, 0px);
+        }
+        to {
+          -webkit-transform: translate3d(1000px, 0px, 0px);
+        }
+      }
+      @-moz-keyframes move-background {
+        from {
+          -webkit-transform: translate3d(0px, 0px, 0px);
+        }
+        to {
+          -webkit-transform: translate3d(1000px, 0px, 0px);
+        }
+      }
+      @-webkit-keyframes move-background {
+        from {
+          -webkit-transform: translate3d(0px, 0px, 0px);
+        }
+        to {
+          -webkit-transform: translate3d(1000px, 0px, 0px);
+        }
+      }
+      
+      body{
+        background-color: black;
+      }
+
+      .background-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+      }
+
+      .container {
+        background: #33333310 url(./media/spirit.png) center center no-repeat;
+        position: absolute;
+        background-size: 1000px;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: block;
+        z-index: 4;
+      }
+
+      img {
+        height: 25vh;
+        width: 25vh;
+        position: absolute;
+        z-index: 3;
+        right: 20px;
+      }
+    </style>
+
+    <script>
+      window.console = window.console || function (t) {};
+      if (document.location.search.match(/type=embed/gi)) {
+        window.parent.postMessage('resize', '*');
+      }
+    </script>
+  </head>
+
+  <body translate="no">
+    <div class="background-container">
+      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/moon2.png" alt="">
+      <div class="video-container" style="height: 100vh">
+        <video autoplay loop muted style="height: 100vh">
+          <p class="subtitle">Spirit & Flame</p>
+          <source
+            src="https://joy1.videvo.net/videvo_files/video/free/2020-01/large_watermarked/200116_Lens%20effect_4k_070_preview.mp4"
+            type="video/mp4"
+          />
+        </video>
+      </div>
+      <div class="container"></div>
+      <br />
+    </div>
+  </body>
+</html>
