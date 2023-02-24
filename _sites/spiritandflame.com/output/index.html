@@ -12,6 +12,19 @@
       if (document.location.search.match(/type=embed/gi)) {
         window.parent.postMessage('resize', '*');
       }
+      var toggle = false;
+      function playMusic() {
+        toggle = !toggle;
+        if (toggle) document.querySelectorAll('.music').forEach((x) => x.play());
+        else document.querySelectorAll('.music').forEach((x) => x.pause());
+      }
+      function today() {
+        document.getElementById('date').innerText = new Date().toDateString();
+      }
+      window.onload = function () {
+        today();
+        initialize(hero);
+      };
     </script>
   </head>
   <body translate="no">
@@ -24,14 +37,20 @@
             src="https://joy1.videvo.net/videvo_files/video/free/2020-01/large_watermarked/200116_Lens%20effect_4k_070_preview.mp4"
             type="video/mp4"
           />
-          <source
-            src="media/smoke.mp4"
-            type="video/mp4"
-          />
+          <source src="media/smoke.mp4" type="video/mp4" />
         </video>
       </div>
       <div class="container"></div>
       <br />
     </div>
+    <p class="f">
+      <a href="#" onclick="playMusic()">Toggle Music 🎼</a>
+      <br />
+      <span id="date"></span>
+    </p>
+    <!-- Audio -->
+    <audio class="music" autoplay loop>
+      <source src="media/OM-Chant-FFX.mp3" type="audio/mp3" />
+    </audio>
   </body>
 </html>
