@@ -9,47 +9,45 @@
   background-size: contain;
 }
 
-.menu{
+.menu {
   z-index: 5;
-  margin-left:auto;
-  margin-right:auto;
+  margin-left: auto;
+  margin-right: auto;
   display: -webkit-flex;
   position: sticky;
   color: white;
-  background: #901d20;
+  background: #901d2070;
   bottom: 0px;
   display: flex;
   min-width: 300px;
 }
 
-.button{
+.button {
   text-align: center;
   width: 20%;
   margin: 25px;
   font-size: xx-large;
 }
-.button > a{
+.button > a {
   text-align: center;
-  height:100px;
+  height: 100px;
   color: white;
 }
 
 @media only screen and (width <= 700px) {
-  .menu{
+  .menu {
     z-index: 5;
-    margin-left:auto;
-    margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
     position: sticky;
     bottom: 100px;
     display: block;
     min-width: 300px;
   }
-  .button{
+  .button {
     width: 50%;
   }
 }
-
-
 
 @keyframes move-background {
   from {
@@ -99,7 +97,7 @@ body {
 .container {
   background: #33333320 url(../media/spirit.png) center center no-repeat;
   position: absolute;
-  background-size: 1000px;
+  background-size: 44vb;
   top: 0;
   bottom: 0;
   left: 0;
@@ -107,11 +105,12 @@ body {
   display: block;
   z-index: 4;
 }
-@media only screen and (width <= 700px) {
+@media only screen and (width >= 700px) {
   .container {
-    background-size: 600px;
+    background-size: 1000px;
   }
 }
+
 img {
   height: 25vw;
   width: 25vw;
@@ -125,18 +124,18 @@ img {
   bottom: 5px;
   right: 15px;
   font-size: 1rem;
-  color: #FFFFFF90;
+  color: #ffffff90;
   text-align: center;
 }
 .f a {
   font-size: 1rem;
-  color: #FFFFFF90;
+  color: #ffffff90;
 }
 
 .subtitle {
   font-weight: 100;
   font-size: 0.8vw;
-  color: #FFFFFF90;
+  color: #ffffff90;
   text-transform: uppercase;
   letter-spacing: 1em;
   text-align: center;
