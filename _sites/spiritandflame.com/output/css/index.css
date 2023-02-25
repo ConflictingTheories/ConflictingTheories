@@ -27,11 +27,14 @@
   width: 20%;
   margin: 25px;
   font-size: xx-large;
+  font-family: fantasy;
 }
+
 .button > a {
   text-align: center;
   height: 100px;
   color: white;
+  text-decoration: none;
 }
 
 @media only screen and (width <= 700px) {
@@ -117,6 +120,7 @@ img {
   position: absolute;
   z-index: 3;
   right: 20px;
+  margin-top: 15px;
 }
 
 .f {
