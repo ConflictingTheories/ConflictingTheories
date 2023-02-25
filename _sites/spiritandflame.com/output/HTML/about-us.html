@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" type="image/x-icon" href="../Images/img-DS.png" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>About Us</title>
+    <link rel="stylesheet" href="../css/navbar.css" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/preloader.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="../js/preloader.js"></script>
+  </head>
+  <style>
+    body {
+      overflow-x: hidden;
+      font-family: 'Montserrat';
+    }
+
+    .mapouter {
+      position: relative;
+      text-align: right;
+      border-radius: 14px;
+    }
+    .gmap_canvas {
+      overflow: hidden;
+      background: none !important;
+      width: 100%;
+      border-radius: 14px;
+      box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+    }
+    .row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin: 0 10%;
+    }
+    .col {
+      width: 45%;
+      margin: 0 10px 0 10px;
+    }
+    h1 {
+      text-align: center;
+    }
+    #about-us,
+    h1 {
+      font-family: 'Montserrat';
+    }
+    nav {
+      position: relative;
+      background: transparent;
+    }
+    p {
+      text-align: justify;
+    }
+    figure > img {
+      width: 500px;
+      height: 500px;
+      object-fit: cover;
+      box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+      border-radius: 7px;
+    }
+  </style>
+  <body>
+    <div class="se-pre-con"></div>
+    <nav>
+      <ul>
+        <li class="primary-nav">
+          <img src="../Images/img-DS.png" alt="logo" />
+          <a href="../index.html">Spirit & Flame</a>
+        </li>
+        <li class="secondary-nav">
+          <a href="../HTML/checkout.html"> <i class="fas fa-shopping-cart"></i> CART </a>
+        </li>
+        <li class="secondary-nav">
+          <a href="../HTML/about-us.html">ABOUT US</a>
+        </li>
+        <li class="secondary-nav">
+          <a href="./HTML/perfumes.html">PERFUMES</a>
+        </li>
+        <li class="secondary-nav">
+          <a href="./HTML/resins.html">RESINS</a>
+        </li>
+        <li class="secondary-nav">
+          <a href="./HTML/oils.html">OILS</a>
+        </li>
+        <li class="secondary-nav"><a href="../HTML/candles.html">CANDLES</a></li>
+        <li class="secondary-nav"><a href="../HTML/incense.html">INCENSE</a></li>
+      </ul>
+    </nav>
+    <h1>About Spirit & Flame</h1>
+    <div class="row">
+      <section class="mapouter col">
+        <div class="gmap_canvas">
+          <iframe
+            width="100%"
+            height="500vw"
+            id="gmap_canvas"
+            src="https://maps.google.com/maps?q=moi%20avenue&t=&z=13&ie=UTF8&iwloc=&output=embed"
+            frameborder="0"
+            scrolling="no"
+            marginheight="0"
+            marginwidth="0"
+          ></iframe>
+        </div>
+      </section>
+
+      <section id="about-us" class="col">
+        <p>
+          Spirit & Flame was started with the vision of being the #1 online shop for all things aromatic. 
+          With a keen interest and high respect for traditional spiritual practices across the globe, 
+          we have come to have a deep love of aromatic scents and sacred fragrances. This world blesses 
+          us with so many joys, and none are both so subtle and so blunt as the sense of smell. It can 
+          bring us bliss and help us detach from the stresses of life with nothing more than a few 
+          inhales of a heavenly scent, whilst negative odours can disrupt our moods and burden us with stress.
+        </p>
+        <p>
+          By curating beautiful and sacred scents and substances from around the world, we hope to bring 
+          you a sense of calm and tranquility. Many of our products have deep traditional lores and deserve 
+          our respect. Where possible, we have tried to provide a brief description of these traditions, 
+          but in no way can we possibly cover the depth and breadth of such a subject and each religion 
+          would require their own site of information each just to do it justice. So whilst, we cannot 
+          offer an academic treatise, we hope we can inspire you to explore these heavenly fragrances, 
+          and get to know a bit more about their traditions and craft your own respect for them in the process.
+        </p>
+        <h2>Mission</h2>
+        <p>
+          Our mission is what drives us to do everything possible to expand human potential. With our 
+          efforts and these beautiful offerings we hope that we can bring some magick into your life 
+          and give you a moment of calm. We wish everyone peace, and hope that our scents inspire you 
+          in wonderful ways. Thank you for your time and looking at our wares, we appreciate you very much!
+        </p>
+      </section>
+    </div>
+  </body>
+</html>

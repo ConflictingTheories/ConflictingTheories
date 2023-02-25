@@ -7,6 +7,8 @@
     <link href="https://fonts.googleapis.com/css?family=Rock+Salt" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Cabin+Sketch" rel="stylesheet" type="text/css" />
     <link href="css/index.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+
     <script>
       window.console = window.console || function (t) {};
       if (document.location.search.match(/type=embed/gi)) {
@@ -29,26 +31,32 @@
   </head>
   <body translate="no">
     <div class="background-container">
-      <div class="menu">
-        <div class="button">
-          <a href="">Candles</a>
-        </div>
-        <div class="button">
-          <a href="">Incense</a>
-        </div>
-        <div class="button">
-          <a href="">Oils</a>
-        </div>
-        <div class="button">
-          <a href="">Resin</a>
-        </div>
-        <div class="button">
-          <a href="">Herbs</a>
-        </div>
-        <div class="button">
-          <a href="">Perfumes</a>
-        </div>
-      </div>
+      <nav>
+        <ul>
+          <li class="primary-nav">
+            <img src="Images/img-DS.png" alt="logo" />
+            <a href="#home">Spirit & Flame</a>
+          </li>
+          <li class="secondary-nav">
+            <a href="HTML/checkout.html"> <i class="fas fa-shopping-cart"></i> CART </a>
+          </li>
+          <li class="secondary-nav">
+            <a href="HTML/about-us.html">ABOUT US</a>
+          </li>
+          <li class="secondary-nav">
+            <a href="./HTML/perfumes.html">PERFUMES</a>
+          </li>
+          <li class="secondary-nav">
+            <a href="./HTML/resins.html">RESINS</a>
+          </li>
+          <li class="secondary-nav">
+            <a href="./HTML/oils.html">OILS</a>
+          </li>
+
+          <li class="secondary-nav"><a href="HTML/incense.html">INCENSE</a></li>
+          <li class="secondary-nav"><a href="HTML/candles.html">CANDLES</a></li>
+        </ul>
+      </nav>
       <img src="media/moon.png" alt="" />
       <div class="video-container" style="height: 100vh">
         <video autoplay loop muted style="height: 100vh">
@@ -62,7 +70,6 @@
       </div>
       <div class="container"></div>
       <br />
-
     </div>
     <p class="f">
       <a href="#" onclick="playMusic()">Toggle Music 🎼</a>
