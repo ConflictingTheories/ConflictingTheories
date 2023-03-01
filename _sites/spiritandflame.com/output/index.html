@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Cabin+Sketch" rel="stylesheet" type="text/css" />
     <link href="css/index.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="style.css" />
 
     <script>
       window.console = window.console || function (t) {};
@@ -30,55 +31,90 @@
     </script>
   </head>
   <body translate="no">
-    <div class="background-container">
-      <nav>
-        <ul>
-          <li class="primary-nav">
-            <img src="Images/img-DS.png" alt="logo" />
-            <a href="#home">Spirit & Flame</a>
-          </li>
-          <li class="secondary-nav">
-            <a href="HTML/checkout.html"> <i class="fas fa-shopping-cart"></i> CART </a>
-          </li>
-          <li class="secondary-nav">
-            <a href="HTML/about-us.html">ABOUT US</a>
-          </li>
-          <li class="secondary-nav">
-            <a href="HTML/perfumes.html">PERFUMES</a>
-          </li>
-          <li class="secondary-nav">
-            <a href="HTML/resins.html">RESINS</a>
-          </li>
-          <li class="secondary-nav">
-            <a href="HTML/oils.html">OILS</a>
-          </li>
+    <nav>
+      <ul>
+        <li class="primary-nav">
+          <img src="Images/img-DS.png" alt="logo" />
+          <a href="#home">Spirit & Flame</a>
+        </li>
+        <li class="secondary-nav">
+          <a href="shop.html"> <i class="fas fa-shopping-cart"></i> SHOP </a>
+        </li>
+        <li class="secondary-nav">
+          <a href="HTML/about-us.html">ABOUT US</a>
+        </li>
+        <li class="secondary-nav">
+          <a href="HTML/perfumes.html">PERFUMES</a>
+        </li>
+        <li class="secondary-nav">
+          <a href="HTML/resins.html">RESINS</a>
+        </li>
+        <li class="secondary-nav">
+          <a href="HTML/oils.html">OILS</a>
+        </li>
 
-          <li class="secondary-nav"><a href="HTML/incense.html">INCENSE</a></li>
-          <li class="secondary-nav"><a href="HTML/candles.html">CANDLES</a></li>
-        </ul>
-      </nav>
-      <img src="media/moon.png" alt="" />
-      <div class="video-container" style="height: 100vh">
-        <video autoplay loop muted style="height: 100vh">
-          <p class="subtitle">Spirit & Flame</p>
-          <source
-            src="https://joy1.videvo.net/videvo_files/video/free/2020-01/large_watermarked/200116_Lens%20effect_4k_070_preview.mp4"
-            type="video/mp4"
-          />
-          <source src="media/smoke.mp4" type="video/mp4" />
-        </video>
+        <li class="secondary-nav"><a href="HTML/incense.html">INCENSE</a></li>
+        <li class="secondary-nav"><a href="HTML/candles.html">CANDLES</a></li>
+      </ul>
+    </nav>
+    <section>
+      <div class="background-container">
+        <img src="media/moon.png" alt="" />
+        <div class="video-container" style="height: 100vh">
+          <video autoplay loop muted style="height: 100vh">
+            <p class="subtitle">Spirit & Flame</p>
+            <source
+              src="https://joy1.videvo.net/videvo_files/video/free/2020-01/large_watermarked/200116_Lens%20effect_4k_070_preview.mp4"
+              type="video/mp4"
+            />
+            <source src="media/smoke.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="container"></div>
+        <br />
+        <p class="f">
+          <a href="#" onclick="playMusic()">Toggle Music 🎼</a>
+          <br />
+          <span id="date"></span>
+        </p>
+        <footer>
+          <div class="row foot">
+            <div class="col">
+              <h1>Spirit & Flame</h1>
+              <p>You #1 shop for candles, incense, oils, resins, and all sacred aromatics.</p>
+            </div>
+            <div class="col">
+              <h2>Links</h2>
+              <ul>
+                <li><a href="HTML/shop.html">Catalog</a></li>
+
+                <li><a href="HTML/Contact-us.html">Contact us</a></li>
+                <li><a href="HTML/survey.html">Take a survey</a></li>
+                <li>
+                  <a href="HTML/terms-and-conditions.html">Terms and conditions</a>
+                </li>
+                <li>
+                  <a href="HTML/refund-policy.html">Refund Policy</a>
+                </li>
+              </ul>
+            </div>
+            <div class="col">
+              <h2>
+                Copyright <sup>©</sup>
+                <a href="https://sovereign.enterprises" target="_blank">Sovereign Research Corporation</a>
+              </h2>
+            </div>
+          </div>
+        </footer>
       </div>
-      <div class="container"></div>
-      <br />
-    </div>
-    <p class="f">
-      <a href="#" onclick="playMusic()">Toggle Music 🎼</a>
-      <br />
-      <span id="date"></span>
-    </p>
-    <!-- Audio -->
-    <audio class="music" autoplay loop>
-      <source src="media/OM-Chant-FFX.mp3" type="audio/mp3" />
-    </audio>
+      <!-- Audio -->
+      <audio class="music" autoplay loop>
+        <source src="media/OM-Chant-FFX.mp3" type="audio/mp3" />
+      </audio>
+
+      <h3 style="text-align: center">
+        <a href="HTML/survey.html">Click here to take a quick survey</a>
+      </h3>
+    </section>
   </body>
 </html>
