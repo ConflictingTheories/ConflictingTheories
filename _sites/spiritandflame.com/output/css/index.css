@@ -114,7 +114,7 @@ body {
   }
 }
 
-img {
+.banner {
   height: 25vw;
   width: 25vw;
   position: absolute;
