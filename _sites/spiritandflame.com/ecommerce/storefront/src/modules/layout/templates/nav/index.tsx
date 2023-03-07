@@ -71,20 +71,25 @@ const Nav = () => {
           </div>
 
           <div className="flex items-center h-full">
-            <Link href="/">
-              <>
-                <div className="block small:hidden">
-                  <img
-                    src="media/logo-small.png"
-                    alt="logo"
-                    className="nav-logo"
-                  />
-                </div>
-                <div className="hidden small:block h-full">
+            <>
+              <div className="block small:hidden" style={{ height: "100%" }}>
+                <Link href="/">
+                  <a>
+                    <img
+                      src="media/logo-small.png"
+                      alt="logo"
+                      style={{ height: "100%" }}
+                      className="nav-logo"
+                    />
+                  </a>
+                </Link>
+              </div>
+              <div className="hidden small:block h-full">
+                <Link href="/">
                   <a className="text-xl-semi uppercase">Spirit & Flame</a>
-                </div>
-              </>
-            </Link>
+                </Link>
+              </div>
+            </>
           </div>
 
           <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
