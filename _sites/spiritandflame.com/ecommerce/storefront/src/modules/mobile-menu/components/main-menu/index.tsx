@@ -66,7 +66,7 @@ const MainMenu = () => {
           </button>
         )}
 
-        <div className="flex flex-col flex-1 text-large-regular text-gray-900">
+        <div className="flex flex-col flex-1 text-large-regular text-white">
           <ul className="flex flex-col gap-y-2">
             <li className="bg-gray-50 p-4">
               <Link href="/store">

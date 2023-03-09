@@ -155,7 +155,8 @@
 }
 
 .background-container {
-  position: fixed;
+  position: absolute;
+  background-color: #000;
   top: 0;
   left: 0;
   bottom: 0;
@@ -185,7 +186,7 @@
   position: absolute;
   z-index: 3;
   right: 20px;
-  margin-top: 15px;
+  margin-top: 50px;
 }
 
 .f {

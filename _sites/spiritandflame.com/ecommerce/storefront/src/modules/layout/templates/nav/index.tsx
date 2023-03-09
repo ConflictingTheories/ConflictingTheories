@@ -47,18 +47,15 @@ const Nav = () => {
     >
       <header
         className={clsx(
-          "relative h-16 px-8 mx-auto transition-colors bg-transparent border-b border-transparent duration-200 group-hover:bg-white group-hover:border-gray-200",
+          "relative h-16 px-8 mx-auto transition-colors bg-transparent border-b border-transparent duration-200 group-hover:bg-black group-hover:border-gray-200",
           {
-            "!bg-white !border-gray-200": !isHome || isScrolled,
+            "!bg-black !border-gray-200": !isHome || isScrolled,
           }
         )}
       >
         <nav
           className={clsx(
-            "text-gray-900 flex items-center justify-between w-full h-full text-small-regular transition-colors duration-200",
-            {
-              "text-white group-hover:text-gray-900": isHome && !isScrolled,
-            }
+            "text-white group-hover:text-white flex items-center justify-between w-full h-full text-small-regular transition-colors duration-200",
           )}
         >
           <div className="flex-1 basis-0 h-full flex items-center">
@@ -77,7 +74,7 @@ const Nav = () => {
                   <a>
                     <img
                       src="media/logo-small.png"
-                      alt="logo"
+                      alt="spirit and flame logo"
                       style={{ height: "100%" }}
                       className="nav-logo"
                     />
@@ -86,7 +83,14 @@ const Nav = () => {
               </div>
               <div className="hidden small:block h-full">
                 <Link href="/">
-                  <a className="text-xl-semi uppercase">Spirit & Flame</a>
+                  <a>
+                    <img
+                      src="media/logo-small.png"
+                      alt="spirit and flamelogo"
+                      style={{ height: "100%" }}
+                      className="nav-logo"
+                    />
+                  </a>
                 </Link>
               </div>
             </>
