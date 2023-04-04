@@ -4,4 +4,4 @@
 docker compose build
 docker compose up -d
 
-docker exec medusa-server-default medusa seed -f ./data/seed.json
+docker exec backend medusa seed -f ./data/seed.json

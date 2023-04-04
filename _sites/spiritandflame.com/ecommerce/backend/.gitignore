@@ -7,3 +7,4 @@ yarn-error.log
 /.idea
 /minio_data
 /meili_data
+/db_data
