@@ -1,22 +1,42 @@
-version: "3.8"
+version: '3.8'
 services:
+  # Admin Panel - Interface for storage management
+  admin:
+    build:
+      context: ./admin
+    ports:
+      - '7000:7000'
+  # Storefront - Public Facing Interface for clients and customers
+  storefront:
+    build:
+      context: ./storefront
+    ports:
+      - '8000:8000'
+  # Backend MedusaJS Server responsible for core logic of the store
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    image: backend:test
-    container_name: medusa-server
+    image: backend:starter
+    container_name: medusa-server-default
     depends_on:
       - postgres
       - redis
+      - search
+    env_file:
+      - './backend/.env'
     environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/medusa-docker
-      REDIS_URL: redis://cache
       NODE_ENV: development
-      JWT_SECRET: some_jwt_secret
-      COOKIE_SECRET: some_cookie_secret
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/medusa-docker
+      REDIS_URL: redis://redis
+      MEILISEARCH_HOST: http://search:7700
+      MINIO_ENDPOINT: http://minio:9000
       PORT: 9000
-  
+    ports:
+      - '9000:9000'
+    volumes:
+      - ./backend:/app/medusa
+  # Meilisearch Search engine for Store product Searching
   search:
     image: getmeili/meilisearch:v1.0
     container_name: medusa-server-search
@@ -25,39 +45,31 @@ services:
     ports:
       - '7700:7700'
     volumes:
-      - ./meili_data:/meili_data
-
+      - ./backend/meili_data:/meili_data
+  # Postgres DB for Core Data Storage
   postgres:
     image: postgres:10.4
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: medusa-docker
-
+  # MinIO for Object Storage (S3 Alternative)
+  minio:
+    image: minio/minio
+    ports:
+      - '9002:9000'
+      - '9001:9001'
+    volumes:
+      - ./db:/data
+    env_file: './backend/.env'
+    command: server --console-address ":9001" /data
+  # Redis DB for Notifications, Events, Subscriptions
   redis:
     image: redis
-    container_name: cache
-    expose:
-      - 6379
+    ports:
+      - '6379:6379'
 
-  admin:
-    build:
-      context: ./admin
-      dockerfile: Dockerfile
-    image: admin:test
-    depends_on:
-      - backend
-    container_name: medusa-admin
-    environment:
-      NODE_OPTIONS: --openssl-legacy-provider
-
-  storefront:
-    build:
-      context: ./storefront
-      dockerfile: Dockerfile
-    image: storefront:test
-    container_name: medusa-storefront
-    depends_on:
-      - backend
+volumes:
+  node_modules:
