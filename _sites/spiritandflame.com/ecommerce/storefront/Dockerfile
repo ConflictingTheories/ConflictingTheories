@@ -16,4 +16,4 @@ RUN npm install sharp
 
 RUN npm install --loglevel=error
 
-ENTRYPOINT ["yarn", "dev" ]
+ENTRYPOINT ["yarn", "dev"]

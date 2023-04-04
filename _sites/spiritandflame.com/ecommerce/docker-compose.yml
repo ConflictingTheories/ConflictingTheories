@@ -16,8 +16,6 @@ services:
     container_name: storefront
     depends_on:
       - backend
-    environment:
-      NODE_ENV: development
     ports:
       - '8000:8000'
   # Backend MedusaJS Server responsible for core logic of the store
@@ -34,7 +32,6 @@ services:
     env_file:
       - './backend/.env'
     environment:
-      NODE_ENV: development
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/medusa-docker
       REDIS_URL: redis://redis
       MEILISEARCH_HOST: http://search:7700

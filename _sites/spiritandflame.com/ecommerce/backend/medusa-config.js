@@ -41,16 +41,6 @@ const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || '';
 const plugins = [
   `medusa-fulfillment-manual`,
   `medusa-payment-manual`,
-   // File Object Storage (MinIO)
-   {
-    resolve: `medusa-file-minio`,
-    options: {
-        endpoint: process.env.MINIO_ENDPOINT,
-        bucket: process.env.MINIO_BUCKET,
-        access_key_id: process.env.MINIO_KEY,
-        secret_access_key: process.env.MINIO_SECRET,
-    },
-  },
   // search
   {
     resolve: `medusa-plugin-meilisearch`,
@@ -63,14 +53,8 @@ const plugins = [
         // index name
         products: {
           // MeiliSearch's setting options to be set on a particular index
-          searchableAttributes: ["title", "description", "variant_sku"],
-          displayedAttributes: [
-            "title", 
-            "description", 
-            "variant_sku", 
-            "thumbnail", 
-            "handle",
-          ],
+          searchableAttributes: ['title', 'description', 'variant_sku'],
+          displayedAttributes: ['title', 'description', 'variant_sku', 'thumbnail', 'handle'],
         },
       },
     },
@@ -84,6 +68,25 @@ const plugins = [
   //     webhook_secret: STRIPE_WEBHOOK_SECRET,
   //   },
   // },
+  // File Object Storage (MinIO)
+  {
+    resolve: `medusa-file-s3`,
+    options: {
+      s3_url: process.env.S3_URL,
+      bucket: process.env.S3_BUCKET,
+      region: process.env.S3_REGION
+    },
+  },
+  {
+    resolve: `medusa-file-minio`,
+    options: {
+      endpoint: process.env.MINIO_ENDPOINT,
+      bucket: process.env.MINIO_BUCKET,
+      private_bucket: process.env.MINIO_PRIVATE_BUCKET,
+      access_key_id: process.env.MINIO_KEY,
+      secret_access_key: process.env.MINIO_SECRET,
+    },
+  },
 ];
 /** @type {import('@medusajs/medusa').ConfigModule} */
 module.exports = {
@@ -93,7 +96,7 @@ module.exports = {
     redis_url: REDIS_URL,
     // For more production-like environment install PostgresQL
     database_url: DATABASE_URL,
-    database_type: "postgres",
+    database_type: 'postgres',
     // database_database: './medusa-db.sql',
     // database_type: 'sqlite',
     store_cors: STORE_CORS,
