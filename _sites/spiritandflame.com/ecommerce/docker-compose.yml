@@ -4,25 +4,33 @@ services:
   admin:
     build:
       context: ./admin
+    container_name: admin
+    depends_on:
+      - backend
     ports:
       - '7000:7000'
   # Storefront - Public Facing Interface for clients and customers
   storefront:
     build:
       context: ./storefront
+    container_name: storefront
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: development
     ports:
       - '8000:8000'
   # Backend MedusaJS Server responsible for core logic of the store
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
     image: backend:starter
-    container_name: medusa-server-default
+    container_name: backend
     depends_on:
       - postgres
       - redis
       - search
+      - minio
     env_file:
       - './backend/.env'
     environment:
@@ -30,7 +38,7 @@ services:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/medusa-docker
       REDIS_URL: redis://redis
       MEILISEARCH_HOST: http://search:7700
-      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ENDPOINT: http://minio:9002
       PORT: 9000
     ports:
       - '9000:9000'
@@ -39,37 +47,44 @@ services:
   # Meilisearch Search engine for Store product Searching
   search:
     image: getmeili/meilisearch:v1.0
-    container_name: medusa-server-search
-    environment:
-      MEILI_MASTER_KEY: 'Oiy5JZoyRfKw35zg849uONb7d2fPp-id2WGLfcodCEs'
+    container_name: search
     ports:
       - '7700:7700'
     volumes:
       - ./backend/meili_data:/meili_data
   # Postgres DB for Core Data Storage
   postgres:
+    restart: always
+    container_name: postgres
     image: postgres:10.4
-    ports:
-      - '5432:5432'
+    volumes:
+      - './backend/db_data:/var/lib/postgresql'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: medusa-docker
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-q', '-d', 'medusa-docker', '-U', 'postgres']
+      retries: 3
+      timeout: 5s
   # MinIO for Object Storage (S3 Alternative)
   minio:
     image: minio/minio
+    container_name: minio
     ports:
-      - '9002:9000'
+      - '9002:9002'
       - '9001:9001'
     volumes:
-      - ./db:/data
+      - ./backend/minio_data:/data
     env_file: './backend/.env'
-    command: server --console-address ":9001" /data
+    command: server --address ":9002" --console-address ":9001" /data
   # Redis DB for Notifications, Events, Subscriptions
   redis:
+    container_name: redis
     image: redis
     ports:
       - '6379:6379'
-
 volumes:
   node_modules:
