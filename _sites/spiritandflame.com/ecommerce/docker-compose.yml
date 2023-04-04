@@ -10,6 +10,8 @@ services:
   storefront:
     build:
       context: ./storefront
+    environment:
+      NODE_ENV: development
     ports:
       - '8000:8000'
   # Backend MedusaJS Server responsible for core logic of the store
@@ -62,7 +64,7 @@ services:
       - '9002:9000'
       - '9001:9001'
     volumes:
-      - ./db:/data
+      - ./minio:/data
     env_file: './backend/.env'
     command: server --console-address ":9001" /data
   # Redis DB for Notifications, Events, Subscriptions
@@ -70,6 +72,5 @@ services:
     image: redis
     ports:
       - '6379:6379'
-
 volumes:
   node_modules:
