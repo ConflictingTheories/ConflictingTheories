@@ -1,28 +1,30 @@
 {
-  "name": "medusa-starter-default",
+  "name": "snf-backend",
   "version": "0.0.1",
-  "description": "A starter for Medusa projects.",
-  "author": "Sebastian Rindom <skrindom@gmail.com>",
-  "license": "MIT",
+  "description": "Spirit and Flame Backend",
+  "author": "Kyle Derby MacInnis <director@sovereign.enterprises>",
+  "private": true,
+  "license": "ISC",
   "scripts": {
     "seed": "medusa seed -f ./data/seed.json",
     "build": "babel src -d dist --extensions \".ts,.js\"",
     "start": "medusa develop"
   },
   "dependencies": {
-    "@medusajs/medusa": "^1.6.0",
+    "@medusajs/admin": "^2.0.0",
+    "@medusajs/cache-inmemory": "^1.8.0",
+    "@medusajs/event-bus-local": "^1.8.0",
+    "@medusajs/medusa": "^1.8.0",
     "@medusajs/medusa-cli": "^1.3.3",
+    "@meilisearch/instant-meilisearch": "^0.12.0",
     "medusa-file-minio": "^1.1.5",
-    "medusa-file-s3": "^1.1.11",
     "medusa-fulfillment-manual": "^1.1.31",
     "medusa-interfaces": "^1.3.3",
     "medusa-payment-manual": "^1.0.16",
     "medusa-payment-stripe": "^1.1.45",
     "medusa-plugin-meilisearch": "^1.0.4",
-    "sqlite3": "^5.1.6",
-    "typeorm": "^0.2.36"
+    "react-instantsearch-dom": "^6.39.1"
   },
-  "repository": "https://github.com/medusajs/medusa-starter-default.git",
   "keywords": [
     "sqlite",
     "ecommerce",

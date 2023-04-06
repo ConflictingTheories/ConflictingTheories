@@ -59,24 +59,25 @@ const plugins = [
       },
     },
   },
+  {
+    resolve: '@medusajs/admin',
+    /** @type {import('@medusajs/admin').PluginOptions} */
+    options: {
+      autoRebuild: true,
+      // ...
+    },
+  },
   // Uncomment to add Stripe support.
   // You can create a Stripe account via: https://stripe.com
   // {
   //   resolve: `medusa-payment-stripe`,
+  //   /** @type {import('medusa-payment-stripe').PluginOptions} */
   //   options: {
   //     api_key: STRIPE_API_KEY,
   //     webhook_secret: STRIPE_WEBHOOK_SECRET,
   //   },
   // },
   // File Object Storage (MinIO)
-  {
-    resolve: `medusa-file-s3`,
-    options: {
-      s3_url: process.env.S3_URL,
-      bucket: process.env.S3_BUCKET,
-      region: process.env.S3_REGION
-    },
-  },
   {
     resolve: `medusa-file-minio`,
     options: {

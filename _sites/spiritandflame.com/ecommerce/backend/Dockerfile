@@ -9,11 +9,7 @@ COPY yarn.* .
 RUN apt-get update
 RUN apt-get install -y python
 
-RUN npm install -g npm@8.1.2
-RUN npm install -g @medusajs/medusa-cli@latest
-RUN npm install sqlite3 --save
-RUN npm install
-
 COPY . .
+RUN yarn
 
 ENTRYPOINT ["./develop.sh"]
