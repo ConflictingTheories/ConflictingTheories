@@ -1,5 +1,25 @@
 version: '3.8'
 services:
+  lb:
+    container_name: 'lb'
+    image: snf-load-balancer:latest
+    restart: always
+    volumes:
+      - './load-balancer/certs:/etc/letsencrypt'
+    depends_on:
+      - 'storefront'
+      - 'backend'
+      - 'search'
+      - 'minio'
+    links:
+      - 'minio:minio'
+      - 'backend:backend'
+      - 'search:search'
+      - 'storefront:storefront'
+    build:
+      context: ./load-balancer/
+    ports:
+      - '80:80'
   # Admin Panel - Interface for storage management
   admin:
     build:
@@ -36,6 +56,7 @@ services:
       REDIS_URL: redis://redis
       MEILISEARCH_HOST: http://search:7700
       MINIO_ENDPOINT: http://minio:9002
+      MINIO_DOMAIN: host.docker.internal
       PORT: 9000
     ports:
       - '9000:9000'
