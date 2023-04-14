@@ -20,15 +20,6 @@ services:
       context: ./load-balancer/
     ports:
       - '80:80'
-  # Admin Panel - Interface for storage management
-  admin:
-    build:
-      context: ./admin
-    container_name: admin
-    depends_on:
-      - backend
-    ports:
-      - '7000:7000'
   # Storefront - Public Facing Interface for clients and customers
   storefront:
     build:
