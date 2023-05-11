@@ -67,15 +67,16 @@ services:
     container_name: postgres
     image: postgres:10.4
     volumes:
-      - './backend/db_data:/var/lib/postgresql'
+      # - './backend/db_data:/var/lib/postgresql'
+      - './medusa-strapi/db_data:/var/lib/postgresql'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: medusa-docker
+      POSTGRES_DB: medusa-strapi # medusa-docker
     ports:
       - '5432:5432'
     healthcheck:
-      test: ['CMD', 'pg_isready', '-q', '-d', 'medusa-docker', '-U', 'postgres']
+      test: ['CMD', 'pg_isready', '-q', '-d', 'medusa-strapi', '-U', 'postgres']
       retries: 3
       timeout: 5s
   # MinIO for Object Storage (S3 Alternative)

@@ -29,7 +29,7 @@ const Hero = () => {
             style={{
               minHeight: "100vh",
               minWidth: "100%",
-              maxWidth: "fit-content",
+              width: "100%",
             }}
           >
             <source
