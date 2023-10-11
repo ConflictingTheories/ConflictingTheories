@@ -2,7 +2,7 @@
 
 Free Your Mind - Self-Sovereignty is the New Future
 - 🌱 I’m currently learning ... [Security+](https://www.comptia.org/certifications/security), [PMI Standards](https://www.pmi.org/), [Rust](https://rust-lang.org)
-- 🔭 I’m currently working on ... the [Proxi Intiative](https://proxi.network), [Calliope](https://calliope.site), [Self-Sovereignty & Digital Privacy](https://sovereign.tips), and Project Management
+- 🔭 I’m currently working on ... the [PixoSpritz](https://peaceful.garden), [Calliope](https://calliope.site), and Game Design
 - 👯 I’m looking to collaborate on ... the [Proxi Intiative](https://proxi.network) & [Calliope](https://calliope.site)
 - 🤔 I’m looking for help with ... the [Proxi Intiative](https://proxi.network) & [Calliope](https://calliope.site)
 
