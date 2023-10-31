@@ -1,3 +1,7 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+
 <style>
 [class*="spider"] {
   position: absolute;
@@ -10,6 +14,11 @@
   margin: 40px 0 0 0;
   background: #110D04;
 }
+
+[class*="halloween"]{
+  font-family: 'Eater', cursive;
+}
+
 [class*="spider"] *, [class*="spider"]:before, [class*="spider"]:after, [class*="spider"] :after, [class*="spider"] :before {
   position: absolute;
   content: "";
@@ -142,11 +151,7 @@
 }
 
 h1 {
-  position: absolute;
-  left: 6%;
-  bottom: 12%;
-  font-family: 'Eater', cursive;
-  font-size: 8.5vw;
+  font-family: 'Creepster', cursive;
   color: #111111;
   -moz-animation: flicker 4s 0s infinite;
   -webkit-animation: flicker 4s 0s infinite;
@@ -213,6 +218,7 @@ h1 {
 
 ~ 20231030T231107 ~
 
+<div class="halloween">
 <div class='spider_0'>
   <div class='eye left'></div>
   <div class='eye right'></div>
@@ -277,3 +283,4 @@ Check out these halloween-themed appropriate video-game throwbacks:
 
 ### Ghosthunter
 ![Ghosthunter](https://i.ytimg.com/vi/pWC7lluBTI0/maxresdefault.jpg)
+</div>
