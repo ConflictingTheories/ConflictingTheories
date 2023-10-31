@@ -1,3 +1,4 @@
+export NODE_OPTIONS=--openssl-legacy-provider
 export NODE_ENV=production
 export REACT_APP_SITE_TITLE="Pixels Cafe: Stay for a bit"
 export ELECTRON_START_URL=http://localhost:8888/
