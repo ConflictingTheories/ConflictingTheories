@@ -14,11 +14,9 @@
   margin: 40px 0 0 0;
   background: #110D04;
 }
-
 [class*="halloween"]{
   font-family: 'Eater', cursive;
 }
-
 [class*="spider"] *, [class*="spider"]:before, [class*="spider"]:after, [class*="spider"] :after, [class*="spider"] :before {
   position: absolute;
   content: "";
@@ -139,17 +137,13 @@
   -webkit-animation: legs-wriggle-right 1s 0.3s infinite;
   animation: legs-wriggle-right 1s 0.3s infinite;
 }
-
 .spider_4 {
   right: 20%;
   margin-top: 50px;
 }
-
 .spider_5 {
   right: 5%;
-  margin-top: 210px;
 }
-
 h1 {
   font-family: 'Creepster', cursive;
   color: #111111;
@@ -157,7 +151,6 @@ h1 {
   -webkit-animation: flicker 4s 0s infinite;
   animation: flicker 4s 0s infinite;
 }
-
 @-moz-keyframes flicker {
   0%, 6%, 12% {
     text-shadow: none;
@@ -214,7 +207,7 @@ h1 {
 }
 </style>
 
-# Happy Halloween from the Pixels Cafe! 👻 🎃
+# Happy Halloween from the Pixels Cafe!
 
 ~ 20231030T231107 ~
 
@@ -256,31 +249,40 @@ h1 {
   <span class='leg right'></span>
 </div>
 
-Check out these halloween-themed appropriate video-game throwbacks:
+👻 🎃 Check out these halloween-themed appropriate video-game throwbacks:
 
 ---
 
-### __Silent Hill__
+### **Silent Hill**
+
 ## ![Silent Hill](https://wallpapercave.com/wp/ekoHPBT.jpg)
 
-### __Fatal Frame__
+### **Fatal Frame**
+
 ## ![Fatal Frame](https://nintendoeverything.com/wp-content/uploads/fatal-frame.jpg)
 
 ### Resident Evil
+
 ## ![Resident Evil](<https://vignette.wikia.nocookie.net/residentevil/images/d/df/Stuffed_deer_room_2002_(1).jpg/revision/latest?cb=20150530010512>)
 
 ### Dino Crisis
+
 ## ![Dino Crisis](<https://r.mprd.se/media/images/51986-Dino_Crisis_(E)-1492553873.png>)
 
 ### Twisted Metal Black
+
 ## ![Twisted Metal Black](https://www.movienewsnet.com/wp-content/uploads/2021/02/Twisted-Metal-1024x576.jpg)
 
 ### BioShock
+
 ## ![BioShock](https://www.gamespot.com/a/uploads/screen_kubrick/123/1239113/2606973-bioshock.jpg)
 
 ### Deadspace
+
 ## ![Deadspace](https://thekoalition.com/images/2013/01/Dead-Space-3-PS3-4.jpg)
 
 ### Ghosthunter
+
 ![Ghosthunter](https://i.ytimg.com/vi/pWC7lluBTI0/maxresdefault.jpg)
+
 </div>

@@ -147,7 +147,6 @@
 
 .spider_5 {
   right: 5%;
-  margin-top: 210px;
 }
 
 h1 {
@@ -214,7 +213,7 @@ h1 {
 }
 </style>
 
-# Happy Halloween from the Pixels Cafe! 👻 🎃
+# Happy Halloween from the Pixels Cafe! 
 
 ~ 20231030T231107 ~
 
@@ -256,7 +255,7 @@ h1 {
   <span class='leg right'></span>
 </div>
 
-Check out these halloween-themed appropriate video-game throwbacks:
+👻 🎃 Check out these halloween-themed appropriate video-game throwbacks:
 
 ---
 
