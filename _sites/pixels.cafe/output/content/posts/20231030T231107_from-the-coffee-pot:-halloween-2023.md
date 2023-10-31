@@ -272,7 +272,7 @@ Check out these halloween-themed appropriate video-game throwbacks:
 ### Dino Crisis
 ## ![Dino Crisis](<https://r.mprd.se/media/images/51986-Dino_Crisis_(E)-1492553873.png>)
 
-### Tristed Metal Black
+### Twisted Metal Black
 ## ![Twisted Metal Black](https://www.movienewsnet.com/wp-content/uploads/2021/02/Twisted-Metal-1024x576.jpg)
 
 ### BioShock
