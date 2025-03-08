@@ -5,7 +5,7 @@ Expand your mind!
 - 🔭 I’m currently working on ... [Calliope](https://github.com/ConflictingTheories/calliope), and [PixoSpritz](https://github.com/ConflictingTheories/calliope-pixos)
 - 👯 I’m looking to collaborate on ... [PixoSpritz](https://github.com/ConflictingTheories/calliope-pixos) & [Calliope](https://github.com/ConflictingTheories/calliope)
 - 🤔 I’m looking for help with ... [PixoSpritz](https://github.com/ConflictingTheories/calliope-pixos) & [Calliope](https://calliope.site)
-
+- 👀 I'm looking for work in ... Game Design, Data Warehousing, Electronics, IoT, Technical Project Management, Senior Developer
 
 <!--
 **ConflictingTheories/ConflictingTheories** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
