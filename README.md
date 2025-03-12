@@ -7,6 +7,11 @@ Expand your mind!
 - 🤔 I’m looking for help with ... [PixoSpritz](https://github.com/ConflictingTheories/calliope-pixos) & [Calliope](https://calliope.site)
 - 👀 I'm looking for work in ... Game Design, Data Warehousing, Electronics, IoT, Technical Project Management, Senior Developer
 
+
+### Update as of March 2025:
+- Past 4.5 years were mostly working for AgencyAnalytics via private git repos [https://github.com/agencyanalytics], so much of my activity from the past 4 years is not directly associated with this github account, and was done with a company specific account. 
+- While employed, top 5 contributer - averaging each year approximately 200-250+ PRs / 500+ Code reviews / 1000's of commits during my time there
+
 <!--
 **ConflictingTheories/ConflictingTheories** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
