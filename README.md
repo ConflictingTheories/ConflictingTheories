@@ -10,7 +10,7 @@ Expand your mind!
 
 ### Update as of March 2025:
 - Past 4.5 years were mostly working for AgencyAnalytics via private git repos [https://github.com/agencyanalytics], so much of my activity from the past 4 years is not directly associated with this github account, and was done with a company specific account. 
-- While employed, top 5 contributer - averaging each year approximately 200-250+ PRs / 500+ Code reviews / 1000's of commits during my time there
+- While employed, top 5 contributer - average contributions per year: approx. 200-250+ PRs merged / 500+ PR Code reviews performed / 1000's of commits drafted
 
 <!--
 **ConflictingTheories/ConflictingTheories** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
