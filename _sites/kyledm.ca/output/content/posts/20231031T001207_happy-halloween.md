@@ -143,21 +143,21 @@ Have a spooktacular day!
   -webkit-animation: legs-wriggle-right 1s 0.3s infinite;
   animation: legs-wriggle-right 1s 0.3s infinite;
 }
-.spider_4 {
+[class*="halloween"] .spider_4 {
   right: 20%;
   margin-top: 50px;
 }
-.spider_5 {
+[class*="halloween"] .spider_5 {
   right: 5%;
 }
-h1 {
+[class*="halloween"] h1 {
   font-family: 'Creepster', cursive;
   color: #111111;
   -moz-animation: flicker 4s 0s infinite;
   -webkit-animation: flicker 4s 0s infinite;
   animation: flicker 4s 0s infinite;
 }
-@-moz-keyframes flicker {
+[class*="halloween"] @-moz-keyframes flicker {
   0%, 6%, 12% {
     text-shadow: none;
     color: #111111;
@@ -175,7 +175,7 @@ h1 {
     color: #fa6701;
   }
 }
-@-webkit-keyframes flicker {
+[class*="halloween"] @-webkit-keyframes flicker {
   0%, 6%, 12% {
     text-shadow: none;
     color: #111111;
