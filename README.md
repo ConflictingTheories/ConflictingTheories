@@ -9,6 +9,7 @@ Expand your mind!
 
 
 ### Update as of March 2025:
+- I AM CURRENTLY LOOKING FOR A JOB! Please reach out if you have an opportunity!
 - Past 4.5 years were mostly working via private git repos so much of my activity from the past 4 years is not directly associated with this github account, and was done with a company specific account. 
 - While employed, top 5 contributer - average contributions **per year**: approx. 200-250+ PRs merged / 500+ PR Code reviews performed / 1000's of commits drafted
 
