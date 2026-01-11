@@ -8,11 +8,9 @@ Expand your mind!
 - 👀 I'm looking for work in ... Game Design, Data Warehousing, Electronics, IoT, Technical Project Management, Senior Developer
 
 
-### Update as of March 2025:
-- I AM CURRENTLY LOOKING FOR A JOB! Please reach out if you have an opportunity!
-- Past 4.5 years were mostly working via private git repos so much of my activity from the past 4 years is not directly associated with this github account, and was done with a company specific account. 
-- While employed, top 5 contributer - average contributions **per year**: approx. 200-250+ PRs merged / 500+ PR Code reviews performed / 1000's of commits drafted
-
+### Update as of 2026:
+- I AM CURRENTLY LOOKING FOR A JOB! SERIOUSLY - Please reach out if you have an opportunity! SEE MY REPOS - SEE MY CONTRIBUTIONS OVER THE YEARS! (NOTE: MUCH OF MY PAST WORK IS NOT PUBLIC SADLY)
+- I really really need to get some income soon.... :/ (No joke - reality is I need to eat....and survive)
 <!--
 **ConflictingTheories/ConflictingTheories** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
